@@ -221,6 +221,31 @@ footer {
   color: var(--muted);
 }
 
+/* ---------- FINDINGS / ALERTS ---------- */
+.findings {
+  background: #f0fdf4;
+  border-left: 4px solid var(--success);
+  padding: 16px;
+  border-radius: 6px;
+  margin: 20px 0;
+}
+
+.findings.warning {
+  background: #fef3c7;
+  border-left-color: var(--warning);
+}
+
+.findings.danger {
+  background: #fee2e2;
+  border-left-color: var(--danger);
+}
+
+.findings strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
   section {
