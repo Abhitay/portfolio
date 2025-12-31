@@ -3,3 +3,6 @@ events.csv
 users.csv
 .DS_Store
 .vscode
+revenue.csv
+churn.csv
+channel_exposure.csv
