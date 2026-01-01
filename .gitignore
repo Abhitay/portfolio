@@ -6,3 +6,10 @@ users.csv
 revenue.csv
 churn.csv
 channel_exposure.csv
+features.csv
+calendar_effects.csv
+baseline_allocation.csv
+channel_summary.csv
+incremental_ltv_results.csv
+optimal_allocation.csv
+uplift_results.csv
