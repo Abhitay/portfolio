@@ -1,2 +1,0 @@
-# abhitay-portfolio
-

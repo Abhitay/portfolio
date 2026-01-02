@@ -1,0 +1,67 @@
+- .gitattributes
+- .gitignore
+- docs/
+  - ai-insights-copilot.html
+  - feature-impact.html
+  - growth-allocation.html
+  - index.html
+  - Shinde Resume.pdf
+  - styles/
+    - main.css
+- feature_impact/
+  - case_study.md
+  - eda.ipynb
+  - naive_bayes.ipynb
+  - v2.ipynb
+  - figures/
+    - 1a.png
+    - 1b.png
+    - 1c.png
+    - 1d.png
+    - 1e.png
+  - data_design/
+    - simulate_events.py
+    - users.csv
+- growth_engine/
+  - case_study.md
+  - dashboard.py
+  - ltv_forecast.ipynb
+  - optimization.ipynb
+  - uplift.ipynb
+  - datadesign/
+    - data_creation.ipynb
+    - baseline_allocation.csv  
+    - channel_exposure.csv  
+    - channel_summary.csv  
+    - churn.csv  
+    - incremental_ltv_results.csv  
+    - optimal_allocation.csv  
+    - revenue.csv  
+    - uplift_results.csv  
+    - users.csv  
+  - figures/
+    - 01_incremental_ltv_by_channel.png
+    - 02_naive_vs_optimized_allocation.png
+    - 03_spend_vs_incremental_value_saturation.png
+    - 04_roi_vs_incremental_ltv_scatter.png
+    - 05_executive_summary_flow.png
+- product_sense/
+  - 01_product_context.ipynb
+  - 02_metric_framework.ipynb
+  - 03_naive_exec_view.ipynb
+  - 04_root_cause_engine.ipynb
+  - 05_decision_engine.ipynb
+  - 06_exec_ai_copilot.ipynb
+  - eda.ipynb
+  - case_study.md
+  - data_design/
+    - calendar_effects.csv
+    - data_creation.ipynb
+    - events.csv
+    - features.csv
+    - users.csv
+  - figures/
+    - esau_trend.png
+    - naive_treated_control_trend.png
+    - pre_post_esau.png
+    - propensity_overlap.png

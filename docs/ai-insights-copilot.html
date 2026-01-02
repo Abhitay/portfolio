@@ -5,288 +5,512 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Engagement Drop Root Cause Analysis | Case Study</title>
 
-  <!-- Base design system -->
   <link rel="stylesheet" href="styles/main.css">
 </head>
+
 <body>
 
   <!-- NAVBAR -->
   <nav>
-    <div class="left">Abhitay Shinde</div>
+    <div class="left"><a href="index.html">Abhitay Shinde</a></div>
     <div class="right">
-      <a href="index.html#projects">Projects</a>
+      <a href="index.html#projects">Highlights</a>
       <a href="index.html#experience">Background</a>
       <a href="index.html#contact">Contact</a>
-      <a class="btn" href="../resume.pdf" target="_blank">Download Resume</a>
+      <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
     </div>
   </nav>
 
-  <!-- HERO / INTRODUCTION -->
+  <!-- HERO -->
   <section class="hero">
-    <h1>Engagement Drop Root Cause Analysis: An Exec-Facing AI Decision System</h1>
+    <h1>Was the Feed Update the Culprit? Root Cause Analysis & Targeted Fix</h1>
+    <p class="subtitle">Deciding whether to rollback a major feed update or apply a focused fix that preserves long-term value.</p>
     <div class="tech-tags">
-      <span class="tag">Python</span>
-      <span class="tag">Pandas</span>
-      <span class="tag">Causal Inference</span>
-      <span class="tag">DiD</span>
-      <span class="tag">Propensity Score Matching</span>
-      <span class="tag">Statistical Testing</span>
-      <span class="tag">Gemini API</span>
       <span class="tag">Product Analytics</span>
-    </div>
-    <p>
-      I built an end-to-end product data science system to diagnose an executive-level engagement drop, moving from raw signals and misleading correlations to a defensible, decision-ready recommendation supported by causal reasoning and bias correction.
-    </p>
-    <!-- TODO: Insert high-level system flow diagram (Metrics → Analysis → Decision → AI Copilot) -->
-  </section>
-
-  <!-- TL;DR Decision Box -->
-  <section>
-    <div class="recommendation danger">
-      <h3>TL;DR — Product Decision</h3>
-      <ul>
-        <li>📉 Engagement (ESAU) dropped ~8% over 4 weeks</li>
-        <li>⚠️ Naive analysis blamed a newly launched feature</li>
-        <li>📈 Statistical tests and DiD appeared significant — but were misleading</li>
-        <li>🔬 After correcting for selection bias and confounders:</li>
-        <ul>
-          <li>~3% driven by seasonality</li>
-          <li>~4% driven by cohort quality shift</li>
-          <li>~1% attributable to a feature interaction bug</li>
-        </ul>
-      </ul>
-      <p><strong>Decision:</strong> Do not rollback the feature; apply a targeted fix and monitor.</p>
-      <!-- TODO: Embed “Daily Sessions / ESAU (Exec View)” plot here. Export from data_creation.ipynb as PNG to docs/assets/ and embed below. -->
-      <!-- <img src="assets/daily_sessions_esau.png" alt="Daily Sessions / ESAU (Exec View)">
-      <div class="caption">ESAU trend over 90 days (exec view). Source: data_creation.ipynb</div> -->
+      <span class="tag">Causal Inference</span>
+      <span class="tag">Propensity Score Matching</span>
+      <span class="tag">Difference-in-Differences</span>
     </div>
   </section>
 
-  <!-- PRODUCT INFORMATION -->
-  <section>
-    <h2>Product Information</h2>
-    <h3>Product Context</h3>
-    <p>
-      The simulated product is a B2C, feed-based application where users engage through sessions and content discovery. Leadership monitors engagement closely due to its downstream impact on retention and revenue. A new feed feature (SmartFeed_v2) was rolled out gradually, shortly before engagement began to decline, creating immediate concern that the feature caused a regression.
-    </p>
-    <h3>Tech Stack</h3>
+  <!-- TL;DR -->
+   <section>
+  <section class="tldr">
+    <h2>TL;DR</h2>
     <ul>
-      <li>Python · Pandas · Causal Inference · DiD · Propensity Score Matching · Statistical Testing · Gemini API · Product Analytics</li>
+      <li>I evaluated a post-launch engagement decline following a major feed update in a consumer product.</li>
+      <li>Initial analysis using aggregate metrics, t-tests, and naive Difference-in-Differences strongly suggested the feature caused the drop.</li>
+      <li>Deeper analysis correcting for selection bias and cohort shifts showed the feature impact was real but not the primary driver.</li>
+      <li><strong>Final decision:</strong> Do not rollback the feature. Apply a targeted fix and monitor cohort-normalized engagement.</li>
     </ul>
   </section>
-
-  <!-- USERS & METRICS -->
+  </section>
   <section>
-    <h2>Users</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>~50,000 users</h3>
-        <ul>
-          <li>US-only</li>
-          <li>Mixture of high-intent (organic/referral) and lower-intent (paid/affiliate) users</li>
-          <li>Noticeable shift toward lower-intent cohorts after Day ~60</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Metrics Tracked</h3>
-        <ul>
-          <li><strong>North Star:</strong> Engaged Sessions per Active User (ESAU)<br><span class="metric-desc">(Sessions per day ÷ active users per day)</span></li>
-          <li>Guardrails: DAU, returning user share, cohort-level ESAU splits</li>
-        </ul>
-      </div>
-    </div>
-    <div class="findings">
-      <strong>Insight:</strong> This cohort shift is not obvious from aggregate dashboards but materially affects engagement.
+    <h2>The Decision Leadership Needed</h2>
+    <p>The product is a B2C, feed-based application where user engagement directly impacts retention and long-term revenue. Engagement is closely monitored by leadership and often used as an early warning signal for product regressions.</p>
+    <p>Shortly after the gradual rollout of a new feed experience, leadership observed a sustained decline in engagement. The timing raised immediate concern that the feature had negatively impacted user behavior. The decision at stake was whether to rollback the feature, pause further rollout, or continue with targeted iteration.</p>
+    <div class="fig">
+      <img src="../product_sense/figures/esau_trend.png" alt="Daily ESAU trend showing post-launch decline">
+      <p class="caption">Figure 1: Daily Engaged Sessions per Active User (ESAU). Engagement trends downward after feature rollout, triggering executive concern.</p>
     </div>
   </section>
 
-  <!-- DATA SNAPSHOT -->
-  <section>
-    <h2>Data Snapshot</h2>
-    <h3>Key Datasets</h3>
-    <ul>
-      <li><strong>users.csv</strong> — signup date, acquisition channel, cohort quality</li>
-      <li><strong>events.csv</strong> — session-level engagement events</li>
-      <li><strong>features.csv</strong> — rollout timing and exposure</li>
-      <li><strong>calendar_effects.csv</strong> — seasonality multipliers</li>
-    </ul>
-    <div class="data-snapshot">
-      <p><strong>Sample Data:</strong> User profiles (from users.csv)</p>
-      <!-- Data source: product_sense/data_design/users.csv -->
-      <table class="snapshot-table">
-        <tr>
-          <td><strong>user_id</strong></td>
-          <td><strong>signup_date</strong></td>
-          <td><strong>country</strong></td>
-          <td><strong>cohort_quality</strong></td>
-          <td><strong>acquisition_channel</strong></td>
-        </tr>
-        <tr><td>1</td><td>2025-10-22</td><td>US</td><td>high</td><td>referral</td></tr>
-        <tr><td>2</td><td>2025-09-15</td><td>US</td><td>high</td><td>referral</td></tr>
-        <tr><td>3</td><td>2025-11-11</td><td>US</td><td>low</td><td>paid</td></tr>
-        <tr><td>4</td><td>2025-10-31</td><td>US</td><td>low</td><td>affiliate</td></tr>
-        <tr><td>5</td><td>2025-09-21</td><td>US</td><td>high</td><td>organic</td></tr>
-      </table>
-    </div>
-    <div class="data-snapshot">
-      <p><strong>Sample Data:</strong> Feature rollout (from features.csv)</p>
-      <!-- Data source: product_sense/data_design/features.csv -->
-      <table class="snapshot-table">
-        <tr><td><strong>feature_name</strong></td><td><strong>launch_date</strong></td><td><strong>rollout_pct</strong></td></tr>
-        <tr><td>SmartFeed_v2</td><td>2025-10-26</td><td>0.6</td></tr>
-      </table>
-    </div>
-    <div class="findings">
-      <strong>Dataset Insights:</strong>
-      <ul>
-        <li>Engagement decay is gradual, not cliff-like</li>
-        <li>Feature exposure is correlated with baseline engagement</li>
-        <li>Aggregate session counts increase while ESAU declines (a classic exec trap)</li>
-      </ul>
-    </div>
-  </section>
+<section>
+  <h2>Who We Were Comparing</h2>
 
-  <!-- APPROACH 1: NAIVE WAY -->
-  <section>
-    <h2>Approach 1 — Naive Analysis</h2>
-    <div class="approach">
-      <h3>What I Did (High-Level)</h3>
-      <ul>
-        <li>Compared ESAU before vs after feature launch</li>
-        <li>Ran t-tests (pre/post, exposed vs not)</li>
-        <li>Applied Difference-in-Differences using exposure as treatment</li>
-        <li>Observed statistically significant results</li>
-      </ul>
-      <!-- TODO: Insert pre vs post ESAU comparison plot -->
-      <!-- TODO: Insert DiD regression table (naive) -->
-    </div>
-    <h3>Outcome</h3>
-    <div class="metrics-box">
-      <div class="metrics-row">
-        <div class="metric-item">
-          <div class="metric-label">ESAU Drop (Observed)</div>
-          <div class="metric-value danger">-8%</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">DiD Interaction Term</div>
-          <div class="metric-value">Statistically Significant</div>
-        </div>
-      </div>
-    </div>
-    <div class="findings warning">
-      <strong>⚠️ Why This Is Wrong:</strong>
-      <ul>
-        <li>Treated users already had higher baseline engagement</li>
-        <li>Exposure was endogenous, not random</li>
-        <li>Parallel trends assumption violated</li>
-        <li>Post period included multiple shocks (seasonality + cohort shift)</li>
-        <li>Despite “correct” methods, the conclusion was misleading.</li>
-      </ul>
-    </div>
-  </section>
+  <p class="lead">
+    The engagement drop did not affect all users equally.
+    Understanding <em>who moved the metric</em> was the first priority.
+  </p>
 
-  <!-- APPROACH 2: CORRECT ONE -->
-  <section>
-    <h2>Approach 2 — Correct Analysis</h2>
-    <div class="approach">
-      <h3>What I Did (High-Level)</h3>
-      <ul>
-        <li>Identified endogeneity in feature exposure</li>
-        <li>Built pre-treatment user features</li>
-        <li>Estimated propensity scores for exposure</li>
-        <li>Matched treated and control users</li>
-        <li>Verified balance post-matching</li>
-        <li>Re-estimated ESAU differences</li>
-        <li>Ran PSM + DiD on matched samples</li>
-        <li>Decomposed engagement drivers</li>
-      </ul>
-      <!-- TODO: Insert propensity score overlap plot (treated vs control) -->
-      <!-- TODO: Insert ESAU trends after matching plot -->
-    </div>
-    <h3>Outcome</h3>
-    <div class="metrics-box">
-      <div class="metrics-row">
-        <div class="metric-item">
-          <div class="metric-label">Seasonality Impact</div>
-          <div class="metric-value">-3%</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Cohort Shift Impact</div>
-          <div class="metric-value">-4%</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Feature Bug Impact</div>
-          <div class="metric-value">-1%</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">True Feature Effect</div>
-          <div class="metric-value positive">~0%</div>
-        </div>
-      </div>
-    </div>
-    <div class="findings">
-      <strong>✅ Key Insight:</strong> Baseline differences largely removed. Feature effect shrank substantially. Seasonality and cohort quality emerged as dominant drivers. Feature bug isolated to a small returning-user segment.
-    </div>
-  </section>
 
-  <!-- KEY FINDINGS / DRIVER IMPACT TABLE -->
-  <section>
-    <h2>Key Findings</h2>
-    <table class="snapshot-table">
-      <tr><th>Driver</th><th>Impact on ESAU</th></tr>
-      <tr><td>Seasonality / fatigue</td><td>~3%</td></tr>
-      <tr><td>Cohort quality shift</td><td>~4%</td></tr>
-      <tr><td>Feature interaction bug</td><td>~1%</td></tr>
-      <tr><td>Total observed drop</td><td>~8%</td></tr>
-    </table>
-    <div class="findings">
-      <strong>No single factor explains the decline; the feature is not the primary cause.</strong>
-    </div>
-  </section>
-
-  <!-- WHAT WOULD HAVE GONE WRONG -->
-  <section>
-    <h2>What Would Have Gone Wrong Without This Analysis</h2>
-    <ul>
-      <li>Feature rollback would not have restored engagement</li>
-      <li>Engineering effort wasted on the wrong problem</li>
-      <li>Long-term roadmap disrupted</li>
-      <li>Executive trust in analytics eroded</li>
-      <li>Root causes (cohorts, seasonality) left unaddressed</li>
-    </ul>
-    <div class="findings warning">
-      <strong>This is exactly how good features get killed by bad analysis.</strong>
-    </div>
-  </section>
-
-  <!-- RECOMMENDATION / CONCLUSION -->
-  <section>
-    <h2>Recommendation & Conclusion</h2>
-    <div class="recommendation positive">
-      <h3>🟢 Maintain SmartFeed_v2 rollout, fix bug</h3>
+  <div class="cards">
+    <div class="card">
+      <h4>High-intent users</h4>
       <p>
-        Maintain the SmartFeed_v2 rollout while fixing the identified returning-user interaction bug. Monitor ESAU normalized by cohort quality over the next two weeks before taking broader action.
+        Returning users with strong baseline engagement and repeat usage.
       </p>
-      <h4>Next Steps</h4>
+      <p class="muted">
+        Small in number, disproportionate impact on ESAU.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Low-intent users</h4>
+      <p>
+        Newly acquired or low-commitment users with volatile engagement.
+      </p>
+      <p class="muted">
+        High volume, unstable behavior.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Lifecycle stage</h4>
+      <p>
+        New vs returning users exhibit fundamentally different engagement dynamics.
+      </p>
+      <p class="muted">
+        Aggregates mask these differences.
+      </p>
+    </div>
+  </div>
+
+  <div class="findings warning">
+    <strong>Why this mattered</strong>
+    <p>
+      A shift in cohort mix alone can move ESAU materially —
+      even if the product experience is unchanged.
+      Any analysis that ignores this risks blaming the wrong cause.
+    </p>
+  </div>
+</section>
+
+
+<section>
+  <h2>Why ESAU Can Mislead</h2>
+
+  <p class="lead">
+    ESAU is a useful signal — but only when the population underneath it is stable.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Why ESAU is attractive</h4>
       <ul>
-        <li>Monitor ESAU and retention post-holiday</li>
-        <li>Segment by cohort and acquisition channel</li>
-        <li>Automate root cause analysis in the Copilot</li>
-        <li>Continue using GenAI for executive summaries</li>
+        <li>Normalizes for DAU growth</li>
+        <li>Captures per-user engagement intensity</li>
+        <li>Moves quickly after product changes</li>
+      </ul>
+      <p class="muted">
+        Implicit assumption: the user mix is comparable over time.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Where it breaks</h4>
+      <ul>
+        <li>Influx of low-intent users dilutes averages</li>
+        <li>Returning users churn more slowly but move the metric more</li>
+        <li>Lifecycle effects masquerade as product regressions</li>
+      </ul>
+      <p class="muted">
+        The metric reacts — but not always to the right cause.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>How ESAU should be used</h4>
+      <p>
+        As a <strong>diagnostic signal</strong>, not a decision trigger.
+      </p>
+      <ul>
+        <li>Segmented by cohort quality</li>
+        <li>Anchored to returning users</li>
+        <li>Interpreted alongside acquisition mix</li>
       </ul>
     </div>
-    <div class="findings">
-      <strong>Conclusion:</strong> This project demonstrates how product data science goes beyond statistical significance. By correcting for bias, validating assumptions, and framing results in decision language, analytics can prevent costly overreactions and guide leadership toward the right action.<br><br>
-      <strong>📌 Final Decision:</strong> No rollback. Targeted fix + monitoring.
+  </div>
+
+  <div class="findings warning">
+    <strong>Key insight</strong>
+    <p>
+      ESAU was telling the truth —
+      just not the truth leadership thought it was.
+    </p>
+  </div>
+</section>
+
+
+<section>
+  <h2>The Data Behind the Decision</h2>
+
+  <p class="lead">
+    To determine whether the feed update caused the drop,
+    the analysis required visibility into <strong>baseline quality</strong>,
+    <strong>feature exposure</strong>, and <strong>post-launch behavior</strong>.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>User-level context</h4>
+      <p>
+        User records capture who users were before the rollout.
+      </p>
+      <ul>
+        <li>Signup timing and acquisition channel</li>
+        <li>Cohort quality classification</li>
+        <li>Returning vs new user status</li>
+      </ul>
+      <p class="muted">
+        This answers: <em>what kind of users are we observing?</em>
+      </p>
     </div>
-    <div class="findings notes">
-      <strong>Notes on Numbers:</strong><br>
-      ~8% drop → From ESAU pre/post averages (daily mean)<br>
-      Seasonality (~3%) → Compare ESAU adjusted vs unadjusted using calendar effects<br>
-      Cohort shift (~4%) → Weighted ESAU by cohort quality<br>
-      Feature bug (~1%) → Returning-user ESAU exposed vs matched control
+
+    <div class="card">
+      <h4>Behavioral outcomes</h4>
+      <p>
+        Event-level data tracks actual engagement over time.
+      </p>
+      <ul>
+        <li>Session starts and counts</li>
+        <li>Feature exposure flags</li>
+        <li>Pre vs post indicators</li>
+      </ul>
+      <p class="muted">
+        This answers: <em>how behavior changed after exposure</em>.
+      </p>
+    </div>
+  </div>
+
+  <div class="findings warning">
+    <strong>Early warning signs</strong>
+    <p>
+      Feature exposure was correlated with baseline engagement,
+      and total sessions continued to grow even as ESAU declined —
+      a classic signal of cohort-driven metric movement.
+    </p>
+  </div>
+
+  <p>
+    Because baseline quality and post-launch behavior were observable separately,
+    the analysis could isolate <em>product impact</em>
+    from <em>population drift</em>.
+  </p>
+</section>
+
+
+  <section>
+  <h2>The Standard Analysis (What Most Teams Would Do)</h2>
+
+  <p class="lead">
+    The initial evidence appeared to point clearly toward a rollback.
+  </p>
+
+  <p>
+    Following the conventional analytics playbook, the analysis began with
+    aggregate comparisons that most teams rely on under time pressure.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Step 1: Pre / post comparison</h4>
+      <p>
+        ESAU was compared before and after the feed rollout across the full user base.
+      </p>
+      <p class="muted">
+        Fast, intuitive, and commonly used in production monitoring.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Step 2: Treated vs control trends</h4>
+      <p>
+        Users exposed to the new feed were compared against non-exposed users
+        over the same time window.
+      </p>
+      <p class="muted">
+        Assumes exposure is exogenous.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Step 3: Difference-in-Differences</h4>
+      <p>
+        A DiD model estimated the interaction between feature exposure
+        and the post-launch period.
+      </p>
+      <p class="muted">
+        Statistically rigorous — if assumptions hold.
+      </p>
+    </div>
+  </div>
+
+  <p class="lead">
+    All three views told the same story.
+  </p>
+
+  <div class="fig">
+    <img src="../product_sense/figures/pre_post_esau.png" alt="Pre vs post ESAU">
+    <p class="caption">
+      ESAU declined immediately following rollout, suggesting a negative feature impact.
+    </p>
+  </div>
+
+  <div class="fig">
+    <img src="../product_sense/figures/naive_treated_control_trend.png" alt="Naive treated vs control trend">
+    <p class="caption">
+      Exposed users diverged downward relative to controls, reinforcing the rollback narrative.
+    </p>
+  </div>
+
+  <div class="findings danger">
+    <strong>Naive conclusion</strong>
+    <p>
+      The feed update caused the engagement drop.
+      Rolling back would restore performance.
+    </p>
+  </div>
+</section>
+
+
+
+  <section>
+    <h2>Why the Naive Conclusion Was Risky</h2>
+    <div class="card findings danger">
+      <strong>Core claim:</strong>
+      <p>The naive analysis compared incomparable groups and attributed all change to the most visible event.</p>
+      <p>The flaw was not in the math, but in the assumptions.</p>
+      <p>Feature exposure was <strong>endogenous</strong>. Higher-engagement users were more likely to be exposed, and cohort composition shifted materially during the post period. At the same time, the post-launch window included seasonality and natural engagement decay.</p>
+      <p>In plain terms, statistical significance masked a fundamentally biased comparison.</p>
     </div>
   </section>
+
+<section>
+  <h2>My Approach: Estimating the Counterfactual</h2>
+
+  <p class="lead">
+    The critical question was not whether engagement changed,
+    but what would have happened <em>without</em> the feed update.
+  </p>
+
+  <p>
+    Because exposure to the feature was non-random,
+    the counterfactual could not be observed directly.
+    The analysis therefore focused on constructing a defensible
+    approximation using only pre-rollout information.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Freeze pre-treatment behavior</h4>
+      <p>
+        User features were engineered exclusively from behavior observed
+        before the rollout.
+      </p>
+      <p class="muted">
+        Prevents post-treatment leakage.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Model exposure propensity</h4>
+      <p>
+        A propensity model estimated each user’s likelihood of receiving
+        the new feed based on baseline engagement and lifecycle stage.
+      </p>
+      <p class="muted">
+        Makes selection bias explicit.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Match comparable users</h4>
+      <p>
+        Treated users were matched to control users
+        with similar propensity scores.
+      </p>
+      <p class="muted">
+        Approximates a randomized experiment.
+      </p>
+    </div>
+  </div>
+
+  <p>
+    Engagement outcomes were then compared over the full post period,
+    avoiding unstable daily ratios that exaggerate noise.
+  </p>
+
+  <p class="lead">
+    Matching is only valid if treated and control users overlap.
+  </p>
+
+  <div class="fig">
+    <img src="../product_sense/figures/propensity_overlap.png" alt="Propensity score overlap">
+    <p class="caption">
+      Propensity score distributions show sufficient overlap after trimming,
+      validating the matching approach.
+    </p>
+  </div>
+
+  <div class="findings">
+    <strong>What this enabled</strong>
+    <p>
+      By comparing users who looked similar before exposure,
+      the analysis isolated the feature’s interaction effect
+      from cohort shifts and seasonality.
+    </p>
+  </div>
+</section>
+
+
+
+<section>
+  <h2>What Changed After Correcting for Bias</h2>
+
+  <p class="lead">
+    Once selection effects and cohort shifts were accounted for,
+    the story changed.
+  </p>
+
+  <p>
+    The naive view suggested a clear regression:
+    ESAU dropped immediately after rollout.
+  </p>
+
+  <div class="findings danger">
+    <strong>That conclusion was incomplete.</strong>
+    <p>
+      It attributed all movement to the feature —
+      ignoring who entered and exited the metric.
+    </p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Naive interpretation</h4>
+      <ul>
+        <li>~1.45% ESAU decline post-launch</li>
+        <li>Statistically significant pre/post difference</li>
+        <li>Treated users trend downward</li>
+      </ul>
+      <p class="muted">
+        Comparison contaminated by selection bias.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Bias-corrected view</h4>
+      <ul>
+        <li>~14.8% fewer sessions for treated users vs matched controls</li>
+        <li>Effect real, but economically modest</li>
+        <li>Insufficient to explain aggregate decline</li>
+      </ul>
+      <p class="muted">
+        Comparison now reflects like-for-like users.
+      </p>
+    </div>
+  </div>
+
+  <div class="findings">
+    <strong>Decision implication</strong>
+    <p>
+      The feature contributed marginally to the drop,
+      but rolling it back would not have recovered engagement.
+      The dominant drivers were cohort quality and seasonality.
+    </p>
+  </div>
+</section>
+
+
+  <section>
+    <h2>Segment-Level Insights</h2>
+    <div class="card">
+      <p>Breaking results down by segment revealed meaningful heterogeneity:</p>
+      <ul>
+        <li><strong>Low-intent cohorts:</strong> engagement decline driven primarily by acquisition mix changes</li>
+        <li><strong>High-intent, returning users:</strong> small but consistent interaction effect from the new feed</li>
+        <li><strong>New users:</strong> minimal sensitivity to the feature</li>
+      </ul>
+      <p>The risk was localized friction among core users, not broad engagement collapse.</p>
+    </div>
+  </section>
+
+  <section>
+  <h2>Key Findings & Inference</h2>
+
+  <p class="lead">
+    Correcting for bias materially changed both the interpretation
+    and the decision.
+  </p>
+
+  <div class="cards two-col">
+    <div class="card">
+      <h4>Aggregate metrics overstated feature impact</h4>
+      <p>
+        The observed ESAU decline was largely driven by
+        cohort mix shifts and seasonality rather than
+        a broad product regression.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Feature exposure was non-random</h4>
+      <p>
+        Higher-engagement and returning users were more likely
+        to receive the new feed, invalidating naive treated–control
+        comparisons.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>The causal effect existed but was modest</h4>
+      <p>
+        After matching, the feed update showed a real interaction
+        effect, but one too small to explain the full engagement drop.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Impact was concentrated in core users</h4>
+      <p>
+        The negative interaction primarily affected
+        high-intent, returning users, while new and low-intent users
+        showed minimal sensitivity.
+      </p>
+    </div>
+  </div>
+
+  <div class="findings">
+    <strong>Inference</strong>
+    <p>
+      Rolling back the feature would not have restored engagement.
+      The majority of the decline was structural rather than causal,
+      with the feature contributing a secondary, localized effect.
+    </p>
+  </div>
+</section>
+
 
   <footer>
     © 2025 Abhitay Shinde | Engagement Drop Root Cause Analysis

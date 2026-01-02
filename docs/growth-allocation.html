@@ -4,281 +4,392 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Growth Allocation Engine | Causal Budget Optimization</title>
-
   <link rel="stylesheet" href="styles/main.css">
-
 </head>
 
 <body>
 
-  <!-- NAVBAR (same as other docs) -->
-  <nav>
-  <div class="left">Abhitay Shinde</div>
+<nav>
+  <div class="left"><a href="index.html">Abhitay Shinde</a></div>
   <div class="right">
-    <a href="index.html#projects">Projects</a>
+    <a href="index.html#projects">Highlights</a>
     <a href="index.html#experience">Background</a>
     <a href="index.html#contact">Contact</a>
-    <a class="btn" href="../resume.pdf" target="_blank">Download Resume</a>
+    <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
   </div>
 </nav>
 
-  <section class="hero">
-    <h1>Growth Allocation Engine</h1>
-    <div class="tech-tags">
-      <span class="tag">Product Analytics</span>
-      <span class="tag">Causal Inference</span>
-      <span class="tag">Uplift Modeling</span>
-      <span class="tag">LTV Forecasting</span>
-      <span class="tag">Optimization</span>
+<!-- HERO -->
+<section class="hero">
+  <h1>Optimize for Incremental LTV — Not ROI</h1>
+  <p class="subtitle">
+    Why ROI-based growth decisions quietly destroy long-term value — and how causal optimization fixes it.
+  </p>
+  <div class="tech-tags">
+    <span class="tag">Product Analytics</span>
+    <span class="tag">Causal Inference</span>
+    <span class="tag">Uplift Modeling</span>
+    <span class="tag">LTV Forecasting</span>
+    <span class="tag">Optimization</span>
+  </div>
+</section>
+
+<!-- TLDR -->
+ <section>
+<section class="tldr">
+  <h2>TL;DR — Executive Decision</h2>
+  <ul>
+    <li>ROI-based allocation favors users who would have converted anyway.</li>
+    <li>User quality, saturation, and causality materially change channel rankings.</li>
+    <li>Incremental LTV reveals which channels actually create long-term value.</li>
+    <li><strong>Decision:</strong> Reallocate spend using incremental LTV optimization. Same budget, higher value.</li>
+  </ul>
+</section>
+</section>
+<!-- DECISION CONTEXT -->
+<section>
+  <h2>The Decision That Triggered This Analysis</h2>
+  <p class="lead">
+    Growth was accelerating — but leadership needed to know whether it was healthy.
+  </p>
+  <p>
+    The product monetizes through ads and subscriptions, making long-term retention
+    more valuable than short-term conversion spikes.
+  </p>
+  <p>
+    The question wasn’t whether to grow — it was whether growth was coming from users
+    who would stay.
+  </p>
+</section>
+
+<!-- WHO -->
+<section>
+  <h2>Who We Were Comparing</h2>
+
+  <p class="lead">
+    Acquisition channels do not bring the same kind of users.  
+    They bring <strong>different futures for the product</strong>.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Low-engagement users</h4>
+      <p>
+        Infrequent sessions, shallow interaction, fast churn.
+      </p>
+      <p class="muted">
+        High volume, low durability.
+      </p>
     </div>
 
+    <div class="card">
+      <h4>Core users</h4>
+      <p>
+        Moderate engagement, stable retention, predictable value.
+      </p>
+      <p class="muted">
+        Backbone of sustainable growth.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Power users</h4>
+      <p>
+        Highly engaged, long-lived, disproportionately valuable.
+      </p>
+      <p class="muted">
+        Small in number, outsized impact.
+      </p>
+    </div>
+  </div>
+
+  <div class="findings warning">
+    <strong>Why this matters</strong>
     <p>
-      Causal budget optimization for scalable growth: why ROI-based budget decisions fail at scale, and how
-      incremental LTV with constrained optimization produces safer, higher-value allocation.
+      Channels source these segments in very different proportions.
+      Any allocation strategy that ignores this implicitly optimizes
+      for <em>volume</em> instead of <em>value</em>.
     </p>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <div class="recommendation danger">
-      <h3>TL;DR — Product Decision</h3>
+
+<!-- METRICS -->
+<section>
+  <h2>Why Standard Metrics Were Misleading</h2>
+
+  <p class="lead">
+    At first glance, the numbers looked healthy.  
+    The problem was that they were answering the <strong>wrong question</strong>.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>What teams usually optimize for</h4>
       <ul>
-        <li>❌ ROI-based allocation over-invests in saturated, low-quality channels</li>
-        <li>⚠️ Paid Search shows strong volume but diminishing marginal value</li>
-        <li>🚩 Social Ads drive low incremental LTV and poor risk-adjusted profit</li>
-        <li>✅ Referral and Organic create the highest causal lifetime value per dollar</li>
+        <li>ROI and cost efficiency</li>
+        <li>Conversion volume</li>
+        <li>Top-line growth</li>
       </ul>
-      <p><strong>Decision:</strong> Adopt causal, constraint-aware budget allocation. Reallocate spend away from low-value channels and cap channels with diminishing returns.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Product Context</h2>
-    <p>As products scale, growth teams face a fundamental question: where should the next dollar be spent to maximize long-term value?</p>
-    <p>Surface metrics like conversion rate, CPA, and ROI can mislead at scale because of selection bias, saturation, and user-quality heterogeneity. This case study shows a different approach: optimize for causal incremental LTV under portfolio constraints.</p>
-  </section>
-
-  <section>
-    <h2>What We Measured</h2>
-    <ul>
-      <li><strong>Primary (North Star):</strong> Incremental Lifetime Value (LTV) — additional long-term value caused by a channel.</li>
-      <li><strong>Secondary:</strong> Channel saturation and diminishing returns; incremental value per dollar.</li>
-      <li><strong>Guardrails:</strong> Risk-adjusted profit, spend concentration limits, minimum diversification.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Channels Evaluated</h2>
-    <p>We analyzed five acquisition channels, each with distinct causal LTV and cost profiles:</p>
-    <div class="cards">
-      <div class="card">
-        <h3>Referral</h3>
-        <p><strong>$21.22 incremental LTV</strong> | Cost: $1.00/user<br/>Self-selected, high-trust users with best lifetime value.</p>
-      </div>
-      <div class="card">
-        <h3>Paid Search</h3>
-        <p><strong>$14.96 incremental LTV</strong> | Cost: $3.00/user<br/>High intent but lower per-user value; saturates quickly.</p>
-      </div>
-      <div class="card">
-        <h3>Affiliate</h3>
-        <p><strong>$10.56 incremental LTV</strong> | Cost: $2.50/user<br/>Partnership-driven, mid-tier quality.</p>
-      </div>
-      <div class="card">
-        <h3>Organic</h3>
-        <p><strong>$6.94 incremental LTV</strong> | Cost: $0.20/user<br/>Cheapest but reach-limited by natural demand.</p>
-      </div>
-      <div class="card">
-        <h3>Social Ads</h3>
-        <p><strong>$5.62 incremental LTV</strong> | Cost: $2.00/user<br/>Lowest causal value; high churn despite conversions.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Approach 1 — Naive Growth Analysis (The Wrong Way)</h2>
-    <p>The naive approach allocates by ROI (value ÷ cost). At small scale this can look reasonable, but it ignores selection bias, saturation, and user-quality heterogeneity. Channels that appear efficient often deliver lower long-term value.</p>
-  </section>
-
-  <section>
-    <h2>Approach 2 — Causal Growth Analysis (The Right Way)</h2>
-    <div class="findings">
-      <h3>Step 1: Causal Uplift Estimation</h3>
-      <p>Estimate incremental conversion lift per channel using uplift modeling on propensity-balanced cohorts. This answers: "Which users converted because of this channel?"</p>
-
-      <h3>Step 2: LTV Forecasting</h3>
-      <p>Forecast long-term value with a survival-based model (Cox Proportional Hazards), accounting for churn over a 24-month horizon and a 10% annual discount rate.</p>
-
-      <h3>Step 3: Incremental LTV Calculation</h3>
-      <p>Combine uplift and LTV: <strong>Incremental LTV = Uplift × Expected Lifetime Value</strong>. Aggregate by channel to get true value creation per channel.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Key Findings</h2>
-    <ol>
-      <li><strong>Incremental LTV Ranking (per user):</strong>
-        <ul>
-          <li>Referral: $21.22 (highest quality, self-selected)</li>
-          <li>Paid Search: $14.96 (volume play, mid-tier quality)</li>
-          <li>Affiliate: $10.56 (partnership quality)</li>
-          <li>Organic: $6.94 (efficient but reach-constrained)</li>
-          <li>Social Ads: $5.62 (lowest causal value, high churn)</li>
-        </ul>
-      </li>
-      <li><strong>ROI tells a different story.</strong> Organic shows highest ROI (34.7x) due to low cost, but delivers lowest lifetime value per user. Simple ROI metrics hide user-quality heterogeneity.</li>
-      <li><strong>Channel saturation dominates scaling.</strong> Paid Search exhibits diminishing marginal returns as spend increases; incremental value does not scale linearly.</li>
-      <li><strong>Risk-adjusted profit penalizes low-quality growth.</strong> Social Ads appear scalable on surface metrics but yield the lowest incremental LTV and highest churn risk.</li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>Budget Optimization: Turning Insight Into Action</h2>
-    <p>We formulated budget allocation as a constrained optimization problem:</p>
-    <ul>
-      <li><strong>Objective:</strong> Maximize total expected incremental value.</li>
-      <li><strong>Constraints:</strong> Fixed total budget; minimum spend per channel; maximum spend per channel to limit saturation; non-negativity and portfolio balance.</li>
-    </ul>
-
-    <div class="fig">
-      <h4>Optimized Allocation vs Baseline</h4>
-      <img src="../growth_engine/figures/02_naive_vs_optimized_allocation.png" alt="Naive vs Optimized Allocation">
-      <p class="caption">Same budget ($500k) — optimized allocation delivers +$116k expected value (+2.4%).</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>Final Allocation Decision</h2>
-    <p>The optimized MILP allocation shifts $53.3k from Social Ads (lowest LTV) to Paid Search (good secondary value), while preserving Referral and Organic at their efficient frontiers:</p>
-
-    <div class="data-snapshot">
-      <table class="snapshot-table">
-      <thead>
-        <tr>
-          <th>Channel</th>
-          <th>Baseline Spend</th>
-          <th>Optimized Spend</th>
-          <th>Change</th>
-          <th>Optimized Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Referral</td>
-          <td>$80,000</td>
-          <td>$80,000</td>
-          <td>—</td>
-          <td>$1.69M</td>
-        </tr>
-        <tr>
-          <td>Paid Search</td>
-          <td>$146,667</td>
-          <td>$200,000</td>
-          <td><span class="positive">+$53,333 (+36%)</span></td>
-          <td>$998K</td>
-        </tr>
-        <tr>
-          <td>Affiliate</td>
-          <td>$100,000</td>
-          <td>$100,000</td>
-          <td>—</td>
-          <td>$423K</td>
-        </tr>
-        <tr>
-          <td>Organic</td>
-          <td>$50,000</td>
-          <td>$50,000</td>
-          <td>—</td>
-          <td>$1.73M</td>
-        </tr>
-        <tr>
-          <td><strong>Social Ads</strong></td>
-          <td>$123,333</td>
-          <td>$70,000</td>
-          <td><span class="negative">−$53,333 (−43%)</span></td>
-          <td>$197K</td>
-        </tr>
-        <tr class="bold-row">
-          <td>TOTAL</td>
-          <td>$500,000</td>
-          <td>$500,000</td>
-          <td>—</td>
-          <td>$5.04M</td>
-        </tr>
-      </tbody>
-    </table>
+      <p class="muted">
+        Implicit assumption: every conversion is equally valuable.
+      </p>
     </div>
 
-    <div class="recommendation positive">
-      <h3>Outcome</h3>
-      <p><strong>Baseline expected value:</strong> $4.93M<br/><strong>Optimized expected value:</strong> $5.04M<br/><strong>Incremental gain: +$116,220 (+2.4%)</strong></p>
-      <p>Same $500k budget — better allocation. No new channels, no additional spend. Just applying causal insights to rebalance toward higher-value, lower-risk growth.</p>
+    <div class="card">
+      <h4>Why this breaks at scale</h4>
+      <ul>
+        <li>High-ROI channels often convert users who would have converted anyway</li>
+        <li>Cheap conversions can mask low retention and fast churn</li>
+        <li>Marginal returns collapse as channels saturate</li>
+      </ul>
+      <p class="muted">
+        Efficiency ≠ causality.
+      </p>
     </div>
-  </section>
 
-  <section>
-    <h2>Why Naive ROI Would Have Failed</h2>
-    <p>Consider what naive ROI-based allocation would suggest:</p>
-    <ul>
-      <li><strong>Organic:</strong> 34.7x ROI (cheapest, lowest cost per acquisition) — maximize spend</li>
-      <li><strong>Referral:</strong> 21.2x ROI (high quality but reach-limited) — hold or minimize</li>
-      <li><strong>Paid Search:</strong> 5.0x ROI (expensive but scalable) — secondary priority</li>
-      <li><strong>Affiliate:</strong> 4.2x ROI (mid-tier efficiency) — low priority</li>
-      <li><strong>Social Ads:</strong> 2.8x ROI (lowest efficiency) — minimize</li>
-    </ul>
-    <p>Yet this ranking is deceptive. Organic users have low lifetime value ($6.94) despite appearing cheap. Referral users have the highest LTV ($21.22) despite lower ROI. If we had optimized by ROI, budget would have concentrated on low-quality channels and quietly eroded long-term value growth.</p>
-  </section>
-
-  <section>
-    <h2>Recommendation & Next Steps</h2>
-    <ul>
-      <li>Adopt causal, constraint-aware budget optimization as the default growth framework.</li>
-      <li>Monitor channel saturation monthly and re-estimate uplift as user mix evolves.</li>
-      <li>Run sensitivity analysis on discount rate and churn assumptions.</li>
-      <li>Extend the framework to capture multi-touch and cross-channel interactions.</li>
-    </ul>
-  </section>
-
-  <section class="tech-appendix">
-    <h3>Technical Appendix (Summary)</h3>
-    <p><strong>Uplift Modeling:</strong> XGBoost treatment effect estimation on propensity-balanced cohorts.</p>
-    <p><strong>LTV Forecasting:</strong> Cox Proportional Hazards survival model (24-month horizon, 10% discount rate).</p>
-    <p><strong>Optimization:</strong> OR-Tools MILP maximizing incremental value under constraints.</p>
-    <h4>Assumptions & Limitations</h4>
-    <ul>
-      <li>Stationarity of uplift and churn</li>
-      <li>Independent channel effects (no synergies modeled)</li>
-      <li>Fixed user mix and finite planning horizon</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Figures & Evidence</h2>
-    <div class="fig">
-      <h4>Incremental LTV by Channel</h4>
-      <img src="../growth_engine/figures/01_incremental_ltv_by_channel.png" alt="Incremental LTV by Channel">
+    <div class="card">
+      <h4>The metric that actually matters</h4>
+      <p>
+        <strong>Incremental Lifetime Value (LTV)</strong>
+      </p>
+      <p>
+        The additional long-term value <em>caused</em> by spend in a channel —
+        not value that would have existed anyway.
+      </p>
     </div>
-    <div class="fig">
-      <h4>Spend vs Incremental Value (Saturation)</h4>
-      <img src="../growth_engine/figures/03_spend_vs_incremental_value_saturation.png" alt="Spend vs Incremental Value">
-    </div>
-    <div class="fig">
-      <h4>ROI vs Incremental LTV</h4>
-      <img src="../growth_engine/figures/04_roi_vs_incremental_ltv_scatter.png" alt="ROI vs Incremental LTV">
-    </div>
-    <div class="fig">
-      <h4>Executive Summary Flow</h4>
-      <img src="../growth_engine/figures/05_executive_summary_flow.png" alt="Executive Summary Flow">
-    </div>
-  </section>
+  </div>
 
-  <section>
-    <h2>Conclusion</h2>
-    <p>Optimizing growth requires optimizing causal value, not surface-level efficiency. In this case study, ROI overstated the value of Paid Search and obscured the damage from Social Ads. By refocusing on incremental LTV and operationalizing constraints through MILP, the team achieved better growth with the same budget and lower downside risk.</p>
-    <p><strong>Decision:</strong> Move budget allocation from ROI heuristics to causal incremental LTV optimization — same budget, better growth, lower risk.</p>
-  </section>
+  <div class="findings warning">
+    <strong>Key insight</strong>
+    <p>
+      Optimizing ROI alone systematically over-allocates budget to channels
+      that look efficient in the short term but under-deliver on long-term value.
+    </p>
+  </div>
+</section>
 
-   <footer>
-    © 2025 Abhitay Shinde | Growth Allocation Optimization
+
+<!-- DATA -->
+<section>
+  <h2>The Data Behind the Decision</h2>
+
+  <p class="lead">
+    To separate <strong>user quality</strong> from <strong>feature impact</strong>,
+    the analysis required data that captured behavior <em>before</em> and <em>after</em>
+    exposure — at the right level of granularity.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h4>User-level context</h4>
+      <p>
+        Each user record represents a single acquisition outcome with enough
+        historical signal to estimate baseline quality.
+      </p>
+      <ul>
+        <li>Engagement segment (low / core / power)</li>
+        <li>Signup channel and timestamp</li>
+        <li>Pre-exposure engagement score</li>
+        <li>7-day retention outcome</li>
+      </ul>
+      <p class="muted">
+        This table answers: <em>who are these users before we touch them?</em>
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>Session-level behavior</h4>
+      <p>
+        Event data captures how users actually interact once acquired,
+        allowing engagement and retention to be measured independently.
+      </p>
+      <ul>
+        <li>Session boundaries</li>
+        <li>Card view events per session</li>
+        <li>Temporal ordering of interactions</li>
+      </ul>
+      <p class="muted">
+        This table answers: <em>what do users actually do after arrival?</em>
+      </p>
+    </div>
+  </div>
+
+  <div class="findings warning">
+    <strong>Critical signal surfaced</strong>
+    <p>
+      Users acquired through certain channels had
+      <strong>systematically higher baseline engagement</strong>
+      even before exposure.
+      This confirmed strong selection bias and invalidated
+      naive engagement comparisons.
+    </p>
+  </div>
+
+  <p>
+    Because baseline quality and post-acquisition behavior were observable
+    in separate but linkable tables, the analysis could explicitly control
+    for user mix — isolating <em>what the channel caused</em>
+    from <em>who the channel happened to attract</em>.
+  </p>
+</section>
+
+
+<section>
+  <h2>Why ROI-Based Allocation Fails at Scale</h2>
+
+  <p class="lead">
+    ROI works early.  
+    It fails precisely when growth starts to matter.
+  </p>
+
+  <p>
+    At small budgets, ranking channels by ROI feels reasonable.
+    Spend is limited, audiences are fresh, and most channels appear efficient.
+    This creates a dangerous illusion: that efficiency scales.
+  </p>
+
+  <div class="findings danger">
+    <strong>The hidden assumption</strong>
+    <p>
+      ROI assumes that marginal users look like average users — and that
+      conversions are both causal and equally valuable.
+    </p>
+  </div>
+
+  <p>
+    In practice, none of these assumptions hold. As spend increases:
+  </p>
+
+  <ul>
+    <li>High-ROI channels increasingly convert users who would have converted anyway</li>
+    <li>User quality deteriorates as easy wins are exhausted</li>
+    <li>Incremental value saturates long before spend does</li>
+  </ul>
+
+  <p class="lead">
+    If ROI were a reliable proxy for value, channels with the highest ROI
+    would also dominate on <strong>incremental LTV</strong>.
+  </p>
+
+  <div class="fig">
+    <img src="../growth_engine/figures/04_roi_vs_incremental_ltv_scatter.png" alt="ROI vs Incremental LTV Scatter">
+    <p class="caption">
+      Each point represents a channel.
+      If ROI tracked causal value, points would lie along a diagonal.
+      Instead, the relationship breaks — exposing hidden tradeoffs.
+    </p>
+  </div>
+
+  <div class="findings warning">
+    <strong>What the chart reveals</strong>
+    <p>
+      Several high-ROI channels underperform on incremental LTV,
+      while channels that look inefficient on paper create
+      substantially more long-term value.
+    </p>
+  </div>
+
+  <p>
+    This is the failure mode of ROI at scale:
+    it rewards channels that harvest existing demand,
+    not those that create durable growth.
+  </p>
+</section>
+
+
+<!-- WHAT CHANGED -->
+<section>
+  <h2>What Changed After Correcting for Bias</h2>
+
+  <p class="lead">
+    Once user quality and selection effects were controlled for,
+    the channel rankings changed — dramatically.
+  </p>
+
+  <p>
+    Before correction, ROI-based views suggested a familiar story:
+    organic and paid search appeared efficient,
+    while referral looked constrained by volume.
+  </p>
+
+  <div class="findings danger">
+    <strong>That story was wrong.</strong>
+    <p>
+      It reflected <em>who channels attracted</em>,
+      not <em>what value they actually created</em>.
+    </p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h4>Before correction</h4>
+      <p>
+        Channels ranked by surface efficiency.
+      </p>
+      <ul>
+        <li>Organic and paid search dominate due to low cost</li>
+        <li>Referral appears secondary due to limited scale</li>
+        <li>Social ads look viable on conversion throughput</li>
+      </ul>
+      <p class="muted">
+        Bias source: high-quality users were unevenly distributed across channels.
+      </p>
+    </div>
+
+    <div class="card">
+      <h4>After correction</h4>
+      <p>
+        Channels ranked by <strong>incremental LTV</strong>.
+      </p>
+      <ul>
+        <li>Referral emerges as the strongest causal driver of value</li>
+        <li>Paid search underperforms once saturation is accounted for</li>
+        <li>Organic loses its dominance when “free” ≠ “incremental”</li>
+      </ul>
+      <p class="muted">
+        Bias removed: comparisons now reflect like-for-like users.
+      </p>
+    </div>
+  </div>
+
+  <div class="fig">
+    <img src="../growth_engine/figures/01_incremental_ltv_by_channel.png" alt="Incremental LTV by Channel">
+    <p class="caption">
+      Takeaway: ranking channels by incremental LTV produces a materially different
+      prioritization than ROI — and explains past scaling failures.
+    </p>
+  </div>
+
+  <div class="findings">
+    <strong>Decision implication</strong>
+    <p>
+      Budget allocation based on ROI would have systematically
+      over-invested in channels with weak causal impact
+      while underfunding the channel that created the most durable value.
+    </p>
+  </div>
+</section>
+
+
+<!-- DECISION -->
+<section class="recommendation positive">
+  <h2>Final Recommendation</h2>
+  <p><strong>Decision:</strong> Ship the optimized allocation.</p>
+  <ul>
+    <li>Reallocate spend toward causal value</li>
+    <li>Monitor saturation quarterly</li>
+    <li>Re-estimate uplift as user mix evolves</li>
+  </ul>
+</section>
+
+  <footer>
+    © 2025 Abhitay Shinde | Growth Allocation Engine
   </footer>
 
 </body>
+</html>
+
+</body>
+
 </html>

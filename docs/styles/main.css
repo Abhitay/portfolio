@@ -1,13 +1,5 @@
 /* ---------- PAGE-SPECIFIC & UTILITY CLASSES FROM HTML ---------- */
-/* Section padding and max width for all pages */
-section {
-  padding: 5px 16px;
-  max-width: 950px;
-  margin: 0 auto;
-}
-section + section {
-  padding-top: 0;
-}
+/* Page-specific spacing (consolidated below) */
 
 /* Metrics, Data Snapshots, Recommendations, Cards, Tags */
 .metrics-box {
@@ -79,24 +71,7 @@ section + section {
   border-bottom: none;
 }
 
-.recommendation {
-  background: #fee2e2;
-  border: 2px solid var(--danger);
-  border-radius: 8px;
-  padding: 24px;
-  margin: 28px 0;
-}
-.recommendation.positive {
-  background: #f0fdf4;
-  border-color: var(--success);
-}
-.recommendation.positive h3 {
-  color: var(--success);
-}
-.recommendation h3 {
-  color: var(--danger);
-  margin-top: 0;
-}
+/* .recommendation styles consolidated later to ensure consistent precedence */
 
 .findings.notes {
   font-size: 13px;
@@ -211,7 +186,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.75;
 }
 
 a {
@@ -234,7 +209,7 @@ nav {
 
 nav .left {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 24px;
 }
 
 nav .right a {
@@ -252,19 +227,27 @@ nav .btn {
 
 /* ---------- SECTIONS & TYPOGRAPHY ---------- */
 section {
-  padding: 80px 32px;
+  padding: 36px 32px;
   max-width: 1100px;
   margin: auto;
 }
 
+section#projects {
+  padding-top: 0;
+}
+
+section#experience {
+  padding-top: 0;
+}
+
 h1 {
-  font-size: 42px;
-  margin: 0 0 16px 0;
+  font-size: 36px;
+  margin: 0 0 12px 0;
 }
 
 h2 {
-  font-size: 28px;
-  margin: 48px 0 20px 0;
+  font-size: 26px;
+  margin: 36px 0 16px 0;
 }
 
 h3 {
@@ -279,16 +262,25 @@ h4 {
 
 p {
   margin: 0 0 14px 0;
-  color: var(--muted);
+  color: var(--text);
+}
+
+/* Lead paragraph style for hero and important intros */
+.lead {
+  font-size: 18px;
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 16px;
 }
 
 ul {
   margin: 8px 0 16px 20px;
   padding: 0;
+  line-height: 1.8;
 }
 
 li {
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 /* ---------- HERO ---------- */
@@ -322,6 +314,67 @@ li {
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+/* Leadership cards (match project card aesthetic but compact) */
+.leadership-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.leadership-card {
+  padding: 18px;
+  border-radius: 10px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.leadership-card h4 {
+  margin: 0 0 8px 0;
+  font-size: 15px;
+}
+
+.leadership-card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Research cards: match leadership cards but slightly more reserved */
+.research-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .research-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.research-card {
+  padding: 18px;
+  border-radius: 10px;
+}
+
+.research-card .research-title {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+}
+
+.research-card .research-meta {
+  margin: 0 0 10px 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.research-card p {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.6;
 }
 
 /* ---------- TAGS ---------- */
@@ -433,6 +486,44 @@ footer {
   color: var(--text);
 }
 
+/* ---------- TL;DR / DECISION PROMINENCE ---------- */
+.tldr {
+  background: #fbfdff;
+  border-left: 4px solid var(--accent);
+  padding: 16px;
+  border-radius: 6px;
+  margin: 20px 0;
+}
+.tldr h2 {
+  font-size: 30px;
+  margin-top: 0;
+  color: var(--text);
+}
+.tldr p, .tldr ul, .tldr li {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* make recommendation sections visually prominent when used */
+.recommendation {
+  background: #fee2e2;
+  border-left: 4px solid var(--danger);
+  border-radius: 6px;
+  padding: 16px;
+  margin: 20px 0;
+}
+.recommendation.positive {
+  background: #f0fdf4;
+  border-left-color: var(--success);
+}
+.recommendation.positive h3 {
+  color: var(--success);
+}
+.recommendation h3 {
+  color: var(--danger);
+  margin-top: 0;
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
   section {
@@ -454,6 +545,381 @@ footer {
 }
 
 /* Vertical rhythm helper */
-section > *:last-child {
+/* keep zero-bottom-margin for most last-child elements, but allow explicit spacing for TL;DR and recommendation blocks */
+section > *:last-child:not(.tldr):not(.recommendation) {
   margin-bottom: 0;
+}
+
+/* reduce space between hero and immediate TL;DR */
+.hero + .tldr {
+  margin-top: 12px;
+  padding-top: 16px;
+}
+
+/* ---------- EXPERIENCE CARDS & VISUAL HIERARCHY ---------- */
+.experience-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 14px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 20px;
+}
+
+.experience-header > div {
+  flex: 1;
+}
+
+.experience-header h4 {
+  margin: 0 0 4px 0;
+}
+
+.role {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.company {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+  font-weight: 500;
+}
+
+.dates {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.impact-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.impact-item {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #e0e7ff;
+  color: #1e40af;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.experience-card ul {
+  margin: 0 0 0 20px;
+  padding: 0;
+}
+
+.experience-card li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* Metric pill styling (visual highlight for bold metrics via CSS) */
+.experience-card strong {
+  color: var(--text);
+  font-weight: 600;
+  background: #fef3c7;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+/* ---------- RESEARCH PUBLICATIONS REDESIGN ---------- */
+.research-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 24px;
+}
+
+.research-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  transition: opacity 0.15s ease;
+}
+
+.research-item:last-child {
+  border-bottom: none;
+}
+
+.research-item:hover {
+  opacity: 0.9;
+}
+
+.research-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 6px 0;
+}
+
+.research-meta {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.research-item > p:last-child {
+  font-size: 14px;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ---------- RESPONSIVE EXPERIENCE SECTION ---------- */
+@media (max-width: 768px) {
+  .experience-card {
+    padding: 18px;
+  }
+
+  .experience-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .dates {
+    white-space: normal;
+  }
+
+  .role {
+    font-size: 16px;
+  }
+
+  .impact-strip {
+    margin-bottom: 14px;
+  }
+
+  .impact-item {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .experience-card li {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .research-title {
+    font-size: 15px;
+  }
+
+  .research-item > p:last-child {
+    font-size: 13px;
+  }
+}
+
+/* ---------- LAYOUT ENHANCEMENTS FOR CASE STUDIES ---------- */
+
+/* Two-column layout: metrics left, figure right */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Compact cards for metric-style summaries */
+.card.compact {
+  padding: 16px;
+}
+
+.card.compact h4 {
+  margin-top: 0;
+  font-size: 15px;
+}
+
+/* Force 2-column grid when 3 causes orphaning */
+.cards.two-col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Reduce visual noise for figure-only cards */
+.card.figure-only {
+  padding: 12px;
+}
+
+/* Light section divider without lines */
+.section-note {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: -8px;
+  margin-bottom: 16px;
+}
+
+/* ---------- COMPARISON BLOCK ---------- */
+
+.comparison-card {
+  padding: 20px;
+}
+
+.comparison-card h4 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.comparison-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 15px;
+}
+
+.comparison-row strong {
+  font-weight: 600;
+}
+
+.comparison-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 12px 0;
+}
+
+.comparison-row.result {
+  font-size: 16px;
+}
+
+.comparison-row.result strong {
+  color: var(--danger);
+}
+
+/* Stack helper for left column */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Metric rows */
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 14px;
+}
+.highlight-row {
+  margin-top: 6px;
+}
+
+/* Subtle explanatory card */
+.card.subtle {
+  background: #ffffff;
+  border: 1px dashed var(--border);
+}
+
+/* Quiet chart container */
+.card.figure-only {
+  padding: 12px;
+}
+
+/* Neutral emphasis for corrected result */
+.neutral {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Positive interpretation block */
+.card.subtle.positive {
+  border: 1px dashed var(--success);
+  background: #f0fdf4;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Emphasized decision card */
+.card.emphasis {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+}
+
+/* Large metric text */
+.metric-big {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 6px 0;
+}
+
+/* Clean list */
+.clean-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 8px 0 0 0;
+}
+
+.clean-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.clean-list li:last-child {
+  border-bottom: none;
+}
+.metrics-contrast {
+  margin-top: 24px;
+}
+
+/* Labels above metric blocks */
+.metric-label {
+  display: inline-block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Primary metric emphasis */
+.metric-primary {
+  border: 2px solid var(--accent);
+  background: #f8faff;
+}
+
+/* Secondary metric de-emphasis */
+.metric-secondary {
+  background: var(--card);
+  opacity: 0.9;
+}
+
+/* Data sources */
+.data-sources {
+  margin-top: 24px;
 }
