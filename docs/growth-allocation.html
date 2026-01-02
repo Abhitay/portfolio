@@ -3,11 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Case study: Using uplift modeling to optimize growth spend allocation. How ROI metrics misled decision-making and causal LTV analysis increased value by 12%." />
   <title>Growth Allocation Engine | Causal Budget Optimization</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
+
+<aside class="side-index collapsible" aria-label="Page index">
+  <button class="side-index-toggle" aria-expanded="false">On this page</button>
+  <div class="side-index-body" hidden>
+    <div class="side-index-title">On this page</div>
+    <a href="#tldr">TL;DR</a>
+    <a href="#decision-context">Decision Context</a>
+    <a href="#who-we-were-comparing">Who We Compared</a>
+    <a href="#misleading-metrics">Why Standard Metrics Misled</a>
+    <a href="#data">Data</a>
+    <a href="#roi-fails">Why ROI Fails</a>
+    <a href="#after-correction">After Correction</a>
+    <a href="#recommendation">Recommendation</a>
+  </div>
+</aside>
 
 <nav>
   <div class="left"><a href="index.html">Abhitay Shinde</a></div>
@@ -19,11 +36,21 @@
   </div>
 </nav>
 
+<section>
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="crumb-sep">/</span>
+    <a href="index.html#case-studies">Case Studies</a>
+    <span class="crumb-sep">/</span>
+    <span>Growth Allocation</span>
+  </div>
+</section>
+
 <!-- HERO -->
 <section class="hero">
-  <h1>Optimize for Incremental LTV — Not ROI</h1>
+  <h1>Optimize for Incremental LTV, Not ROI</h1>
   <p class="subtitle">
-    Why ROI-based growth decisions quietly destroy long-term value — and how causal optimization fixes it.
+    Why ROI-based growth decisions quietly destroy long-term value, and how causal optimization fixes it.
   </p>
   <div class="tech-tags">
     <span class="tag">Product Analytics</span>
@@ -35,9 +62,9 @@
 </section>
 
 <!-- TLDR -->
- <section>
+ <section id="tldr">
 <section class="tldr">
-  <h2>TL;DR — Executive Decision</h2>
+  <h2>TL;DR: Executive Decision</h2>
   <ul>
     <li>ROI-based allocation favors users who would have converted anyway.</li>
     <li>User quality, saturation, and causality materially change channel rankings.</li>
@@ -47,23 +74,23 @@
 </section>
 </section>
 <!-- DECISION CONTEXT -->
-<section>
+<section id="decision-context">
   <h2>The Decision That Triggered This Analysis</h2>
   <p class="lead">
-    Growth was accelerating — but leadership needed to know whether it was healthy.
+    Growth was accelerating, but leadership needed to know whether it was healthy.
   </p>
   <p>
     The product monetizes through ads and subscriptions, making long-term retention
     more valuable than short-term conversion spikes.
   </p>
   <p>
-    The question wasn’t whether to grow — it was whether growth was coming from users
+    The question wasn't whether to grow; it was whether growth was coming from users
     who would stay.
   </p>
 </section>
 
 <!-- WHO -->
-<section>
+<section id="who-we-were-comparing">
   <h2>Who We Were Comparing</h2>
 
   <p class="lead">
@@ -115,7 +142,7 @@
 
 
 <!-- METRICS -->
-<section>
+<section id="misleading-metrics">
   <h2>Why Standard Metrics Were Misleading</h2>
 
   <p class="lead">
@@ -154,7 +181,7 @@
         <strong>Incremental Lifetime Value (LTV)</strong>
       </p>
       <p>
-        The additional long-term value <em>caused</em> by spend in a channel —
+        The additional long-term value <em>caused</em> by spend in a channel,
         not value that would have existed anyway.
       </p>
     </div>
@@ -171,13 +198,13 @@
 
 
 <!-- DATA -->
-<section>
+<section id="data">
   <h2>The Data Behind the Decision</h2>
 
   <p class="lead">
     To separate <strong>user quality</strong> from <strong>feature impact</strong>,
     the analysis required data that captured behavior <em>before</em> and <em>after</em>
-    exposure — at the right level of granularity.
+    exposure, at the right level of granularity.
   </p>
 
   <div class="cards">
@@ -229,13 +256,13 @@
   <p>
     Because baseline quality and post-acquisition behavior were observable
     in separate but linkable tables, the analysis could explicitly control
-    for user mix — isolating <em>what the channel caused</em>
+    for user mix, isolating <em>what the channel caused</em>
     from <em>who the channel happened to attract</em>.
   </p>
 </section>
 
 
-<section>
+<section id="roi-fails">
   <h2>Why ROI-Based Allocation Fails at Scale</h2>
 
   <p class="lead">
@@ -252,7 +279,7 @@
   <div class="findings danger">
     <strong>The hidden assumption</strong>
     <p>
-      ROI assumes that marginal users look like average users — and that
+      ROI assumes that marginal users look like average users, and that
       conversions are both causal and equally valuable.
     </p>
   </div>
@@ -277,7 +304,7 @@
     <p class="caption">
       Each point represents a channel.
       If ROI tracked causal value, points would lie along a diagonal.
-      Instead, the relationship breaks — exposing hidden tradeoffs.
+      Instead, the relationship breaks, exposing hidden tradeoffs.
     </p>
   </div>
 
@@ -299,12 +326,12 @@
 
 
 <!-- WHAT CHANGED -->
-<section>
+<section id="after-correction">
   <h2>What Changed After Correcting for Bias</h2>
 
   <p class="lead">
     Once user quality and selection effects were controlled for,
-    the channel rankings changed — dramatically.
+    the channel rankings changed dramatically.
   </p>
 
   <p>
@@ -357,7 +384,7 @@
     <img src="figures/01_incremental_ltv_by_channel.png" alt="Incremental LTV by Channel">
     <p class="caption">
       Takeaway: ranking channels by incremental LTV produces a materially different
-      prioritization than ROI — and explains past scaling failures.
+      prioritization than ROI and explains past scaling failures.
     </p>
   </div>
 
@@ -373,7 +400,8 @@
 
 
 <!-- DECISION -->
-<section class="recommendation positive">
+ <section>
+<section class="findings">
   <h2>Final Recommendation</h2>
   <p><strong>Decision:</strong> Ship the optimized allocation.</p>
   <ul>
@@ -382,10 +410,75 @@
     <li>Re-estimate uplift as user mix evolves</li>
   </ul>
 </section>
+</section>
+<div class="back-to-portfolio">
+  <a href="index.html#case-studies" class="pill-link">← Back to Portfolio</a>
+</div>
 
-  <footer>
-    © 2025 Abhitay Shinde | Growth Allocation Engine
-  </footer>
+<footer>
+  © 2025 Abhitay Shinde
+</footer>
+
+<script>
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav .right a[href^="#"]');
+
+    function highlightNavLink() {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Add flash effect when ANY internal link is clicked
+    const allInternalLinks = document.querySelectorAll('a[href^="#"]');
+    allInternalLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          document.querySelectorAll('.highlight-flash').forEach(el => el.classList.remove('highlight-flash'));
+          setTimeout(() => {
+            targetSection.classList.add('highlight-flash');
+            setTimeout(() => targetSection.classList.remove('highlight-flash'), 3000);
+          }, 100);
+        }
+      });
+    });
+
+    // Collapsible side index (hover)
+    const sideIndex = document.querySelector('.side-index.collapsible');
+    const sideToggle = sideIndex?.querySelector('.side-index-toggle');
+    const sideBody = sideIndex?.querySelector('.side-index-body');
+    if (sideIndex && sideToggle && sideBody) {
+      const openPanel = () => {
+        sideIndex.classList.add('open');
+        sideToggle.setAttribute('aria-expanded', 'true');
+        sideBody.hidden = false;
+      };
+      const closePanel = () => {
+        sideIndex.classList.remove('open');
+        sideToggle.setAttribute('aria-expanded', 'false');
+        sideBody.hidden = true;
+      };
+      sideIndex.addEventListener('mouseenter', openPanel);
+      sideIndex.addEventListener('mouseleave', closePanel);
+    }
+
+    window.addEventListener('scroll', highlightNavLink);
+    highlightNavLink();
+  </script>
 
 </body>
 </html>

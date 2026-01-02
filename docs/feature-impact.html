@@ -3,12 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Case study: Using propensity score matching to evaluate a feed feature's true impact on retention. How selection bias masked zero effect in a 110-140% engagement lift." />
   <title>Feature Impact Analysis | Causal Inference Case Study</title>
-
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
+
+  <aside class="side-index collapsible" aria-label="Page index">
+    <button class="side-index-toggle" aria-expanded="false">On this page</button>
+    <div class="side-index-body" hidden>
+      <div class="side-index-title">On this page</div>
+      <a href="#tldr">TL;DR</a>
+      <a href="#decision-context">Decision Context</a>
+      <a href="#who-we-were-comparing">Who We Compared</a>
+      <a href="#misleading-metrics">Why Standard Metrics Misled</a>
+      <a href="#data">Data</a>
+      <a href="#naive-comparison">Naive Comparison</a>
+      <a href="#naive-failure">Why It Failed</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#recommendation">Recommendation</a>
+    </div>
+  </aside>
 
   <!-- NAVBAR -->
   <nav>
@@ -21,11 +39,21 @@
     </div>
   </nav>
 
+  <section>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="crumb-sep">/</span>
+      <a href="index.html#case-studies">Case Studies</a>
+      <span class="crumb-sep">/</span>
+      <span>Feature Impact Analysis</span>
+    </div>
+  </section>
+
   <!-- HERO -->
   <section class="hero">
     <h1>When Engagement Lifts Mislead: Did the New Feed Improve Retention?</h1>
     <p class="subtitle">
-      Why the initial engagement signal mattered — and how causal correction changed the decision.
+      Why the initial engagement signal mattered, and how causal correction changed the decision.
     </p>
     <div class="tech-tags">
       <span class="tag">Product Analytics</span>
@@ -36,19 +64,19 @@
   </section>
 
   <!-- TLDR -->
-   <section>
+   <section id="tldr">
   <section class="tldr">
     <h2>TL;DR</h2>
     <p>
       A new feed iteration appeared to drive a <strong>~110–140% lift in engagement</strong>.
       After correcting for selection bias using <strong>propensity score matching</strong>,
       I found <strong>no meaningful improvement in 7-day retention</strong>.
-      The lift was driven by <em>who</em> received the feature — not the feature itself.
+      The lift was driven by <em>who</em> received the feature, not the feature itself.
     </p>
     <p><strong>Final decision: do not ship the feature.</strong></p>
   </section></section>
   <!-- CONTEXT -->
-  <section>
+  <section id="decision-context">
     <h2>The Decision That Triggered This Analysis</h2>
     <p>
       This case study evaluates a feed-ranking change in a generic consumer social app.
@@ -63,7 +91,7 @@
   </section>
 
   <!-- WHO WE WERE COMPARING -->
-  <section>
+  <section id="who-we-were-comparing">
     <h2>Who We Were Comparing</h2>
     <p class="section-note">
       Users clustered naturally into three behavioral segments.
@@ -100,7 +128,7 @@
   </section>
 
   <!-- METRICS -->
-<section>
+<section id="misleading-metrics">
   <h2>Why Standard Metrics Were Misleading</h2>
   <p class="lead">
     Engagement spikes are diagnostic, not decisive. Success criteria were defined upfront.
@@ -134,7 +162,7 @@
   <div class="findings">
     <strong>Decision rule</strong>
     <p>
-      The decision hinged on whether users returned — not whether they interacted more in a single session.
+      The decision hinged on whether users returned, not whether they interacted more in a single session.
     </p>
   </div>
 </section>
@@ -142,7 +170,7 @@
 
 
   <!-- DATA -->
-<section>
+<section id="data">
   <h2>The Data Behind the Decision</h2>
 
   <p class="lead">
@@ -224,7 +252,7 @@
 
 
 
- <section>
+ <section id="naive-comparison">
   <h2>The Naive Comparison (Why It Deceived Us)</h2>
   <p class="lead">A dashboard view suggested a dramatic engagement win.</p>
 
@@ -281,7 +309,7 @@
 
 
   <!-- FAILURE -->
-<section>
+<section id="naive-failure">
   <h2>Why the Naive Comparison Failed</h2>
 
   <div class="findings danger">
@@ -304,7 +332,7 @@
 
 
   <!-- METHOD -->
-  <section>
+  <section id="method">
     <h2>How I Isolated the Causal Effect</h2>
     <p>
       I applied propensity score matching to approximate a randomized experiment.
@@ -327,7 +355,7 @@
   </section>
 
   <!-- RESULTS -->
-  <section>
+  <section id="results">
   <h2>What Changed After Correcting for Bias</h2>
   <p class="lead">
     Matching shifted the comparison onto like-for-like users.
@@ -385,7 +413,7 @@
 </section>
 
   <!-- RECOMMENDATION -->
-  <section>
+  <section id="recommendation">
     <h2>Recommendation</h2>
     <div class="findings danger">
       <strong>Do not ship the feature.</strong>
@@ -393,9 +421,74 @@
     </div>
   </section>
 
+  <div class="back-to-portfolio">
+    <a href="index.html#case-studies" class="pill-link">← Back to Portfolio</a>
+  </div>
+
   <footer>
-    © 2025 Abhitay Shinde | Feature Impact & Experimentation Case Study
+    © 2025 Abhitay Shinde
   </footer>
+
+  <script>
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav .right a[href^="#"]');
+
+    function highlightNavLink() {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Add flash effect when ANY internal link is clicked
+    const allInternalLinks = document.querySelectorAll('a[href^="#"]');
+    allInternalLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          document.querySelectorAll('.highlight-flash').forEach(el => el.classList.remove('highlight-flash'));
+          setTimeout(() => {
+            targetSection.classList.add('highlight-flash');
+            setTimeout(() => targetSection.classList.remove('highlight-flash'), 3000);
+          }, 100);
+        }
+      });
+    });
+
+    // Collapsible side index (hover)
+    const sideIndex = document.querySelector('.side-index.collapsible');
+    const sideToggle = sideIndex?.querySelector('.side-index-toggle');
+    const sideBody = sideIndex?.querySelector('.side-index-body');
+    if (sideIndex && sideToggle && sideBody) {
+      const openPanel = () => {
+        sideIndex.classList.add('open');
+        sideToggle.setAttribute('aria-expanded', 'true');
+        sideBody.hidden = false;
+      };
+      const closePanel = () => {
+        sideIndex.classList.remove('open');
+        sideToggle.setAttribute('aria-expanded', 'false');
+        sideBody.hidden = true;
+      };
+      sideIndex.addEventListener('mouseenter', openPanel);
+      sideIndex.addEventListener('mouseleave', closePanel);
+    }
+
+    window.addEventListener('scroll', highlightNavLink);
+    highlightNavLink();
+  </script>
 
 </body>
 </html>
