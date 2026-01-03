@@ -32,10 +32,13 @@
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
     <div class="right">
-      <a href="index.html#projects">Highlights</a>
-      <a href="index.html#experience">Background</a>
-      <a href="index.html#contact">Contact</a>
-      <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+      <div class="nav-links">
+        <a href="index.html#projects">Highlights</a>
+        <a href="index.html#experience">Background</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
+      </div>
     </div>
   </nav>
 
@@ -465,7 +468,70 @@
           }, 100);
         }
       });
+
+      // Mobile toast prompt for case study links (feature-impact only)
+      const caseStudyLinks = document.querySelectorAll('a[href*="feature-impact.html"], a[href*="growth-allocation.html"], a[href*="ai-insights-copilot.html"]');
+      const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+      let pendingHref = null;
+
+      const ensureToast = () => {
+        let toast = document.querySelector('.toast-banner');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.className = 'toast-banner';
+          toast.innerHTML = `
+            <div class="toast-title">Best viewed on desktop</div>
+            <div class="toast-text">These case studies are easier to read on a larger screen. Continue on mobile?</div>
+            <div class="toast-buttons">
+              <button class="btn-secondary" type="button" data-toast-cancel>Cancel</button>
+              <button class="btn-primary" type="button" data-toast-continue>Continue</button>
+            </div>
+          `;
+          document.body.appendChild(toast);
+
+          const closeToast = () => {
+            toast.classList.remove('show');
+            pendingHref = null;
+          };
+
+          toast.querySelector('[data-toast-cancel]')?.addEventListener('click', closeToast);
+          toast.querySelector('[data-toast-continue]')?.addEventListener('click', () => {
+            if (pendingHref) {
+              window.location.href = pendingHref;
+            }
+            closeToast();
+          });
+        }
+        return toast;
+      };
+
+      caseStudyLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          if (!isMobile()) return;
+          e.preventDefault();
+          pendingHref = link.href;
+          const toast = ensureToast();
+          toast.classList.add('show');
+        });
+      });
     });
+
+    // Mobile nav toggle
+    const navRight = document.querySelector('nav .right');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinksWrap = document.querySelector('.nav-links');
+    if (navRight && navToggle && navLinksWrap) {
+      navToggle.addEventListener('click', () => {
+        const isOpen = navRight.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+      navLinksWrap.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          navRight.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
 
     // Collapsible side index (hover)
     const sideIndex = document.querySelector('.side-index.collapsible');

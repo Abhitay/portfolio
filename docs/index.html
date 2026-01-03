@@ -38,10 +38,13 @@
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
     <div class="right">
-      <a href="#projects">Highlights</a>
-      <a href="#experience">Background</a>
-      <a href="#contact">Contact</a>
-      <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+      <div class="nav-links">
+        <a href="#projects">Highlights</a>
+        <a href="#experience">Background</a>
+        <a href="#contact">Contact</a>
+        <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
+      </div>
     </div>
   </nav>
 
@@ -412,6 +415,40 @@
               targetSection.classList.remove('highlight-flash');
             }, 1200);
           }, 100);
+        }
+      });
+    });
+
+    // Mobile nav toggle
+    const navRight = document.querySelector('nav .right');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinksWrap = document.querySelector('.nav-links');
+
+    if (navRight && navToggle && navLinksWrap) {
+      navToggle.addEventListener('click', () => {
+        const isOpen = navRight.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      navLinksWrap.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          navRight.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // Mobile prompt for case study links
+    const caseStudyLinks = document.querySelectorAll('a[href*="feature-impact.html"], a[href*="growth-allocation.html"], a[href*="ai-insights-copilot.html"]');
+    const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+    caseStudyLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (!isMobile()) return;
+        e.preventDefault();
+        const proceed = window.confirm('For the best viewing experience, open this case study on desktop. Continue on mobile?');
+        if (proceed) {
+          window.location.href = link.href;
         }
       });
     });
