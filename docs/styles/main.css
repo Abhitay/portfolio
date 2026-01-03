@@ -587,17 +587,45 @@ nav .btn {
   height: 40px;
 }
 
+.contact-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+  line-height: 1;
+}
+
+.contact-icon svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  transform: none;
+}
+
+.contact-icon:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
 .nav-toggle {
   display: none;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--card);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
+  line-height: 1;
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
@@ -639,6 +667,9 @@ nav .btn:hover {
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+  .contact-icon {
+    display: inline-flex;
   }
   .nav-toggle {
     display: inline-flex;
@@ -851,6 +882,16 @@ li {
 .hero p {
   font-size: 18px;
   max-width: 850px;
+}
+
+.hero h1 {
+  color: var(--text);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.hero h1 .quote-mark {
+  color: var(--accent);
 }
 
 .hero .lead {
@@ -1180,7 +1221,8 @@ footer {
 /* ---------- FINDINGS / ALERTS ---------- */
 .findings {
   background: #f0fdf4;
-  border-left: 4px solid var(--success);
+  border: 0.5px solid var(--success);
+  border-left-width: 4px;
   padding: 16px;
   border-radius: 6px;
   margin: 20px 0;
@@ -1188,12 +1230,14 @@ footer {
 
 .findings.warning {
   background: #fef3c7;
-  border-left-color: var(--warning);
+  border-color: var(--warning);
+  border-left-width: 4px;
 }
 
 .findings.danger {
   background: #fee2e2;
-  border-left-color: var(--danger);
+  border-color: var(--danger);
+  border-left-width: 4px;
 }
 
 .findings strong {
@@ -1205,9 +1249,8 @@ footer {
 /* ---------- TL;DR / DECISION PROMINENCE ---------- */
 .tldr {
   background: #fbfdff;
-  border-left: 4px solid var(--accent);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--accent);
+  border: 0.5px solid var(--accent);
+  border-left-width: 4px;
   padding: 16px;
   border-radius: 6px;
   margin: 20px 0;
@@ -1225,15 +1268,16 @@ footer {
 /* make recommendation sections visually prominent when used */
 .recommendation {
   background: #fee2e2;
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--danger);
+  border: 0.5px solid var(--danger);
+  border-left-width: 2px;
   border-radius: 6px;
   padding: 16px;
   margin: 20px 0;
 }
 .recommendation.positive {
   background: #f0fdf4;
-  border-left-color: var(--success);
+  border-color: var(--success);
+  border-left-width: 2px;
 }
 .recommendation.positive h3 {
   color: var(--success);
@@ -1655,4 +1699,28 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 /* Data sources */
 .data-sources {
   margin-top: 24px;
+}
+
+/* --- Mobile contact icon in navbar --- */
+.nav-contact-icon {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .nav-contact-icon {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 84px;
+    line-height: 2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .nav-contact-icon:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
