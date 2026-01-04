@@ -1057,11 +1057,16 @@ li {
   margin-top: auto;
   font-weight: 600;
   display: inline-block;
-  transition: transform 0.12s ease, color 0.12s ease;
+  padding: 4px 8px;
+  border-radius: 6px;
+  width: fit-content;
+  transition: transform 0.12s ease, color 0.12s ease, background 0.12s ease;
 }
 
 #projects .card a:hover {
-  transform: translateY(-1px) scale(1.02);
+  background: #eef2ff;
+  color: #1e3a8a;
+  transform: translateX(2px) scale(1.01);
 }
 
 /* Leadership cards (match project card aesthetic but compact) */
