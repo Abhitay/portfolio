@@ -3,9 +3,12 @@
 
 /* Metrics, Data Snapshots, Recommendations, Cards, Tags */
 .metrics-box {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
   padding: 24px;
   margin: 24px 0;
 }
@@ -63,10 +66,12 @@
   gap: 8px;
   padding: 10px 14px;
   margin: 12px 0 8px;
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg-soft);
+  border: 1px solid var(--glass-border);
   border-radius: 999px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(10px) saturate(145%);
+  -webkit-backdrop-filter: blur(10px) saturate(145%);
   font-size: 14px;
   color: var(--text);
 }
@@ -104,13 +109,15 @@
   gap: 6px;
   padding: 10px 14px;
   border-radius: 999px;
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg-soft);
+  border: 1px solid var(--glass-border);
   color: var(--text);
   font-weight: 600;
   font-size: 14px;
   text-decoration: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  backdrop-filter: blur(10px) saturate(145%);
+  -webkit-backdrop-filter: blur(10px) saturate(145%);
 }
 
 .pill-link:hover {
@@ -159,10 +166,12 @@
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.66), rgba(219, 234, 254, 0.52));
+  border: 1px solid rgba(148, 163, 184, 0.34);
   border-radius: 999px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(14px) saturate(155%);
+  -webkit-backdrop-filter: blur(14px) saturate(155%);
   font-weight: 700;
   color: var(--text);
   cursor: pointer;
@@ -177,13 +186,20 @@
 .side-index.collapsible .side-index-body {
   margin-top: 10px;
   padding: 12px;
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.70), rgba(219, 234, 254, 0.52));
+  border: 1px solid rgba(148, 163, 184, 0.30);
   border-radius: 12px;
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+/* Show either the opener pill or the panel so it reads as one unit */
+.side-index.collapsible.open .side-index-toggle {
+  display: none;
 }
 
 .side-index.collapsible:not(.open) .side-index-body {
@@ -200,7 +216,8 @@
   letter-spacing: 0.5px;
   color: var(--muted);
   font-weight: 700;
-  margin-bottom: 2px;
+  margin: 0;
+  line-height: 1.1;
 }
 
 .side-index a {
@@ -243,18 +260,41 @@
 }
 
 .side-index-close {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
-  font-size: 18px;
+  box-shadow: none;
+  font-size: 0;
+  font-weight: 400;
+  font-family: inherit;
   cursor: pointer;
-  color: var(--text);
+  color: var(--muted);
   line-height: 1;
-  padding: 6px;
-  border-radius: 8px;
+  padding: 0;
+  margin: 0;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.side-index-close::before {
+  content: "\00D7";
+  font-size: 22px;
+  line-height: 1;
+  transform: translateY(0);
 }
 
 .side-index-close:hover {
-  background: #eef2ff;
+  color: var(--text);
+  background: rgba(148, 163, 184, 0.14);
+}
+
+.side-index-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .side-index-group {
@@ -336,16 +376,19 @@
   .side-index-header {
     position: sticky;
     top: 0;
-    background: var(--card);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.76), rgba(219, 234, 254, 0.56));
     padding-bottom: 8px;
     z-index: 1;
   }
 }
 
 .data-snapshot {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
   padding: 20px;
   margin: 20px 0;
 }
@@ -374,9 +417,12 @@
 
 /* Approach, Code, and User Cards (from feature-impact) */
 .approach {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
   padding: 28px;
   margin: 28px 0;
 }
@@ -474,6 +520,10 @@
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
+  --glass-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.62), rgba(219, 234, 254, 0.40));
+  --glass-bg-soft: linear-gradient(160deg, rgba(255, 255, 255, 0.70), rgba(219, 234, 254, 0.34));
+  --glass-border: rgba(148, 163, 184, 0.30);
+  --glass-shadow: 0 14px 34px rgba(15, 23, 42, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.38);
 }
 
 * {
@@ -502,16 +552,16 @@ a {
 nav {
   position: sticky;
   top: 0;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  background: var(--glass-bg-soft);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border-bottom: 1px solid var(--glass-border);
   padding: 12px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
   transition: box-shadow 0.2s ease;
 }
 
@@ -594,8 +644,10 @@ nav .btn {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--card);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg-soft);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
   color: var(--text);
   text-decoration: none;
   transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
@@ -621,8 +673,10 @@ nav .btn {
   width: 44px;
   height: 44px;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--card);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg-soft);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
   font-size: 20px;
   font-weight: 700;
   line-height: 1;
@@ -678,10 +732,12 @@ nav .btn:hover {
     position: absolute;
     top: 56px;
     right: 0;
-    background: var(--card);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     border-radius: 12px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
     padding: 12px;
     flex-direction: column;
     align-items: flex-start;
@@ -704,8 +760,10 @@ nav .btn:hover {
 /* Contact tweaks */
 @media (max-width: 768px) {
   .contact {
-    background: var(--card);
-    border: 1px solid var(--border);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
     border-radius: 12px;
     padding: 24px;
   }
@@ -735,10 +793,12 @@ nav .btn:hover {
 }
 
 .toast-banner {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.16);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
   padding: 14px 16px;
   max-width: 360px;
   width: min(440px, 100%);
@@ -907,6 +967,16 @@ li {
   margin-top: 20px;
 }
 
+/* Homepage hero copy should use full content width */
+.hero-home p {
+  max-width: none;
+}
+
+/* Keep Media Praise image vertically centered next to text */
+#media-praise .two-col {
+  align-items: center;
+}
+
 /* Hero questions grid */
 .hero-questions {
   display: grid;
@@ -1014,10 +1084,13 @@ li {
 }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 24px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -1057,16 +1130,11 @@ li {
   margin-top: auto;
   font-weight: 600;
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 6px;
-  width: fit-content;
-  transition: transform 0.12s ease, color 0.12s ease, background 0.12s ease;
+  transition: transform 0.12s ease, color 0.12s ease;
 }
 
 #projects .card a:hover {
-  background: #eef2ff;
-  color: #1e3a8a;
-  transform: translateX(2px) scale(1.01);
+  transform: translateY(-1px) scale(1.02);
 }
 
 /* Leadership cards (match project card aesthetic but compact) */
@@ -1234,23 +1302,26 @@ footer {
 
 /* ---------- FINDINGS / ALERTS ---------- */
 .findings {
-  background: #f0fdf4;
-  border: 0.5px solid var(--success);
+  background: linear-gradient(160deg, rgba(240, 253, 244, 0.72), rgba(220, 252, 231, 0.52));
+  border: 1px solid color-mix(in srgb, var(--success) 45%, white 55%);
   border-left-width: 4px;
   padding: 16px;
   border-radius: 6px;
   margin: 20px 0;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px) saturate(145%);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
 }
 
 .findings.warning {
-  background: #fef3c7;
-  border-color: var(--warning);
+  background: linear-gradient(160deg, rgba(254, 243, 199, 0.72), rgba(254, 249, 195, 0.52));
+  border-color: color-mix(in srgb, var(--warning) 50%, white 50%);
   border-left-width: 4px;
 }
 
 .findings.danger {
-  background: #fee2e2;
-  border-color: var(--danger);
+  background: linear-gradient(160deg, rgba(254, 226, 226, 0.72), rgba(254, 202, 202, 0.52));
+  border-color: color-mix(in srgb, var(--danger) 50%, white 50%);
   border-left-width: 4px;
 }
 
@@ -1262,12 +1333,15 @@ footer {
 
 /* ---------- TL;DR / DECISION PROMINENCE ---------- */
 .tldr {
-  background: #fbfdff;
-  border: 0.5px solid var(--accent);
+  background: linear-gradient(160deg, rgba(239, 246, 255, 0.68), rgba(219, 234, 254, 0.50));
+  border: 1px solid color-mix(in srgb, var(--accent) 46%, white 54%);
   border-left-width: 4px;
   padding: 16px;
   border-radius: 6px;
   margin: 20px 0;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px) saturate(145%);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
 }
 .tldr h2 {
   font-size: 30px;
@@ -1281,16 +1355,19 @@ footer {
 
 /* make recommendation sections visually prominent when used */
 .recommendation {
-  background: #fee2e2;
-  border: 0.5px solid var(--danger);
+  background: linear-gradient(160deg, rgba(254, 226, 226, 0.72), rgba(254, 202, 202, 0.52));
+  border: 1px solid color-mix(in srgb, var(--danger) 50%, white 50%);
   border-left-width: 2px;
   border-radius: 6px;
   padding: 16px;
   margin: 20px 0;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px) saturate(145%);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
 }
 .recommendation.positive {
-  background: #f0fdf4;
-  border-color: var(--success);
+  background: linear-gradient(160deg, rgba(240, 253, 244, 0.72), rgba(220, 252, 231, 0.52));
+  border-color: color-mix(in srgb, var(--success) 50%, white 50%);
   border-left-width: 2px;
 }
 .recommendation.positive h3 {
@@ -1335,11 +1412,14 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 
 /* ---------- EXPERIENCE CARDS & VISUAL HIERARCHY ---------- */
 .experience-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 14px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -1442,7 +1522,7 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   padding: 0 !important;
   font-weight: 700 !important;
 }
-}
+
 
 /* ---------- RESEARCH PUBLICATIONS REDESIGN ---------- */
 .research-list {

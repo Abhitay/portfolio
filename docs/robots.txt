@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://abhitay.me/sitemap.xml
+Host: abhitay.me

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Case study: Hybrid Retrieval System for Earnings Call Interpretation using vector search, knowledge graphs, and agentic orchestration for financial reasoning." />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V9RNG3QS4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} // Google Analytics helper
+    gtag('js', new Date());
+    gtag('config', 'G-6V9RNG3QS4');
+  </script>
+  <title>Hybrid Retrieval System | Graph RAG Case Study</title>
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/web-app-manifest-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon/web-app-manifest-512x512.png">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <aside class="side-index collapsible" aria-label="Page index">
+    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
+      <span class="side-index-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="side-index-label">On this page</span>
+    </button>
+    <div class="side-index-body" hidden>
+      <div class="side-index-header">
+        <div class="side-index-title">On this page</div>
+        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
+      </div>
+      <a href="#tldr">TL;DR</a>
+      <a href="#decision-context">Decision Context</a>
+      <a href="#who-we-were-comparing">Who We Compared</a>
+      <a href="#why-rag-alone-fails">Why Baseline RAG Fails</a>
+      <a href="#data">Data</a>
+      <a href="#approach">Technical Approach</a>
+      <a href="#results">Evaluation Results</a>
+      <a href="#recommendation">Recommendation</a>
+    </div>
+  </aside>
+
+  <nav>
+    <div class="left"><a href="index.html">Abhitay Shinde</a></div>
+    <div class="right">
+      <a href="index.html#contact" class="nav-contact-icon" aria-label="Contact" title="Contact">💬</a>
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+      <div class="nav-links">
+        <a href="index.html#projects">Highlights</a>
+        <a href="index.html#experience">Background</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="crumb-sep">/</span>
+      <a href="index.html#case-studies">Case Studies</a>
+      <span class="crumb-sep">/</span>
+      <span>Hybrid Retrieval System</span>
+    </div>
+  </section>
+
+  <section class="hero">
+    <h1>Hybrid Retrieval System for Earnings Call Interpretation</h1>
+    <p class="subtitle">Combining vector retrieval, knowledge graphs, and agentic planning to improve financial due-diligence workflows.</p>
+    <div class="tech-tags">
+      <span class="tag">Graph RAG</span>
+      <span class="tag">ChromaDB</span>
+      <span class="tag">Knowledge Graph</span>
+      <span class="tag">Agentic AI</span>
+      <span class="tag">Financial NLP</span>
+    </div>
+  </section>
+
+  <section id="tldr">
+  <section class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li>Earnings calls are long, mixed-format documents that are difficult to analyze consistently at scale.</li>
+      <li>We built a Hybrid RAG system using vector search, structured financial tables, and graph reasoning.</li>
+      <li>An agentic planner routes each query to the right tools and assembles grounded evidence.</li>
+      <li><strong>Result:</strong> stronger interpretability and summary quality than baseline RAG, with numeric reasoning still the biggest failure mode.</li>
+    </ul>
+  </section>
+  </section>
+
+  <section id="decision-context">
+    <h2>The Decision That Triggered This Build</h2>
+    <p>
+      Earnings calls are core inputs for institutional due diligence, but each transcript can span 50 to 300 pages and mix
+      executive narratives, analyst Q&amp;A, and structured tables. Analysts need high-confidence answers quickly across firms and quarters.
+    </p>
+    <p>
+      The central product decision was whether retrieval could move beyond chunk relevance into reliable,
+      evidence-grounded financial reasoning for summaries, Q&amp;A, and peer comparisons.
+    </p>
+  </section>
+
+  <section id="who-we-were-comparing">
+    <h2>What We Needed to Compare</h2>
+    <div class="cards">
+      <div class="card">
+        <h4>Single-company Q&amp;A</h4>
+        <p>Answer targeted call questions with grounded transcript and metric evidence.</p>
+      </div>
+      <div class="card">
+        <h4>Quarter-over-quarter narrative</h4>
+        <p>Compare guidance, risk posture, and key metric movements against prior periods.</p>
+      </div>
+      <div class="card">
+        <h4>Peer benchmarking</h4>
+        <p>Contrast companies in the same period without inventing unsupported numeric claims.</p>
+      </div>
+    </div>
+    <div class="findings warning">
+      <strong>Why this mattered</strong>
+      <p>
+        Retrieval-only systems can fetch relevant snippets, but often fail to combine semantic, numeric,
+        and relational evidence into one coherent answer path.
+      </p>
+    </div>
+  </section>
+
+  <section id="why-rag-alone-fails">
+    <h2>Why Baseline RAG Alone Was Not Enough</h2>
+    <div class="cards">
+      <div class="card">
+        <h4>Context isolation</h4>
+        <p>Top chunks capture local semantics but miss cross-document and cross-quarter structure.</p>
+      </div>
+      <div class="card">
+        <h4>Weak numeric grounding</h4>
+        <p>Without table retrieval, generated outputs drift on values and temporal attribution.</p>
+      </div>
+      <div class="card">
+        <h4>No tool policy</h4>
+        <p>Single-pass retrieval cannot adapt to whether a question needs metrics, risks, or transcript tone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="data">
+    <h2>The Data Behind the System</h2>
+    <p class="lead">Three evidence layers were integrated to support semantic retrieval and symbolic reasoning in one pipeline.</p>
+    <div class="cards">
+      <div class="card">
+        <h4>Vector Store (ChromaDB)</h4>
+        <ul>
+          <li>Transcript chunks embedded with all-MiniLM-L6-v2</li>
+          <li>Metadata filters by ticker, filing type, and quarter</li>
+          <li>Quarter-relaxed fallback retrieval when exact match is missing</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Structured Parquet Tables</h4>
+        <ul>
+          <li>Metrics, segment entries, and risk indicators</li>
+          <li>Shared quarter normalization across modules</li>
+          <li>Deterministic filters to anchor numeric outputs</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Graph Layer</h4>
+        <ul>
+          <li>Company-quarter-metric entity schema</li>
+          <li>NetworkX implementation with Neo4j-compatible design</li>
+          <li>Foundation for richer temporal and peer reasoning</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="approach">
+    <h2>Technical Approach</h2>
+    <p>
+      A planner model selects tools per query and returns a JSON policy (use_vector_search, use_metrics,
+      use_segments, use_risks, plus vector_query). Retrieved evidence is fused into one JSON blob passed to
+      the final response model with explicit grounding instructions.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <h4>Planner + Tool Routing</h4>
+        <p>Intent-aware retrieval selection with safe fallback to all-tools mode when planner output is invalid.</p>
+      </div>
+      <div class="card">
+        <h4>Evidence Fusion</h4>
+        <p>Combines transcript snippets, metrics, segment data, and risk rows into a single context package.</p>
+      </div>
+      <div class="card">
+        <h4>Hallucination Controls</h4>
+        <p>Low temperature and explicit prompts to avoid guessing numbers when data is absent.</p>
+      </div>
+    </div>
+    <div class="findings">
+      <strong>Design choice</strong>
+      <p>
+        Intent handling is prompt-driven instead of hard-coded, making the system easier to extend with new tools and workflows.
+      </p>
+    </div>
+  </section>
+
+  <section id="results">
+    <h2>Evaluation and Benchmarks</h2>
+    <p>
+      LLM-as-a-judge pilots showed strong tone/guidance synthesis but weaker reliability on strict numeric
+      and temporal fact alignment.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Case</th>
+          <th>Overall</th>
+          <th>Relevance</th>
+          <th>Factual</th>
+          <th>Grounded</th>
+          <th>Complete</th>
+          <th>Clear</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tone and guidance</td>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>Risk relevance</td>
+          <td>0.1</td>
+          <td>1.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.2</td>
+          <td>1.0</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="findings warning">
+      <strong>Main weakness</strong>
+      <p>
+        Numeric grounding and quarter attribution remain the dominant error source in difficult queries.
+      </p>
+    </div>
+  </section>
+
+  <section id="recommendation">
+    <h2>Recommendation</h2>
+    <div class="recommendation positive">
+      <h3>Deploy as analyst-assist with guardrails</h3>
+      <p>
+        Use the system for exploratory analysis, summaries, and benchmarking, while requiring citation validation
+        and confidence checks before high-stakes numeric decisions.
+      </p>
+    </div>
+    <h3>Next Iteration Priorities</h3>
+    <ul>
+      <li>Integrate domain-specific encoders such as FinBERT for financial retrieval quality.</li>
+      <li>Expand temporal graph logic for robust quarter-over-quarter reasoning.</li>
+      <li>Add citation verification and confidence calibration for hallucination mitigation.</li>
+      <li>Package as MCP-compatible service for modular analyst workflow integration.</li>
+    </ul>
+  </section>
+
+  <footer>© 2026 Abhitay Shinde</footer>
+
+  <script>
+    const allInternalLinks = document.querySelectorAll('a[href^="#"]');
+    allInternalLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          document.querySelectorAll('.highlight-flash').forEach(el => el.classList.remove('highlight-flash'));
+          setTimeout(() => {
+            targetSection.classList.add('highlight-flash');
+            setTimeout(() => targetSection.classList.remove('highlight-flash'), 1200);
+          }, 100);
+        }
+      });
+    });
+
+    const navRight = document.querySelector('nav .right');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinksWrap = document.querySelector('.nav-links');
+    if (navRight && navToggle && navLinksWrap) {
+      navToggle.addEventListener('click', () => {
+        const isOpen = navRight.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+      navLinksWrap.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          navRight.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    const sideIndex = document.querySelector('.side-index.collapsible');
+    const sideToggle = sideIndex?.querySelector('.side-index-toggle');
+    const sideBody = sideIndex?.querySelector('.side-index-body');
+    const sideClose = sideIndex?.querySelector('.side-index-close');
+    const sideMedia = window.matchMedia('(max-width: 768px)');
+    if (sideIndex && sideToggle && sideBody) {
+      const openPanel = () => {
+        sideIndex.classList.add('open');
+        sideToggle.setAttribute('aria-expanded', 'true');
+        sideBody.hidden = false;
+      };
+      const closePanel = () => {
+        sideIndex.classList.remove('open');
+        sideToggle.setAttribute('aria-expanded', 'false');
+        if (sideMedia.matches) {
+          setTimeout(() => {
+            if (!sideIndex.classList.contains('open')) sideBody.hidden = true;
+          }, 180);
+        } else {
+          sideBody.hidden = true;
+        }
+      };
+      sideToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (sideIndex.classList.contains('open')) closePanel();
+        else openPanel();
+      });
+      sideClose?.addEventListener('click', closePanel);
+      sideIndex.addEventListener('mouseenter', () => {
+        if (!sideMedia.matches) openPanel();
+      });
+      sideIndex.addEventListener('mouseleave', () => {
+        if (!sideMedia.matches) closePanel();
+      });
+      sideMedia.addEventListener('change', () => {
+        sideBody.hidden = !sideIndex.classList.contains('open');
+      });
+    }
+  </script>
+
+</body>
+</html>

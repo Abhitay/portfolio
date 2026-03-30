@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Case study: M(iche)Langelo, an end-to-end pipeline for AI-generated art detection, style analysis, captioning, and restyling using CLIP, BLIP, and transfer-learned SuSy." />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V9RNG3QS4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} // Google Analytics helper
+    gtag('js', new Date());
+    gtag('config', 'G-6V9RNG3QS4');
+  </script>
+  <title>M(iche)Langelo | AI-Generated Art Detection</title>
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/web-app-manifest-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon/web-app-manifest-512x512.png">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+
+  <aside class="side-index collapsible" aria-label="Page index">
+    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
+      <span class="side-index-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="side-index-label">On this page</span>
+    </button>
+    <div class="side-index-body" hidden>
+      <div class="side-index-header">
+        <div class="side-index-title">On this page</div>
+        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
+      </div>
+      <a href="#tldr">TL;DR</a>
+      <a href="#decision-context">Decision Context</a>
+      <a href="#related-work">Related Work</a>
+      <a href="#data">Data</a>
+      <a href="#methods">Methods</a>
+      <a href="#experiments">Experiments</a>
+      <a href="#system-overview">System Overview</a>
+      <a href="#recommendation">Recommendation</a>
+    </div>
+  </aside>
+
+  <nav>
+    <div class="left"><a href="index.html">Abhitay Shinde</a></div>
+    <div class="right">
+      <a href="index.html#contact" class="nav-contact-icon" aria-label="Contact" title="Contact">💬</a>
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+      <div class="nav-links">
+        <a href="index.html#projects">Highlights</a>
+        <a href="index.html#experience">Background</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="crumb-sep">/</span>
+      <a href="index.html#case-studies">Case Studies</a>
+      <span class="crumb-sep">/</span>
+      <span>M(iche)Langelo</span>
+    </div>
+  </section>
+
+  <section class="hero">
+    <h1>M(iche)Langelo: Analysis on AI-Generated Art</h1>
+    <p class="subtitle">
+      End-to-end pipeline for large-scale AI-art detection, style analysis, captioning, and optional restyling.
+    </p>
+    <div class="tech-tags">
+      <span class="tag">CLIP</span>
+      <span class="tag">BLIP</span>
+      <span class="tag">SuSy</span>
+      <span class="tag">Transfer Learning</span>
+      <span class="tag">Airflow + BigQuery</span>
+    </div>
+  </section>
+
+  <section id="tldr">
+  <section class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li>M(iche)Langelo is a production-style Reddit pipeline for AI-art monitoring and analysis.</li>
+      <li>The system combines CLIP for style, BLIP for captions, and SuSy for source detection.</li>
+      <li>A transfer-learned 3-class SuSy head (authentic, MidJourney, DALL-E 3) improved AI-class detection on real-world Reddit data.</li>
+      <li><strong>Result:</strong> stronger MidJourney and DALL-E detection under domain shift, with interpretability preserved through multimodal outputs.</li>
+    </ul>
+  </section>
+  </section>
+
+  <section id="decision-context">
+    <h2>The Decision That Triggered This Build</h2>
+    <p>
+      The spread of high-fidelity text-to-image models raised practical trust issues for online visual ecosystems:
+      attribution, misuse, and authenticity ambiguity. Existing detectors trained on curated benchmarks showed weak transfer
+      to noisy social data.
+    </p>
+    <p>
+      The core question was whether an end-to-end, continuously evaluated system could maintain reliable detection
+      performance on Reddit while also surfacing useful style and semantic context for human review.
+    </p>
+    <div class="findings warning">
+      <strong>Deployment reality</strong>
+      <p>
+        Open social streams are weakly labeled and constantly shifting; single-model accuracy alone is not enough for operational trust.
+      </p>
+    </div>
+  </section>
+
+  <section id="related-work">
+    <h2>Related Work</h2>
+    <div class="cards">
+      <div class="card">
+        <h4>Synthetic image detection</h4>
+        <p>
+          Artifact-based GAN detectors struggle on modern diffusion outputs. SuSy improves generalization but can degrade under domain shift.
+        </p>
+      </div>
+      <div class="card">
+        <h4>Vision-language models</h4>
+        <p>
+          CLIP provides strong zero-shot style recognition and BLIP adds semantic captioning that improves interpretability and downstream utility.
+        </p>
+      </div>
+      <div class="card">
+        <h4>System-level gap</h4>
+        <p>
+          Most studies use static datasets; few combine continuous ingestion, scalable storage, inference, and evaluation in one loop.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="data">
+    <h2>The Data Behind the Decision</h2>
+    <p class="lead">
+      Data strategy focused on independent fine-tuning sets plus real-world Reddit test streams from model-specific communities.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <h4>Fine-tuning data</h4>
+        <ul>
+          <li>Three target classes: authentic, MidJourney, DALL-E 3</li>
+          <li>1,000 images per class with 70/30 train-validation split</li>
+          <li>Sources chosen to avoid overlap with original SuSy training data</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Reddit test stream</h4>
+        <ul>
+          <li>Subreddits: r/dalle2, r/midjourney, r/aiArt, r/Art</li>
+          <li>Most recent 1,000 posts per subreddit with NSFW filtering</li>
+          <li>Weak supervision via subreddit provenance and flair metadata</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Observed activity rates</h4>
+        <ul>
+          <li>r/dalle2: 1.28 posts/day</li>
+          <li>r/midjourney: 35.71 posts/day</li>
+          <li>r/aiArt: 111.11 posts/day</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics-box">
+      <h4>Frequency of AI-generated image subreddits</h4>
+      <table class="snapshot-table">
+        <tr>
+          <td><strong>Subreddit</strong></td>
+          <td><strong>Time Span of 1000 Posts (days)</strong></td>
+          <td><strong>Posts / Day</strong></td>
+        </tr>
+        <tr>
+          <td>r/dalle2</td>
+          <td>779</td>
+          <td>1.28</td>
+        </tr>
+        <tr>
+          <td>r/midjourney</td>
+          <td>28</td>
+          <td>35.71</td>
+        </tr>
+        <tr>
+          <td>r/aiArt</td>
+          <td>9</td>
+          <td>111.11</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="cards" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px;">
+      <div class="card" style="padding: 10px;">
+        <div class="fig" style="margin: 0;">
+          <img src="figures/michelangelo_reddit_dalle_sample_1.jpeg" alt="Example Reddit DALL-E image 1" style="width: 100%; height: 150px; object-fit: cover; border-radius: 6px;">
+          <p class="caption">Figure 1: Example Reddit DALL-E image (sample 1).</p>
+        </div>
+      </div>
+      <div class="card" style="padding: 10px;">
+        <div class="fig" style="margin: 0;">
+          <img src="figures/michelangelo_reddit_dalle_sample_2.jpeg" alt="Example Reddit DALL-E image 2" style="width: 100%; height: 150px; object-fit: cover; border-radius: 6px;">
+          <p class="caption">Figure 2: Example Reddit DALL-E image (sample 2).</p>
+        </div>
+      </div>
+      <div class="card" style="padding: 10px;">
+        <div class="fig" style="margin: 0;">
+          <img src="figures/michelangelo_reddit_dalle_sample_3.jpeg" alt="Example Reddit DALL-E image 3" style="width: 100%; height: 150px; object-fit: cover; border-radius: 6px;">
+          <p class="caption">Figure 3: Example Reddit DALL-E image (sample 3) showing non-artistic variance in the test stream.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="methods">
+    <h2>Methods</h2>
+    <p>
+      The pipeline has two major layers: automated data engineering and multimodal inference. Airflow orchestrates Reddit collection,
+      deduplication by submission ID, and metadata updates to BigQuery. Inference then runs CLIP (style), BLIP (caption), and SuSy (source).
+    </p>
+    <div class="cards">
+      <div class="card">
+        <h4>Data pipeline</h4>
+        <p>
+          Scheduled collectors ingest new images, persist content to cloud storage, and append structured metadata tables for tracking and evaluation.
+        </p>
+      </div>
+      <div class="card">
+        <h4>Transfer learning</h4>
+        <p>
+          SuSy was adapted from 6-class outputs to a 3-class projection layer, then fine-tuned end-to-end for Reddit-style domain adaptation.
+        </p>
+      </div>
+      <div class="card">
+        <h4>Interpretability</h4>
+        <p>
+          Style rankings, captions, and class probabilities are surfaced together through a Gradio UI for rapid qualitative validation.
+        </p>
+      </div>
+    </div>
+    <div class="fig">
+      <img src="figures/michelangelo_airflow_dag.png" alt="Apache Airflow DAG for Reddit collection and metadata update pipeline">
+      <p class="caption">Figure 4: Apache Airflow DAG for collection, metadata updates, table updates, and daily logging.</p>
+    </div>
+
+  </section>
+
+  <section id="experiments">
+    <h2>Experiments and Findings</h2>
+    <p>
+      Baseline CNNs (ResNet variants) underperformed on Reddit’s diverse artistic distributions. BLIP outperformed earlier captioning attempts on semantic richness,
+      and CLIP prompt engineering improved style ranking stability. The strongest gains came from SuSy transfer learning under domain shift.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Class / Model</th>
+          <th>Original SuSy</th>
+          <th>Finetuned SuSy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Authentic</td>
+          <td>68.22%</td>
+          <td>57.71%</td>
+        </tr>
+        <tr>
+          <td>DALL-E</td>
+          <td>0.32%</td>
+          <td>14.38%</td>
+        </tr>
+        <tr>
+          <td>MidJourney</td>
+          <td>0.28%</td>
+          <td>43.37%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="findings">
+      <strong>Interpretation</strong>
+      <p>
+        Finetuning significantly increased AI-class detection quality on Reddit-like data, indicating that domain-adaptive heads are critical for real deployment.
+      </p>
+    </div>
+
+    <div class="fig">
+      <img src="figures/michelangelo_blip_caption_results.png" alt="BLIP captioning examples on artistic and synthetic images">
+      <p class="caption">Figure 6: BLIP-generated captions showing semantically rich image descriptions used for interpretability and restyling prompts.</p>
+    </div>
+
+    <div class="fig">
+      <img src="figures/michelangelo_sdxl_restyle_results.png" alt="Stable Diffusion XL restyling examples guided by BLIP captions">
+      <p class="caption">Figure 8: Stable Diffusion XL image-to-image restyling guided by BLIP captions while preserving semantic structure.</p>
+    </div>
+
+  </section>
+
+  <section id="system-overview">
+    <h2>System Overview</h2>
+    <p>
+      M(iche)Langelo is implemented in Python with PyTorch, Transformers, OpenCLIP, Diffusers, PRAW, Airflow, and BigQuery.
+      The architecture is modular, enabling continuous collection, scalable storage, and iterative model updates.
+    </p>
+    <div class="cards leadership-cards">
+      <div class="card leadership-card">
+        <h4>Continuous ingestion</h4>
+        <p>Airflow + PRAW keep datasets fresh from active Reddit communities.</p>
+      </div>
+      <div class="card leadership-card">
+        <h4>Multimodal inference</h4>
+        <p>CLIP, BLIP, and SuSy provide style, semantic, and source signals in one pass.</p>
+      </div>
+      <div class="card leadership-card">
+        <h4>Scalable analytics</h4>
+        <p>BigQuery stores metadata, predictions, confidence scores, and execution traces.</p>
+      </div>
+      <div class="card leadership-card">
+        <h4>Interactive inspection</h4>
+        <p>Gradio UI enables rapid qualitative review and restyling workflows.</p>
+      </div>
+    </div>
+
+    <div class="fig">
+      <img src="figures/michelangelo_gradio_ui_input.png" alt="Gradio interface showing image upload and analysis configuration controls">
+      <p class="caption">Figure 11: Interactive analysis UI with model options and execution controls.</p>
+    </div>
+
+    <div class="fig">
+      <img src="figures/michelangelo_gradio_ui_output.png" alt="Gradio output panel with BLIP caption, CLIP styles, and SuSy source probabilities">
+      <p class="caption">Figure 12: Structured output panel combining caption, style ranking, and source-detection probabilities.</p>
+    </div>
+
+    <div class="fig">
+      <img src="figures/michelangelo_bigquery_sample_rows.png" alt="BigQuery sample rows with CLIP and BLIP output columns">
+      <p class="caption">Figure 13: BigQuery sample rows showing pipeline outputs and model predictions.</p>
+    </div>
+
+  </section>
+
+  <section id="recommendation">
+    <h2>Recommendation</h2>
+    <div class="recommendation positive">
+      <h3>Use as real-time monitoring + analyst assist</h3>
+      <p>
+        Keep the transfer-learned SuSy pipeline in production for social streams, with recurring re-training,
+        confidence calibration, and richer supervision signals beyond subreddit labels.
+      </p>
+    </div>
+    <h3>Next Iteration Priorities</h3>
+    <ul>
+      <li>Add watermark and metadata forensics to complement model-based detection.</li>
+      <li>Distill inference stack for lower-latency batch throughput.</li>
+      <li>Expand source classes beyond MidJourney and DALL-E 3.</li>
+      <li>Automate drift reporting and threshold tuning for deployment governance.</li>
+    </ul>
+  </section>
+
+  <footer>© 2026 Abhitay Shinde</footer>
+
+  <script>
+    const allInternalLinks = document.querySelectorAll('a[href^="#"]');
+    allInternalLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          document.querySelectorAll('.highlight-flash').forEach(el => el.classList.remove('highlight-flash'));
+          setTimeout(() => {
+            targetSection.classList.add('highlight-flash');
+            setTimeout(() => targetSection.classList.remove('highlight-flash'), 1200);
+          }, 100);
+        }
+      });
+    });
+
+    const navRight = document.querySelector('nav .right');
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinksWrap = document.querySelector('.nav-links');
+    if (navRight && navToggle && navLinksWrap) {
+      navToggle.addEventListener('click', () => {
+        const isOpen = navRight.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+      navLinksWrap.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          navRight.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    const sideIndex = document.querySelector('.side-index.collapsible');
+    const sideToggle = sideIndex?.querySelector('.side-index-toggle');
+    const sideBody = sideIndex?.querySelector('.side-index-body');
+    const sideClose = sideIndex?.querySelector('.side-index-close');
+    const sideMedia = window.matchMedia('(max-width: 768px)');
+    if (sideIndex && sideToggle && sideBody) {
+      const openPanel = () => {
+        sideIndex.classList.add('open');
+        sideToggle.setAttribute('aria-expanded', 'true');
+        sideBody.hidden = false;
+      };
+      const closePanel = () => {
+        sideIndex.classList.remove('open');
+        sideToggle.setAttribute('aria-expanded', 'false');
+        if (sideMedia.matches) {
+          setTimeout(() => {
+            if (!sideIndex.classList.contains('open')) sideBody.hidden = true;
+          }, 180);
+        } else {
+          sideBody.hidden = true;
+        }
+      };
+      sideToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (sideIndex.classList.contains('open')) closePanel();
+        else openPanel();
+      });
+      sideClose?.addEventListener('click', closePanel);
+      sideIndex.addEventListener('mouseenter', () => {
+        if (!sideMedia.matches) openPanel();
+      });
+      sideIndex.addEventListener('mouseleave', () => {
+        if (!sideMedia.matches) closePanel();
+      });
+      sideMedia.addEventListener('change', () => {
+        sideBody.hidden = !sideIndex.classList.contains('open');
+      });
+    }
+  </script>
+
+</body>
+</html>
