@@ -1,5 +1,11 @@
 User-agent: *
 Allow: /
+Disallow: /favicon/
+Disallow: /figures/
+
+User-agent: AdsBot-Google
+Disallow: /
 
 Sitemap: https://abhitay.me/sitemap.xml
 Host: abhitay.me
+Crawl-delay: 1
