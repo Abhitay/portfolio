@@ -107,22 +107,20 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 14px;
+  padding: 11px 18px;
   border-radius: 999px;
-  background: var(--glass-bg-soft);
-  border: 1px solid var(--glass-border);
+  background: transparent;
+  border: 1px solid var(--border-strong);
   color: var(--text);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 14px;
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-  backdrop-filter: blur(10px) saturate(145%);
-  -webkit-backdrop-filter: blur(10px) saturate(145%);
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
 .pill-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+  background: var(--surface);
+  border-color: var(--text);
 }
 
 .pill-link.primary {
@@ -132,7 +130,8 @@
 }
 
 .pill-link.primary:hover {
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+  background: #333;
+  border-color: #333;
 }
 .mt-16 { margin-top: 16px; }
 
@@ -165,33 +164,29 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.66), rgba(219, 234, 254, 0.52));
-  border: 1px solid rgba(148, 163, 184, 0.34);
+  padding: 9px 14px;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(14px) saturate(155%);
-  -webkit-backdrop-filter: blur(14px) saturate(155%);
-  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  font-weight: 500;
   color: var(--text);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .side-index-toggle:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  background: var(--surface);
+  border-color: var(--text);
 }
 
 .side-index.collapsible .side-index-body {
   margin-top: 10px;
-  padding: 12px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.70), rgba(219, 234, 254, 0.52));
-  border: 1px solid rgba(148, 163, 184, 0.30);
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.42);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -247,9 +242,8 @@
 }
 
 .side-index a:hover {
-  background: #eef2ff;
-  color: #1e3a8a;
-  transform: translateX(2px) scale(1.01);
+  background: var(--surface);
+  color: var(--text);
 }
 
 .side-index-header {
@@ -376,7 +370,7 @@
   .side-index-header {
     position: sticky;
     top: 0;
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.76), rgba(219, 234, 254, 0.56));
+    background: var(--card);
     padding-bottom: 8px;
     z-index: 1;
   }
@@ -512,65 +506,91 @@
 /* ---------- ROOT VARIABLES & BASE STYLES ---------- */
 :root {
   --bg: #ffffff;
-  --text: #111827;
-  --muted: #6b7280;
-  --accent: #2563eb;
-  --card: #f9fafb;
-  --border: #e5e7eb;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --glass-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.62), rgba(219, 234, 254, 0.40));
-  --glass-bg-soft: linear-gradient(160deg, rgba(255, 255, 255, 0.70), rgba(219, 234, 254, 0.34));
-  --glass-border: rgba(148, 163, 184, 0.30);
-  --glass-shadow: 0 14px 34px rgba(15, 23, 42, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.38);
+  --text: #0a0a0a;
+  --muted: #6f6b66;
+  --faint: #9a958e;
+  --accent: #0a0a0a;
+  --card: #ffffff;
+  --surface: #f6f4f1;
+  --border: #e7e3dd;
+  --border-strong: #d3cec6;
+  --success: #1f7a52;
+  --warning: #9a6a00;
+  --danger: #b42318;
+  /* Legacy "glass" tokens neutralized to a flat, editorial surface so every
+     component that references them loses the frosted-blue look automatically. */
+  --glass-bg: var(--card);
+  --glass-bg-soft: var(--card);
+  --glass-border: var(--border);
+  --glass-shadow: none;
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 200px;
+  scroll-padding-top: 90px;
 }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.75;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
 }
 
 a {
-  color: var(--accent);
+  color: var(--text);
   text-decoration: none;
+  font-family: inherit;
+}
+
+/* Editorial serif for all display headings */
+h1, h2, h3, .hero h1, .role, .research-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Neutralize leftover frosted-glass blur across every component */
+.card, .experience-card, .metrics-box, .data-snapshot, .approach,
+.findings, .tldr, .recommendation, .pill-link, .breadcrumb, .nav-links,
+.toast-banner, .side-index-toggle, .side-index.collapsible .side-index-body {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* ---------- NAVBAR ---------- */
 nav {
   position: sticky;
   top: 0;
-  background: var(--glass-bg-soft);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  border-bottom: 1px solid var(--glass-border);
-  padding: 12px 32px;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 10;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-  transition: box-shadow 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 nav .left {
-  font-weight: 700;
-  font-size: 26px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
   display: inline-block;
-  transition: transform 0.12s ease;
-  letter-spacing: -0.5px;
+  transition: opacity 0.15s ease;
+  letter-spacing: -0.01em;
 }
 
 nav .left a {
@@ -579,15 +599,16 @@ nav .left a {
 }
 
 nav .left a:hover {
-  transform: translateY(-1px) scale(1.02);
+  opacity: 0.6;
 }
 
 nav .right a {
-  margin-left: 20px;
+  margin-left: 26px;
   font-size: 14px;
+  color: var(--text);
   display: inline-block;
   position: relative;
-  transition: transform 0.12s ease, color 0.12s ease;
+  transition: opacity 0.15s ease;
   padding-bottom: 2px;
 }
 
@@ -603,8 +624,7 @@ nav .right a::after {
 }
 
 nav .right a:hover {
-  transform: translateY(-1px);
-  color: var(--accent);
+  opacity: 0.55;
 }
 
 nav .right a:hover::after {
@@ -612,29 +632,29 @@ nav .right a:hover::after {
 }
 
 nav .right a.active {
-  color: var(--accent);
-  font-weight: 600;
+  color: var(--text);
+  font-weight: 500;
 }
 
 nav .right a.active::after {
   width: 100%;
 }
 nav .btn {
-  padding: 11px 22px 10px 22px;
+  padding: 9px 18px;
   border-radius: 999px;
-  background: var(--accent);
-  color: white;
-  font-weight: 600;
+  background: transparent;
+  color: var(--text) !important;
+  border: 1px solid var(--border-strong);
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   font-size: 14px;
-  letter-spacing: 0.2px;
   position: relative;
   vertical-align: middle;
   line-height: 1.2;
-  height: 40px;
+  height: 38px;
 }
 
 .contact-icon {
@@ -703,9 +723,9 @@ nav .btn::after {
 }
 
 nav .btn:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.3);
-  background: #1d4ed8;
+  background: var(--text);
+  color: #fff !important;
+  border-color: var(--text);
 }
 
 /* Responsive nav */
@@ -857,10 +877,71 @@ nav .btn:hover {
 }
 /* ---------- SECTIONS & TYPOGRAPHY ---------- */
 section {
-  padding: 28px 32px;
-  max-width: 1100px;
-  margin: auto;
+  width: 74%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 56px 0;
   transition: background 0.3s ease;
+}
+
+/* Nested sections (e.g. the TL;DR box wrapped in <section id="tldr">) must fill
+   their parent column, not re-apply the 13% side margins. */
+section section {
+  width: 100%;
+  max-width: none;
+}
+
+/* Numbered section eyebrow — "01 · Experience" */
+/* Section header: small uppercase kicker on the left, a creative serif caption
+   pushed to the right — using the full width, no divider line. */
+.section-eyebrow {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin: 0 0 40px 0;
+  font-family: var(--font-sans);
+}
+
+.sec-kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Big, creative right-hand caption that plays with the B&W theme:
+   base words grey, the key word black via .cap-em. */
+.sec-caption {
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5.2vw, 54px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.sec-caption .cap-em {
+  color: var(--text);
+  font-family: inherit;
+}
+
+@media (max-width: 620px) {
+  .sec-caption {
+    display: none;
+  }
+}
+
+.sub-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 40px 0 16px 0;
 }
 
 @keyframes sectionHighlight {
@@ -887,32 +968,28 @@ section {
   transition: none;
 }
 
-section#projects {
-  padding-top: 0;
-}
-
-section#experience {
-  padding-top: 0;
-}
 
 h1 {
-  font-size: 36px;
-  margin: 0 0 12px 0;
+  font-size: clamp(40px, 6vw, 60px);
+  line-height: 1.05;
+  margin: 0 0 16px 0;
 }
 
 h2 {
-  font-size: 26px;
-  margin: 20px 0 12px 0;
+  font-size: 30px;
+  line-height: 1.2;
+  margin: 0 0 12px 0;
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 21px;
   margin: 18px 0 8px 0;
 }
 
 h4 {
   font-size: 16px;
   margin: 16px 0 8px 0;
+  font-weight: 600;
 }
 
 p {
@@ -939,32 +1016,136 @@ li {
 }
 
 /* ---------- HERO ---------- */
+.hero {
+  padding-top: 88px;
+  padding-bottom: 72px;
+}
+
 .hero p {
   font-size: 18px;
-  max-width: 850px;
+  max-width: 640px;
 }
 
 .hero h1 {
   color: var(--text);
-  font-weight: 800;
-  letter-spacing: -0.5px;
+  font-weight: 500;
 }
 
 .hero h1 .quote-mark {
-  color: var(--accent);
+  color: var(--faint);
+}
+
+/* Inverse (black box, white text) emphasis in the hero headline.
+   Keeps the serif (inherit), and on load the black highlight sweeps
+   left-to-right, revealing the white text like a highlighter marker. */
+.hero h1 .hl {
+  font-family: inherit;
+  color: #fff;
+  white-space: nowrap;
+  padding: 0.02em 0.16em;
+  border-radius: 3px;
+  background-image: linear-gradient(var(--text) 0 0);
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  animation: hl-sweep 0.85s cubic-bezier(0.65, 0, 0.35, 1) 0.45s forwards;
+}
+
+@keyframes hl-sweep {
+  to { background-size: 100% 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 .hl {
+    background-size: 100% 100%;
+    animation: none;
+  }
 }
 
 .hero .lead {
+  font-family: var(--font-sans);
   font-size: 20px;
-  font-weight: 600;
-  color: var(--accent);
+  font-weight: 400;
+  color: var(--muted);
   margin-bottom: 20px;
+  max-width: 760px;
 }
 
 .hero .subtitle {
   font-size: 14px;
   color: var(--muted);
   margin-top: 20px;
+}
+
+.hero-eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0 0 22px 0;
+}
+
+.hero-eyebrow .dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  margin-right: 9px;
+  vertical-align: middle;
+  animation: dot-pulse 2.4s ease-out infinite;
+}
+
+@keyframes dot-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(31, 122, 82, 0.45); }
+  70% { box-shadow: 0 0 0 7px rgba(31, 122, 82, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(31, 122, 82, 0); }
+}
+
+/* Blinking terminal caret */
+.type-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 7px;
+  background: var(--text);
+  vertical-align: text-bottom;
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* Minimal scroll-reveal — the .reveal class is added by JS, so the page stays
+   fully visible if JS is off. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow .dot,
+  .type-caret {
+    animation: none;
+  }
+  .reveal,
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Homepage hero copy should use full content width */
@@ -1078,63 +1259,64 @@ li {
 /* ---------- CARDS & GRIDS ---------- */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
   margin-top: 30px;
 }
 
 .card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  padding: 26px;
+  box-shadow: none;
+  transition: border-color 0.18s ease, background 0.18s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  border-color: var(--border-strong);
+  background: var(--surface);
 }
 
 .card a {
-  transition: transform 0.12s ease, color 0.12s ease;
+  transition: opacity 0.15s ease;
   display: inline-block;
 }
 
 .card a:hover {
-  transform: translateY(-1px) scale(1.02);
+  opacity: 0.6;
 }
 
-#projects .card {
+#work .card {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-#projects .card .tag {
+#work .card .tag {
   align-self: flex-start;
 }
 
-#projects .card h3 {
+#work .card h3 {
   margin-top: 6px;
 }
 
-#projects .card p {
+#work .card p {
   flex: 1;
 }
 
-#projects .card a {
+#work .card a {
   margin-top: auto;
-  font-weight: 600;
+  font-weight: 500;
   display: inline-block;
-  transition: transform 0.12s ease, color 0.12s ease;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 1px;
+  transition: border-color 0.15s ease, opacity 0.15s ease;
 }
 
-#projects .card a:hover {
-  transform: translateY(-1px) scale(1.02);
+#work .card a:hover {
+  opacity: 1;
+  border-color: var(--text);
 }
 
 /* Leadership cards (match project card aesthetic but compact) */
@@ -1210,11 +1392,13 @@ li {
 /* ---------- TAGS ---------- */
 .tag {
   display: inline-block;
-  font-size: 12px;
-  padding: 4px 10px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 4px 11px;
   border-radius: 999px;
-  background: #e0e7ff;
-  color: #1e3a8a;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--muted);
   margin-bottom: 4px;
 }
 
@@ -1238,8 +1422,9 @@ li {
   font-size: 12px;
   padding: 6px 12px;
   border-radius: 999px;
-  background: #eef2ff;
-  color: #3730a3;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--muted);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -1333,15 +1518,13 @@ footer {
 
 /* ---------- TL;DR / DECISION PROMINENCE ---------- */
 .tldr {
-  background: linear-gradient(160deg, rgba(239, 246, 255, 0.68), rgba(219, 234, 254, 0.50));
-  border: 1px solid color-mix(in srgb, var(--accent) 46%, white 54%);
-  border-left-width: 4px;
-  padding: 16px;
-  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--text);
+  padding: 20px 24px;
+  border-radius: 8px;
   margin: 20px 0;
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(12px) saturate(145%);
-  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  box-shadow: none;
 }
 .tldr h2 {
   font-size: 30px;
@@ -1381,6 +1564,8 @@ footer {
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
   section {
+    width: auto;
+    max-width: none;
     padding: 36px 20px;
   }
 
@@ -1412,20 +1597,18 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 
 /* ---------- EXPERIENCE CARDS & VISUAL HIERARCHY ---------- */
 .experience-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 14px;
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  padding: 24px 26px;
+  margin-bottom: 12px;
+  box-shadow: none;
+  transition: border-color 0.18s ease, background 0.18s ease;
 }
 
 .experience-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+  border-color: var(--border-strong);
+  background: var(--surface);
 }
 
 .experience-header {
@@ -1475,10 +1658,11 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 .impact-item {
   display: inline-block;
   font-size: 12px;
-  padding: 4px 10px;
+  padding: 4px 11px;
   border-radius: 999px;
-  background: #e0e7ff;
-  color: #1e40af;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -1508,13 +1692,11 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   padding-left: 0;
 }
 
-/* Metric pill styling (visual highlight for bold metrics via CSS) */
+/* Emphasized metrics: weight + subtle underline, no colored highlight */
 .experience-card strong {
   color: var(--text);
   font-weight: 600;
-  background: #fef3c7;
-  padding: 2px 5px;
-  border-radius: 4px;
+  box-shadow: inset 0 -0.4em 0 var(--surface);
 }
 
 .experience-card strong.course-label {
@@ -1823,5 +2005,396 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   .nav-contact-icon:hover {
     transform: scale(1.1);
     opacity: 0.8;
+  }
+}
+
+/* ============================================
+   OPEN / DE-BOXED LAYOUTS (homepage)
+   Cards replaced with hairline-separated lists so
+   nothing sits in a box and nothing orphans on wrap.
+   ============================================ */
+
+/* --- Selected Work: two-column open rows --- */
+.work-list {
+  margin-top: 12px;
+}
+
+.work-item {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 40px;
+  align-items: start;
+  padding: 34px 0;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+}
+
+.work-item:first-child {
+  border-top: none;
+  padding-top: 12px;
+}
+
+.work-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.work-main h3 {
+  margin: 0 0 10px 0;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.work-main p {
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.arrow-link {
+  display: inline-block;
+  font-weight: 500;
+  color: var(--text);
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 1px;
+  transition: border-color 0.15s ease;
+}
+
+.work-item:hover h3 {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.work-item:hover .arrow-link {
+  border-color: var(--text);
+}
+
+/* --- Leadership & Impact: open two-up grid, no boxes --- */
+.impact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 48px;
+  margin-top: 12px;
+}
+
+.impact-block {
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+}
+
+.impact-grid .impact-block:nth-child(1),
+.impact-grid .impact-block:nth-child(2) {
+  border-top: none;
+  padding-top: 4px;
+}
+
+.impact-block h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+}
+
+.impact-block p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* --- Research: open two-up list, no boxes --- */
+.research-open {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 48px;
+  margin-top: 12px;
+}
+
+.research-open .research-item {
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: none;
+}
+
+.research-open .research-item:nth-child(1),
+.research-open .research-item:nth-child(2) {
+  border-top: none;
+  padding-top: 4px;
+}
+
+.research-open .research-item:hover {
+  opacity: 1;
+}
+
+/* --- Media Praise: open, no box --- */
+.media-block {
+  margin-top: 12px;
+}
+
+/* --- Experience & Education: two-column editorial layout ---
+   Left column = company block (logo, role, company, dates); right column =
+   the work done (bullets + skills). Reuses the existing markup via grid. */
+.experience-card {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  column-gap: 48px;
+  align-items: start;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  padding: 36px 0;
+  margin-bottom: 0;
+  box-shadow: none;
+}
+
+.experience-card:hover {
+  background: transparent;
+  border-color: var(--border);
+}
+
+/* Left column: stack logo, role, company, dates. Span all rows so the right
+   column (skills + bullets) packs tightly instead of matching the tall header. */
+.experience-header {
+  grid-column: 1;
+  grid-row: 1 / span 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 0;
+}
+
+.experience-header .dates {
+  white-space: normal;
+}
+
+/* Right column: everything that isn't the header (skills + bullets) */
+.experience-card > *:not(.experience-header) {
+  grid-column: 2;
+}
+
+.experience-card > .impact-strip {
+  margin: 2px 0 16px 0;
+}
+
+.experience-card > ul,
+.experience-card > .edu-detail {
+  margin-top: 0;
+}
+
+/* In the narrow left column, let the role focus drop to its own line */
+.experience-header .role-focus {
+  display: block;
+  margin-top: 4px;
+}
+
+.experience-header .role-focus::before {
+  content: none;
+}
+
+#professional-experience .experience-card:first-child,
+#early-experience .experience-card:first-child,
+#education .experience-card:first-child {
+  border-top: none;
+  padding-top: 12px;
+}
+
+/* Metric emphasis reads fine without a card background */
+.experience-card strong {
+  box-shadow: none;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+@media (max-width: 768px) {
+  .work-item {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 26px 0;
+  }
+  .impact-grid,
+  .research-open {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .impact-grid .impact-block:nth-child(2),
+  .research-open .research-item:nth-child(2) {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+  .experience-card {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+    padding: 22px 0;
+  }
+  .experience-card > *:not(.experience-header) {
+    grid-column: 1;
+  }
+  .experience-header .role-focus {
+    display: inline;
+    margin-top: 0;
+  }
+  .experience-header .role-focus::before {
+    content: "·";
+    margin: 0 9px;
+  }
+}
+
+/* Case-study card grids: keep exactly-4-item grids as an even 2x2 instead of
+   wrapping 3 + 1 (which left the 4th card "hanging" on its own row). */
+@media (min-width: 640px) {
+  .cards:has(> :nth-child(4):last-child) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Hero contact row --- */
+.hero-contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  margin-top: 26px;
+  font-size: 15px;
+}
+
+.hero-contact a {
+  color: var(--muted);
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.hero-contact a:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+/* --- Company logo / monogram in experience + education --- */
+.exp-id {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.company-logo {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* If a real logo image is dropped in later, it fills the tile cleanly */
+.company-logo:has(img) {
+  background: #fff;
+}
+
+.company-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 5px;
+}
+
+/* Role focus (was the "(Customer Acquisition)" parenthetical): quiet inline
+   text, not a chip — kept minimal and non-invasive next to the role title. */
+.role-focus {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.role-focus::before {
+  content: "·";
+  margin: 0 9px;
+  color: var(--faint);
+}
+
+/* --- Education: labelled coursework / focus chips --- */
+.edu-detail {
+  margin-top: 6px;
+}
+
+.edu-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--faint);
+  margin-bottom: 12px;
+}
+
+.edu-detail .tech-tags {
+  margin: 0;
+}
+
+/* --- Media Praise: clean featured block --- */
+.media-feature {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 36px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.media-figure img {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.media-body h4 {
+  margin: 12px 0 4px 0;
+  font-size: 18px;
+}
+
+.media-body > p {
+  color: var(--muted);
+}
+
+.media-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 16px;
+}
+
+.media-links a {
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 1px;
+  transition: border-color 0.15s ease;
+}
+
+.media-links a:hover {
+  border-color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .media-feature {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .company-logo {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+  .exp-id {
+    gap: 12px;
   }
 }

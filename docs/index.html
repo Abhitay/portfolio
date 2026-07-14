@@ -20,307 +20,180 @@
   <link rel="icon" type="image/png" sizes="512x512" href="favicon/web-app-manifest-512x512.png">
   <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
   <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
 
-  <aside class="side-index collapsible" aria-label="Page index">
-    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
-      <span class="side-index-icon" aria-hidden="true">
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <span class="side-index-label">On this page</span>
-    </button>
-    <div class="side-index-body" hidden>
-      <div class="side-index-header">
-        <div class="side-index-title">On this page</div>
-        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
-      </div>
-      <div class="side-index-group">
-        <a class="side-index-parent" href="#projects">Highlights</a>
-        <div class="side-index-children">
-          <a href="#case-studies">Case Studies</a>
-          <a href="#leadership">Leadership & Impact</a>
-          <a href="#media-praise">Media Praise</a>
-        </div>
-      </div>
-      <div class="side-index-group">
-        <a class="side-index-parent" href="#experience">Background</a>
-        <div class="side-index-children">
-          <a href="#professional-experience">Professional Experience</a>
-          <a href="#education">Education</a>
-          <a href="#research">Research</a>
-        </div>
-      </div>
-      <a href="#contact">Contact</a>
-    </div>
-  </aside>
-
   <!-- NAVBAR -->
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
     <div class="right">
-      <!-- Mobile contact icon -->
-      <a
-        href="#contact"
-        class="nav-contact-icon"
-        aria-label="Contact"
-        title="Contact"
-        style = "font-size: 20px;"
-      >
-        💬
-      </a>
       <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
       <div class="nav-links">
-        <a href="#projects">Highlights</a>
-        <a href="#experience">Background</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
+        <a href="#education">Education</a>
         <a href="#contact">Contact</a>
-        <a class="btn" href="Shinde Resume.pdf" target="_blank">Download Resume</a>
+        <a class="btn" href="Shinde Resume.pdf" target="_blank">Résumé</a>
       </div>
     </div>
   </nav>
 
-   
+  <!-- HERO -->
+  <section id="about" class="hero hero-home">
+    <p class="hero-eyebrow"><span class="dot"></span>Data Scientist · New York, NY<span class="type-caret" aria-hidden="true"></span></p>
 
-  <section class="hero hero-home">
-    <h1>I'm a Data Scientist</h1>
+    <h1>I build models that turn messy <span class="hl">data into decisions</span> people act on.</h1>
 
-  <p class="lead">
-    I drive GenAI, product, and stakeholder decisions, across large-scale systems and agentic AI initiatives.
-  </p>
-
-  <div class="hero-joke">
-    <p>
-      <em>*This is where I'd normally write a long paragraph about my qualifications, but that would take too many LLM tokens.*</em>
+    <p class="lead">
+      A data scientist blending machine learning, experimentation, and product intuition
+      to help teams make confident, evidence-based decisions.
     </p>
-  </div>
 
-  <p class="hero-cta">
-    I recommend checking out my highlighted projects. They summarize all my experience in quick and fun reads.
-  </p>
-</section>
-
-  <!-- PROJECT HIGHLIGHTS -->
-  <section id="projects">
-    <h2>Highlighted Projects</h2>
-
-    <div id="case-studies" class="cards">
-      <div class="card">
-        <span class="tag">LLMs · Graph RAG · Retrieval</span>
-        <span class="read-time">⏱️ 9 min read</span>
-        <h3>IBM Agentic Library - Graph RAG for Document Q&amp;A</h3>
-        <p>
-          Built a Graph RAG pipeline with Neo4j and FAISS for structured retrieval.
-          Knowledge-graph modeling improved retrieval precision by 30%+ over naive search.
-        </p>
-        <a href="graph-rag-hybrid-retrieval.html">Explore the Analysis →</a>
-      </div>
-
-      <div class="card">
-        <span class="tag">NLP · Vision · Detection</span>
-        <span class="read-time">⏱️ 7 min read</span>
-        <h3>M(iche)Langelo - Analysis on AI-Generated Art</h3>
-        <p>
-          Built an end-to-end Reddit pipeline for style, caption, and source detection using CLIP, BLIP, and SuSy.
-          Transfer learning to a 3-class SuSy head improved MidJourney and DALL-E detection on real-world art streams.
-        </p>
-        <a href="michelangelo-ai-detection.html">Explore the Analysis →</a>
-      </div>
-
-      <div class="card">
-        <span class="tag">Causal Inference · Optimization</span>
-        <span class="read-time">⏱️ 12 min suite read</span>
-        <h3>Product Analytics Suite</h3>
-        <p>
-          A combined suite of three analyses covering feature impact, growth allocation,
-          and root-cause diagnosis using PSM, DiD, uplift modeling, and MMM.
-        </p>
-        <a href="causal-product-analytics-suite.html">Explore the Analysis →</a>
-      </div>
+    <div class="hero-contact">
+      <a href="mailto:abhitayshinde@gmail.com">abhitayshinde@gmail.com</a>
+      <a href="tel:+16462250802">(646) 225-0802</a>
+      <a href="https://www.linkedin.com/in/abhitay" target="_blank">LinkedIn</a>
+      <a href="https://github.com/Abhitay" target="_blank">GitHub</a>
+      <a href="https://scholar.google.com/citations?user=f0wnYuYAAAAJ&hl=en" target="_blank">Google Scholar</a>
     </div>
-
-    <div id="leadership" style="margin-top: 48px;">
-  <h2>Leadership & Impact</h2>
-
-  <div class="cards leadership-cards">
-    <div class="card leadership-card">
-      <h4>Built analytics products from zero to scale</h4>
-      <p>
-        Founding team member for MyLoanBhai, TestMyPolicy, and FinQy 2.0,
-        establishing product analytics foundations from first release to scaled execution.
-      </p>
-    </div>
-
-    <div class="card leadership-card">
-      <h4>Scaled operations across 35 cities and 3 countries</h4>
-      <p>
-        Led data-backed operating workflows across multi-country teams,
-        enabling standardized execution and measurable performance governance.
-      </p>
-    </div>
-
-    <div class="card leadership-card">
-      <h4>Lead author on 4+ IEEE papers</h4>
-      <p>
-        Published work spanning predictive maintenance, NLP-to-SQL automation,
-        and ML modeling with 15+ citations across peer-reviewed research.
-      </p>
-    </div>
-
-    <div class="card leadership-card">
-      <h4>Global AI hackathon winner</h4>
-      <p>
-        Won first place in a global AI hackathon, ranking 1st out of 750 teams
-        in a 1,311-participant competition spanning 19 countries.
-      </p>
-    </div>
-  </div>
-</div>
-
-    <div id="media-praise" style="margin-top: 48px;">
-      <h2>Media Praise</h2>
-
-      <div class="card">
-        <div class="two-col">
-          <div class="fig" style="margin: 0;">
-            <img src="figures/hackathon_image.jpeg" alt="Grand finale collage for Hackathon on Plastic-Free Rivers with AI at REVA University">
-          </div>
-
-          <div>
-            <span class="tag">Featured In ThePrint (ANI PR)</span>
-            <h4>"Hackathon on Plastic-Free Rivers with AI" Grand Finale at REVA University</h4>
-            <p class="muted">11 September 2023 · REVA University + Kyndryl</p>
-
-            <ul>
-              <li>750 teams from 19 countries and 1,311 total participants.</li>
-              <li>Top 15 finalist teams reached the live grand finale demo.</li>
-              <li>Team EcoGuards won 1st place and a prize of INR 1,50,000.</li>
-              <li>Challenge focus: Vision AI for plastic detection, classification, and segmentation from drone imagery.</li>
-            </ul>
-
-            <p>
-              <a href="https://theprint.in/ani-press-releases/hackathon-on-plastic-free-rivers-with-ai-grand-finale-concludes-successfully-at-reva-university/1756535/" target="_blank">Read media coverage →</a>
-              ·
-              <a href="https://www.youtube.com/watch?v=iPcEjU4BPOk" target="_blank">Watch event recap →</a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </section>
 
   <!-- EXPERIENCE -->
   <section id="experience">
-    <h2>Background</h2>
+    <h2 class="section-eyebrow"><span class="sec-kicker">01 · Experience</span><span class="sec-caption">Where I've <span class="cap-em">built</span></span></h2>
 
     <div id="professional-experience">
-      <h3>Professional Experience</h3>
-
       <div class="experience-card">
         <div class="experience-header">
-          <div>
-            <h4 class="role">Data Scientist (Customer Acquisition)</h4>
-            <p class="company">Ask2AI · New York, NY</p>
+          <div class="exp-id">
+            <span class="company-logo"><img src="logos/ask2ai.jpeg" alt="Ask2AI logo"></span>
+            <div>
+              <h4 class="role">Data Scientist <span class="role-focus">Customer Acquisition</span></h4>
+              <p class="company">Ask2AI · New York, NY</p>
+            </div>
           </div>
-          <span class="dates">Feb 2026 – Jun 2026</span>
+          <span class="dates">Feb 2026 – Present</span>
         </div>
         <div class="impact-strip">
-          <span class="impact-item">Feature Selection</span>
+          <span class="impact-item">Feature Engineering</span>
           <span class="impact-item">Causal Inference</span>
           <span class="impact-item">Polars</span>
         </div>
         <ul>
-          <li>Built a feature selection and causal inference pipeline in Python and Polars correcting selection bias in the bank's default model, integrating 11 data sources across 30M+ customers.</li>
-          <li>Inferred default probability for rejected customers using Double Machine Learning with propensity-corrected features, validated at 0.86 AUC on a held-out cohort.</li>
+          <li>Corrected selection bias in the scoring model, by building a feature engineering and causal inference pipeline in Python and Polars that integrated 11 source systems into a unified 30 million customer dataset.</li>
+          <li>Scored the rejected-applicant population at 0.86 held-out AUC, by training gradient-boosted models within a Double Machine Learning framework to correct the selection bias in approved-only training data.</li>
+          <li>Expanded the approvable population by 15% at flat expected default, by handing corrected scores to credit policy.</li>
         </ul>
       </div>
 
       <div class="experience-card">
         <div class="experience-header">
-          <div>
-            <h4 class="role">Data Science Researcher (Generative AI and Personalization)</h4>
-            <p class="company">Julius Baer · New York, NY</p>
+          <div class="exp-id">
+            <span class="company-logo"><img src="logos/julius_baer.jpeg" alt="Julius Baer logo"></span>
+            <div>
+              <h4 class="role">Data Scientist <span class="role-focus">Generative AI &amp; Personalization</span></h4>
+              <p class="company">Julius Baer · New York, NY</p>
+            </div>
           </div>
           <span class="dates">Jun 2025 – Sep 2025</span>
         </div>
         <div class="impact-strip">
-          <span class="impact-item">Gen AI Personalization</span>
-          <span class="impact-item">LangGraph</span>
-          <span class="impact-item">Experimentation</span>
+          <span class="impact-item">Agentic LangGraph</span>
+          <span class="impact-item">LLM-as-a-Judge</span>
+          <span class="impact-item">RAG</span>
         </div>
         <ul>
-          <li>Engineered an LLM personalization chatbot using LangGraph and prompt chaining, automating content selection and curation time by 35%.</li>
-          <li>Uncovered a 25% lift in customer content engagement by running causal and exploratory analysis on customer behavior using Python and SQL.</li>
-          <li>Standardized guardrails and reproducibility across cross-functional teams by establishing an experimentation framework.</li>
+          <li>Replaced the analyst-and-copywriter handoff for client-facing investment documents, by engineering an agentic LangGraph system retrieving client holdings, stated preferences, and live market news into a single generated draft.</li>
+          <li>Automated compliance review at 86% agreement with human reviewers, by building an LLM-as-a-judge critic that scored each draft against the firm's rubric and regenerated failures until they passed.</li>
+          <li>Cut content selection time for relationship managers by 35%, by shipping the pipeline as a chat interface with human-in-the-loop revision, letting RMs iterate on a living client document.</li>
+          <li>Surfaced a 25% engagement lift, using exploratory analysis on customer data in Python and SQL against matched controls.</li>
         </ul>
       </div>
 
       <div class="experience-card">
         <div class="experience-header">
-          <div>
-            <h4 class="role">Data Scientist Consultant (Customer Analytics and Segmentation)</h4>
-            <p class="company">TD Bank · New York, NY</p>
+          <div class="exp-id">
+            <span class="company-logo"><img src="logos/ask2ai.jpeg" alt="Ask2AI logo"></span>
+            <div>
+              <h4 class="role">Data Scientist Co-op <span class="role-focus">Customer Acquisition</span></h4>
+              <p class="company">Ask2AI · New York, NY</p>
+            </div>
+          </div>
+          <span class="dates">Jan 2025 – May 2025</span>
+        </div>
+        <div class="impact-strip">
+          <span class="impact-item">Uplift Modeling</span>
+          <span class="impact-item">DiD</span>
+          <span class="impact-item">Mixed-Integer Optimization</span>
+        </div>
+        <ul>
+          <li>Improved cross-channel ROI attribution by 22% and identified optimal credit limit thresholds, by building uplift models and difference-in-differences designs that isolated incremental campaign impact from last-touch bias.</li>
+          <li>Lifted customer LTV 12% and cut churn 25%, by pairing uplift modeling with mixed-integer optimization to reallocate acquisition budget across channels.</li>
+        </ul>
+      </div>
+
+      <div class="experience-card">
+        <div class="experience-header">
+          <div class="exp-id">
+            <span class="company-logo"><img src="logos/td_bank.jpeg" alt="TD Bank logo"></span>
+            <div>
+              <h4 class="role">Data Scientist Capstone <span class="role-focus">Customer Analytics &amp; Segmentation</span></h4>
+              <p class="company">TD Bank · New York, NY</p>
+            </div>
           </div>
           <span class="dates">Jan 2025 – May 2025</span>
         </div>
         <div class="impact-strip">
           <span class="impact-item">Customer Analytics</span>
           <span class="impact-item">Fraud Detection</span>
-          <span class="impact-item">XGBoost + SHAP</span>
+          <span class="impact-item">XGBoost</span>
         </div>
         <ul>
-          <li>Validated fraud-detection strategies by executing causal inference and A/B testing on 100M+ transactions in PySpark.</li>
-          <li>Elevated fraud model accuracy from 0.20 to 0.67 PR-AUC using an XGBoost model with SHAP-based explainability.</li>
-          <li>Informed senior leadership on segmentation, money laundering, and fraud-reduction strategy through data-driven insights.</li>
+          <li>Raised fraud model precision-recall AUC from 0.20 to 0.67, by training XGBoost with SHAP on 100 million transactions.</li>
+          <li>Validated fraud-detection strategy for senior leadership, by quantifying incremental catch rate against a holdout.</li>
+          <li>Shaped segmentation and anti-money-laundering strategy, by clustering customers on transaction behavior and delivering automated reporting on the resulting risk tiers.</li>
         </ul>
       </div>
 
       <div class="experience-card">
         <div class="experience-header">
-          <div>
-            <h4 class="role">Quantitative Research Co-op (Customer Acquisition)</h4>
-            <p class="company">Ask2AI · New York, NY</p>
-          </div>
-          <span class="dates">Jan 2025 – May 2025</span>
-        </div>
-        <div class="impact-strip">
-          <span class="impact-item">Acquisition Analytics</span>
-          <span class="impact-item">Growth Optimization</span>
-          <span class="impact-item">MILP</span>
-        </div>
-        <ul>
-          <li>Improved ROI attribution across acquisition channels by 22% by deploying uplift modeling for personalization and difference-in-differences to isolate causal impact, identifying optimal credit limit thresholds to lift conversion rates.</li>
-          <li>Boosted customer LTV by 12% and reduced churn by 25% by building uplift models and MILP for acquisition allocation.</li>
-        </ul>
-      </div>
-
-      <div class="experience-card">
-        <div class="experience-header">
-          <div>
-            <h4 class="role">Teaching Assistant (Algorithms to Data Science)</h4>
-            <p class="company">Columbia University · New York, NY</p>
+          <div class="exp-id">
+            <span class="company-logo"><img src="logos/columbia.jpeg" alt="Columbia University logo"></span>
+            <div>
+              <h4 class="role">Teaching Assistant <span class="role-focus">Algorithms to Data Science</span></h4>
+              <p class="company">Columbia University · New York, NY</p>
+            </div>
           </div>
           <span class="dates">Sep 2024 – Jan 2025</span>
         </div>
         <div class="impact-strip">
-          <span class="impact-item">Algorithms to Data Science</span>
           <span class="impact-item">Student Mentorship</span>
+          <span class="impact-item">Experiment Design</span>
         </div>
         <ul>
           <li>Mentored 250+ MS students on ML algorithms, analytical reasoning, experiment design, and inference through structured weekly sessions.</li>
           <li>Designed case studies and assignments on A/B test design, modeling, and data-driven decision-making for applied data science coursework.</li>
         </ul>
       </div>
+    </div>
+
+    <div id="early-experience">
+      <p class="sub-eyebrow">Earlier Experience &amp; Internships</p>
 
       <div class="experience-card">
         <div class="experience-header">
-          <div>
-            <h4 class="role">Data Scientist Consultant (Predictive Maintenance and Operational Analytics)</h4>
-            <p class="company">Navin Fluorine International Limited · Mumbai, IN</p>
+          <div class="exp-id">
+            <span class="company-logo"><img src="logos/nfil.jpeg" alt="Navin Fluorine logo"></span>
+            <div>
+              <h4 class="role">Data Scientist Consultant <span class="role-focus">Predictive Maintenance &amp; Operational Analytics</span></h4>
+              <p class="company">Navin Fluorine International Limited · Mumbai, IN</p>
+            </div>
           </div>
           <span class="dates">May 2023 – Nov 2023</span>
         </div>
@@ -336,9 +209,12 @@
 
       <div class="experience-card">
         <div class="experience-header">
-          <div>
-            <h4 class="role">Founding IT Intern (Acquisition and Retention Analytics)</h4>
-            <p class="company">E-Revbay Pvt. Ltd. · Mumbai, IN</p>
+          <div class="exp-id">
+            <span class="company-logo"><img src="logos/e_revbay.jpeg" alt="E-Revbay logo"></span>
+            <div>
+              <h4 class="role">Founding IT Intern <span class="role-focus">Acquisition &amp; Retention Analytics</span></h4>
+              <p class="company">E-Revbay Pvt. Ltd. · Mumbai, IN</p>
+            </div>
           </div>
           <span class="dates">Dec 2021 – May 2022</span>
         </div>
@@ -354,9 +230,12 @@
 
       <div class="experience-card">
         <div class="experience-header">
-          <div>
-            <h4 class="role">Artificial Intelligence Intern</h4>
-            <p class="company">Verzeo</p>
+          <div class="exp-id">
+            <span class="company-logo"><img src="logos/verzeo.jpeg" alt="Verzeo logo"></span>
+            <div>
+              <h4 class="role">Artificial Intelligence Intern</h4>
+              <p class="company">Verzeo · Remote</p>
+            </div>
           </div>
           <span class="dates">Jun 2021 – Aug 2021</span>
         </div>
@@ -372,68 +251,209 @@
       </div>
     </div>
 
-    <div id="education" style="margin-top: 48px;">
-      <h3>Education</h3>
+  </section>
 
-      <div class="experience-card">
-        <div class="experience-header">
-          <div>
-            <h4 class="role">M.S. Data Science</h4>
-            <p class="company">Columbia University · New York, NY</p>
-          </div>
-          <span class="dates">Sep 2024 – Dec 2025</span>
-        </div>
-        <div class="impact-strip">
-          <span class="impact-item">GPA 3.7/4.0</span>
-        </div>
-        <ul>
-          <li><b>Relevant Courses:</b> Agentic AI; Fintech and Data Economy (PhD elective); Big Data Analytics; Statistics; Applied Machine Learning</li>
-        </ul>
-      </div>
+  <!-- SELECTED PROJECTS -->
+  <section id="projects">
+    <h2 class="section-eyebrow"><span class="sec-kicker">02 · Selected Projects</span><span class="sec-caption">Beyond the <span class="cap-em">desk</span></span></h2>
 
-      <div class="experience-card">
-        <div class="experience-header">
-          <div>
-            <h4 class="role">B.Tech Honors (Computer Engineering, Data Science/Analytics)</h4>
-            <p class="company">NMIMS University · Mumbai, India</p>
-          </div>
-          <span class="dates">Jun 2020 – May 2024</span>
+    <div id="case-studies" class="work-list">
+      <a class="work-item" href="graph-rag-hybrid-retrieval.html">
+        <div class="work-aside">
+          <span class="tag">LLMs · Graph RAG · Retrieval</span>
+          <span class="read-time">9 min read</span>
         </div>
-        <div class="impact-strip">
-          <span class="impact-item">GPA 3.9/4.0</span>
+        <div class="work-main">
+          <h3>IBM Agentic Library: Graph RAG for Document Q&amp;A</h3>
+          <p>
+            Built a Graph RAG pipeline with Neo4j and FAISS for structured retrieval.
+            Knowledge-graph modeling improved retrieval precision by 30%+ over naive search.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
         </div>
-        <ul>
-          <li><b>Focus Areas:</b> Computer Engineering, Data Science, and Analytics</li>
-        </ul>
+      </a>
+
+      <a class="work-item" href="michelangelo-ai-detection.html">
+        <div class="work-aside">
+          <span class="tag">NLP · Vision · Detection</span>
+          <span class="read-time">7 min read</span>
+        </div>
+        <div class="work-main">
+          <h3>M(iche)Langelo: Analysis on AI-Generated Art</h3>
+          <p>
+            Built an end-to-end Reddit pipeline for style, caption, and source detection using CLIP, BLIP, and SuSy.
+            Transfer learning to a 3-class SuSy head improved MidJourney and DALL-E detection on real-world art streams.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+
+      <a class="work-item" href="causal-product-analytics-suite.html">
+        <div class="work-aside">
+          <span class="tag">Analytics · Experimentation</span>
+          <span class="read-time">12 min suite read</span>
+        </div>
+        <div class="work-main">
+          <h3>Product Analytics Suite</h3>
+          <p>
+            A combined suite of three analyses covering feature impact, growth allocation,
+            and root-cause diagnosis using PSM, DiD, uplift modeling, and MMM.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS & MEDIA -->
+  <section id="publications">
+    <h2 class="section-eyebrow"><span class="sec-kicker">03 · Publications &amp; Media</span><span class="sec-caption">On the <span class="cap-em">record</span></span></h2>
+
+    <div id="media-praise">
+      <p class="sub-eyebrow">Media Praise</p>
+
+      <div class="media-feature">
+        <div class="media-figure">
+          <img src="figures/hackathon_image.jpeg" alt="Grand finale collage for Hackathon on Plastic-Free Rivers with AI at REVA University">
+        </div>
+
+        <div class="media-body">
+          <span class="tag">Featured in ThePrint (ANI PR)</span>
+          <h4>"Hackathon on Plastic-Free Rivers with AI" Grand Finale at REVA University</h4>
+          <p class="muted">11 September 2023 · REVA University + Kyndryl</p>
+          <p>
+            Team EcoGuards placed 1st out of 750 teams from 19 countries (1,311 participants),
+            winning a INR 1,50,000 prize for a Vision AI system that detects, classifies, and
+            segments river plastic from drone imagery.
+          </p>
+          <p class="media-links">
+            <a href="https://theprint.in/ani-press-releases/hackathon-on-plastic-free-rivers-with-ai-grand-finale-concludes-successfully-at-reva-university/1756535/" target="_blank">Read media coverage →</a>
+            <a href="https://www.youtube.com/watch?v=iPcEjU4BPOk" target="_blank">Watch event recap →</a>
+          </p>
+        </div>
       </div>
     </div>
 
+    <div id="research">
+      <p class="sub-eyebrow">Research Publications</p>
 
-    <div id="research" style="margin-top: 48px;">
-      <h3>Research Publications</h3>
-      <div class="cards research-cards">
-        <div class="card research-card">
+      <div class="research-open">
+        <div class="research-item">
           <h4 class="research-title"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:9yKSN-GCB0IC" target="_blank">Predictive maintenance for metro systems</a></h4>
           <p class="research-meta"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:9yKSN-GCB0IC" target="_blank">Google Scholar · Lead Author</a></p>
           <p>Demonstrated a sensor-driven pipeline that predicts equipment failures so operations teams can schedule targeted maintenance and reduce downtime.</p>
         </div>
 
-        <div class="card research-card">
+        <div class="research-item">
           <h4 class="research-title"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:u5HHmVD_uO8C" target="_blank">Diabetes detection optimized for recall</a></h4>
           <p class="research-meta"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:u5HHmVD_uO8C" target="_blank">Google Scholar · Lead Author</a></p>
           <p>Prioritized recall in model design to reduce missed diagnoses, improving early detection reliability for clinical use.</p>
         </div>
 
-        <div class="card research-card">
+        <div class="research-item">
           <h4 class="research-title"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:d1gkVwhDpl0C" target="_blank">NLP to SQL for mobile learning</a></h4>
           <p class="research-meta"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:d1gkVwhDpl0C" target="_blank">Google Scholar</a></p>
           <p>Built an NLP-to-SQL interface that lets non-technical users query student and CSV data directly from mobile devices.</p>
         </div>
 
-        <div class="card research-card">
+        <div class="research-item">
           <h4 class="research-title"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:qjMakFHDy7sC" target="_blank">Semi-supervised disease prediction</a></h4>
           <p class="research-meta"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:qjMakFHDy7sC" target="_blank">Google Scholar</a></p>
           <p>Applied semi-supervised methods to leverage unlabeled clinical data and improve prediction robustness in ambiguous diagnostic cases.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="leadership">
+      <p class="sub-eyebrow">Leadership &amp; Impact</p>
+
+      <div class="impact-grid">
+        <div class="impact-block">
+          <h4>Built analytics products from zero to scale</h4>
+          <p>
+            Founding team member for MyLoanBhai, TestMyPolicy, and FinQy 2.0,
+            establishing product analytics foundations from first release to scaled execution.
+          </p>
+        </div>
+
+        <div class="impact-block">
+          <h4>Scaled operations across 35 cities and 3 countries</h4>
+          <p>
+            Led data-backed operating workflows across multi-country teams,
+            enabling standardized execution and measurable performance governance.
+          </p>
+        </div>
+
+        <div class="impact-block">
+          <h4>Lead author on 4+ IEEE papers</h4>
+          <p>
+            Published work spanning predictive maintenance, NLP-to-SQL automation,
+            and ML modeling with 15+ citations across peer-reviewed research.
+          </p>
+        </div>
+
+        <div class="impact-block">
+          <h4>Global AI hackathon winner</h4>
+          <p>
+            Won first place in a global AI hackathon, ranking 1st out of 750 teams
+            in a 1,311-participant competition spanning 19 countries.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <h2 class="section-eyebrow"><span class="sec-kicker">04 · Education</span><span class="sec-caption">Where it <span class="cap-em">started</span></span></h2>
+
+    <div class="experience-card">
+      <div class="experience-header">
+        <div class="exp-id">
+          <span class="company-logo"><img src="logos/columbia.jpeg" alt="Columbia University logo"></span>
+          <div>
+            <h4 class="role">M.S. Data Science</h4>
+            <p class="company">Columbia University · New York, NY</p>
+          </div>
+        </div>
+        <span class="dates">Sep 2024 – Dec 2025</span>
+      </div>
+      <div class="impact-strip">
+        <span class="impact-item">GPA 3.7/4.0</span>
+      </div>
+      <div class="edu-detail">
+        <span class="edu-label">Relevant Coursework</span>
+        <div class="tech-tags">
+          <span class="tag">Agentic AI</span>
+          <span class="tag">Fintech &amp; Data Economy (PhD elective)</span>
+          <span class="tag">Big Data Analytics</span>
+          <span class="tag">Statistics</span>
+          <span class="tag">Applied Machine Learning</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="experience-card">
+      <div class="experience-header">
+        <div class="exp-id">
+          <span class="company-logo"><img src="logos/nmims.jpeg" alt="NMIMS University logo"></span>
+          <div>
+            <h4 class="role">B.Tech Honors (Computer Engineering, Data Science/Analytics)</h4>
+            <p class="company">NMIMS University · Mumbai, India</p>
+          </div>
+        </div>
+        <span class="dates">Jun 2020 – May 2024</span>
+      </div>
+      <div class="impact-strip">
+        <span class="impact-item">GPA 3.9/4.0</span>
+      </div>
+      <div class="edu-detail">
+        <span class="edu-label">Focus Areas</span>
+        <div class="tech-tags">
+          <span class="tag">Computer Engineering</span>
+          <span class="tag">Data Science</span>
+          <span class="tag">Analytics</span>
         </div>
       </div>
     </div>
@@ -441,11 +461,11 @@
 
   <!-- CONTACT -->
   <section id="contact" class="contact">
-    <h2>Contact</h2>
+    <h2 class="section-eyebrow"><span class="sec-kicker">05 · Contact</span><span class="sec-caption">Say <span class="cap-em">hello</span></span></h2>
     <p>Always happy to discuss data science, experimentation, causal inference, and GenAI applications.</p>
 
     <div class="contact-links">
-      <a class="pill-link primary" href="mailto:abhitayshinde@gmail.com">Email: abhitayshinde@gmail.com</a>
+      <a class="pill-link primary" href="mailto:abhitayshinde@gmail.com">abhitayshinde@gmail.com</a>
       <a class="pill-link" href="https://www.linkedin.com/in/abhitay" target="_blank">LinkedIn</a>
       <a class="pill-link" href="https://github.com/Abhitay" target="_blank">GitHub</a>
     </div>
@@ -462,9 +482,9 @@
 
     function highlightNavLink() {
       let current = '';
-      
+
       sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
+        const sectionTop = section.offsetTop - 120;
         const sectionHeight = section.clientHeight;
         if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
           current = section.getAttribute('id');
@@ -478,31 +498,6 @@
         }
       });
     }
-
-    // Add flash effect when ANY internal link is clicked
-    const allInternalLinks = document.querySelectorAll('a[href^="#"]');
-    allInternalLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href').substring(1);
-        const targetSection = document.getElementById(targetId);
-        
-        if (targetSection) {
-          // Remove any existing highlight
-          document.querySelectorAll('.highlight-flash').forEach(el => {
-            el.classList.remove('highlight-flash');
-          });
-          
-          // Add highlight after a short delay to ensure scroll has started
-          setTimeout(() => {
-            targetSection.classList.add('highlight-flash');
-            // Remove class after animation completes
-            setTimeout(() => {
-              targetSection.classList.remove('highlight-flash');
-            }, 1200);
-          }, 100);
-        }
-      });
-    });
 
     // Mobile nav toggle
     const navRight = document.querySelector('nav .right');
@@ -523,118 +518,40 @@
       });
     }
 
-    // Side index toggle (icon on mobile, hover/click on desktop)
-    const sideIndex = document.querySelector('.side-index.collapsible');
-    const sideToggle = sideIndex?.querySelector('.side-index-toggle');
-    const sideBody = sideIndex?.querySelector('.side-index-body');
-    const sideClose = sideIndex?.querySelector('.side-index-close');
-    const sideMedia = window.matchMedia('(max-width: 768px)');
-
-    if (sideIndex && sideToggle && sideBody) {
-      const openPanel = () => {
-        sideIndex.classList.add('open');
-        sideToggle.setAttribute('aria-expanded', 'true');
-        sideToggle.setAttribute('aria-label', 'Close section list');
-        sideBody.hidden = false;
-      };
-
-      const closePanel = () => {
-        sideIndex.classList.remove('open');
-        sideToggle.setAttribute('aria-expanded', 'false');
-        sideToggle.setAttribute('aria-label', 'Open section list');
-        if (sideMedia.matches) {
-          setTimeout(() => {
-            if (!sideIndex.classList.contains('open')) {
-              sideBody.hidden = true;
-            }
-          }, 180);
-        } else {
-          sideBody.hidden = true;
-        }
-      };
-
-      sideToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (sideIndex.classList.contains('open')) {
-          closePanel();
-        } else {
-          openPanel();
-        }
-      });
-
-      sideClose?.addEventListener('click', closePanel);
-
-      // Desktop: start expanded. Mobile: start collapsed.
-      const syncPanelForViewport = () => {
-        if (sideMedia.matches) {
-          closePanel();
-        } else {
-          openPanel();
-        }
-      };
-
-      syncPanelForViewport();
-      sideMedia.addEventListener('change', syncPanelForViewport);
-    }
-
-    // Mobile toast prompt for case study links
-    const caseStudyLinks = document.querySelectorAll('a[href*="feature-impact.html"], a[href*="growth-allocation.html"], a[href*="ai-insights-copilot.html"], a[href*="causal-product-analytics-suite.html"], a[href*="graph-rag-hybrid-retrieval.html"], a[href*="michelangelo-ai-detection.html"]');
-    const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
-    let pendingHref = null;
-
-    const ensureToast = () => {
-      let overlay = document.querySelector('.toast-overlay');
-      let toast = document.querySelector('.toast-banner');
-      if (!overlay || !toast) {
-        overlay = document.createElement('div');
-        overlay.className = 'toast-overlay';
-        toast = document.createElement('div');
-        toast.className = 'toast-banner';
-        toast.innerHTML = `
-          <div class="toast-title">Best viewed on desktop</div>
-          <div class="toast-text">These case studies are easier to read on a larger screen. Continue on mobile?</div>
-          <div class="toast-buttons">
-            <button class="btn-secondary" type="button" data-toast-cancel>Cancel</button>
-            <button class="btn-primary" type="button" data-toast-continue>Continue</button>
-          </div>
-        `;
-        overlay.appendChild(toast);
-        document.body.appendChild(overlay);
-
-        const closeToast = () => {
-          overlay?.classList.remove('show');
-          toast?.classList.remove('show');
-          pendingHref = null;
-        };
-
-        overlay.addEventListener('click', (e) => {
-          if (e.target === overlay) closeToast();
-        });
-
-        toast.querySelector('[data-toast-cancel]')?.addEventListener('click', closeToast);
-        toast.querySelector('[data-toast-continue]')?.addEventListener('click', () => {
-          if (pendingHref) {
-            window.location.href = pendingHref;
-          }
-          closeToast();
-        });
-      }
-      return { overlay, toast };
-    };
-
-    caseStudyLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        if (!isMobile()) return;
-        e.preventDefault();
-        pendingHref = link.href;
-        const { overlay, toast } = ensureToast();
-        overlay.classList.add('show');
-        toast.classList.add('show');
-      });
-    });
-
     window.addEventListener('scroll', highlightNavLink);
     highlightNavLink(); // Call on page load
+
+    // Minimal scroll-reveal: fade + rise content blocks as they enter view.
+    // The .reveal class is added by JS, so the page stays fully visible if JS
+    // is off; a scroll+rect check (robust everywhere) toggles .is-visible.
+    const revealTargets = document.querySelectorAll(
+      '.work-item, .experience-card, .research-item, .impact-block, .media-feature, .edu-detail'
+    );
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (revealTargets.length && !reduceMotion) {
+      revealTargets.forEach(el => el.classList.add('reveal'));
+      const revealInView = () => {
+        const trigger = window.innerHeight * 0.9;
+        revealTargets.forEach(el => {
+          if (!el.classList.contains('is-visible') &&
+              el.getBoundingClientRect().top < trigger) {
+            el.classList.add('is-visible');
+          }
+        });
+      };
+      let ticking = false;
+      const onScroll = () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(() => { revealInView(); ticking = false; });
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      revealInView(); // reveal whatever is already in view on load
+      // Failsafe: never leave content hidden if scroll detection ever fails.
+      setTimeout(() => revealTargets.forEach(el => el.classList.add('is-visible')), 2500);
+    }
   </script>
 
 </body>
