@@ -1017,8 +1017,77 @@ li {
 
 /* ---------- HERO ---------- */
 .hero {
-  padding-top: 88px;
-  padding-bottom: 72px;
+  min-height: calc(100vh - 74px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 56px;
+  position: relative;
+}
+
+/* Minimal scroll cue, tucked into the right margin gutter: a vertical label
+   above a hairline track down which a short black segment runs on a loop. */
+.scroll-cue {
+  position: absolute;
+  right: -6.5vw;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: var(--faint);
+}
+
+.scroll-cue-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.scroll-cue-track {
+  position: relative;
+  width: 1px;
+  height: 66px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.scroll-cue-track::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 18px;
+  background: var(--text);
+  animation: scroll-cue-run 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scroll-cue-run {
+  0% { transform: translateY(-18px); }
+  65%, 100% { transform: translateY(66px); }
+}
+
+.scroll-cue:hover .scroll-cue-text {
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue-track::after {
+    animation: none;
+    transform: translateY(22px);
+  }
+}
+
+@media (max-width: 900px) {
+  .scroll-cue {
+    display: none;
+  }
 }
 
 .hero p {
@@ -1105,14 +1174,15 @@ li {
   100% { box-shadow: 0 0 0 0 rgba(31, 122, 82, 0); }
 }
 
-/* Blinking terminal caret */
+/* Blinking terminal caret (sized relative to whatever text it follows) */
 .type-caret {
   display: inline-block;
-  width: 2px;
-  height: 1.05em;
-  margin-left: 7px;
+  width: 0.06em;
+  min-width: 3px;
+  height: 0.76em;
+  margin-left: 0.16em;
   background: var(--text);
-  vertical-align: text-bottom;
+  vertical-align: -0.03em;
   animation: caret-blink 1.1s steps(1) infinite;
 }
 
@@ -2130,19 +2200,14 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   margin-top: 12px;
 }
 
-/* --- Experience & Education: two-column editorial layout ---
-   Left column = company block (logo, role, company, dates); right column =
-   the work done (bullets + skills). Reuses the existing markup via grid. */
+/* --- Experience & Education: de-boxed hairline list.
+   This base is the "old" single-column style, used by Education. --- */
 .experience-card {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  column-gap: 48px;
-  align-items: start;
   background: transparent;
   border: none;
   border-top: 1px solid var(--border);
   border-radius: 0;
-  padding: 36px 0;
+  padding: 32px 0;
   margin-bottom: 0;
   box-shadow: none;
 }
@@ -2152,49 +2217,132 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   border-color: var(--border);
 }
 
-/* Left column: stack logo, role, company, dates. Span all rows so the right
-   column (skills + bullets) packs tightly instead of matching the tall header. */
-.experience-header {
+/* --- Experience section: two-column editorial card + a minimal timeline that
+   lives out in the LEFT PAGE MARGIN (not in the card). A hairline spine with a
+   small node per role and the date riding alongside it, all in the whitespace
+   to the left of the content. The spine is drawn per-card so it stays
+   continuous no matter how tall each card grows. */
+#experience .experience-card {
+  display: grid;
+  grid-template-columns: 236px 1fr;
+  column-gap: 48px;
+  align-items: start;
+  padding: 34px 0;
+  position: relative;
+}
+
+/* Spine segment — sits in the margin, left of the content */
+#experience .experience-card::after {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-strong);
+}
+
+/* Node — a small dot on the margin spine, centered in the card vertically */
+#experience .experience-card::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--text);
+  z-index: 1;
+}
+
+#experience .experience-header {
   grid-column: 1;
   grid-row: 1 / span 20;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
   margin-bottom: 0;
 }
 
-.experience-header .dates {
-  white-space: normal;
+/* Logo on top; role/focus/company share the same left edge below it */
+#experience .exp-id {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
 }
 
-/* Right column: everything that isn't the header (skills + bullets) */
-.experience-card > *:not(.experience-header) {
+#experience .exp-id > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+#experience .exp-id .role,
+#experience .exp-id .company {
+  margin: 0;
+}
+
+/* Date rides the margin timeline, right-aligned toward the spine, level with
+   the (card-centered) node */
+#experience .dates {
+  position: absolute;
+  left: -132px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 84px;
+  text-align: right;
+  white-space: normal;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+#experience .experience-card > *:not(.experience-header):not(.dates) {
   grid-column: 2;
 }
 
-.experience-card > .impact-strip {
+#experience .experience-card > .impact-strip {
   margin: 2px 0 16px 0;
 }
 
-.experience-card > ul,
-.experience-card > .edu-detail {
+#experience .experience-card > ul {
   margin-top: 0;
 }
 
-/* In the narrow left column, let the role focus drop to its own line */
-.experience-header .role-focus {
+/* Role focus drops to its own quiet line under the role title */
+#experience .experience-header .role-focus {
   display: block;
   margin-top: 4px;
+  color: var(--muted);
 }
 
-.experience-header .role-focus::before {
+#experience .experience-header .role-focus::before {
   content: none;
 }
 
-#professional-experience .experience-card:first-child,
-#early-experience .experience-card:first-child,
-#education .experience-card:first-child {
+/* Two roles in the same window: both keep the normal solid node, and the one
+   shared date sits centered between the two nodes. (Node center is top:52 + 4;
+   the two nodes are one card-height apart, so the midpoint is 50% + 56px.) */
+#experience .experience-card.concurrent-last .dates {
+  display: none;
+}
+
+#experience .experience-card.concurrent-first .dates {
+  top: 100%;
+  transform: translateY(-50%);
+}
+
+/* First card of each experience group: drop the divider, keep the rhythm */
+#professional-experience > .experience-card:first-child,
+#early-experience .experience-card:first-of-type {
+  border-top: none;
+}
+
+#education .experience-card:first-of-type {
   border-top: none;
   padding-top: 12px;
 }
@@ -2203,6 +2351,34 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 .experience-card strong {
   box-shadow: none;
   border-bottom: 1px solid var(--border-strong);
+}
+
+/* Not enough side-margin for the timeline: retire it, bring the date inline
+   at the top of the details column. */
+@media (max-width: 1080px) {
+  #experience .experience-card::before,
+  #experience .experience-card::after {
+    display: none;
+  }
+  #experience .dates {
+    position: static;
+    grid-column: 2;
+    order: -1;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: auto;
+    margin: 0 0 12px 0;
+    text-align: left;
+    font-size: 12px;
+  }
+  #experience .experience-card.concurrent-last .dates {
+    display: block;
+  }
+  #experience .experience-card.concurrent-first .dates {
+    top: auto;
+    transform: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -2221,21 +2397,23 @@ section > *:last-child:not(.tldr):not(.recommendation) {
     border-top: 1px solid var(--border);
     padding-top: 24px;
   }
-  .experience-card {
+  #experience .experience-card {
     grid-template-columns: 1fr;
-    row-gap: 16px;
-    padding: 22px 0;
+    row-gap: 12px;
+    padding: 24px 0;
   }
-  .experience-card > *:not(.experience-header) {
+  #experience .experience-card > *:not(.experience-header):not(.dates) {
     grid-column: 1;
   }
-  .experience-header .role-focus {
-    display: inline;
-    margin-top: 0;
+  #experience .experience-header {
+    grid-column: 1;
+    grid-row: auto;
   }
-  .experience-header .role-focus::before {
-    content: "·";
-    margin: 0 9px;
+  #experience .dates {
+    grid-column: 1;
+  }
+  .experience-card {
+    padding: 22px 0;
   }
 }
 
@@ -2320,6 +2498,17 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   content: "·";
   margin: 0 9px;
   color: var(--faint);
+}
+
+/* Leadership & Impact: simple bullet list (no cards) */
+.impact-list {
+  margin: 4px 0 0 0;
+  padding-left: 20px;
+}
+
+.impact-list li {
+  margin-bottom: 10px;
+  line-height: 1.6;
 }
 
 /* --- Education: labelled coursework / focus chips --- */
