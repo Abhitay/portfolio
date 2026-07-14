@@ -46,7 +46,7 @@
 
   <!-- HERO -->
   <section id="about" class="hero hero-home">
-    <p class="hero-eyebrow"><span class="dot"></span>Data Scientist · New York, NY</p>
+    <p class="hero-eyebrow"><span class="dot"></span>Open to work &amp; collaboration · New York, NY</p>
 
     <h1>I build models that turn messy <span class="hl">data into decisions</span> people act on.</h1>
 
@@ -260,7 +260,7 @@
 
   <!-- SELECTED PROJECTS -->
   <section id="projects">
-    <h2 class="section-eyebrow"><span class="sec-kicker">02 · Selected Projects</span><span class="sec-caption">Beyond the <span class="cap-em">desk</span><span class="type-caret" aria-hidden="true"></span></span></h2>
+    <h2 class="section-eyebrow"><span class="sec-kicker">02 · Selected Projects</span><span class="sec-caption">Side <span class="cap-em">Quests</span><span class="type-caret" aria-hidden="true"></span></span></h2>
 
     <div id="case-studies" class="work-list">
       <a class="work-item" href="graph-rag-hybrid-retrieval.html">
@@ -384,7 +384,7 @@
 
   <!-- EDUCATION -->
   <section id="education">
-    <h2 class="section-eyebrow"><span class="sec-kicker">04 · Education</span><span class="sec-caption">Where it <span class="cap-em">started</span><span class="type-caret" aria-hidden="true"></span></span></h2>
+    <h2 class="section-eyebrow"><span class="sec-kicker">04 · Education</span><span class="sec-caption">The Paper <span class="cap-em">Chase</span><span class="type-caret" aria-hidden="true"></span></span></h2>
 
     <div class="experience-card">
       <div class="experience-header">
@@ -444,7 +444,10 @@
 
     <div class="contact-links">
       <a class="pill-link primary" href="mailto:abhitayshinde@gmail.com">abhitayshinde@gmail.com</a>
+      <a class="pill-link" href="tel:+16462250802">(646) 225-0802</a>
       <a class="pill-link" href="https://www.linkedin.com/in/abhitay" target="_blank">LinkedIn</a>
+      <a class="pill-link" href="https://github.com/Abhitay" target="_blank">GitHub</a>
+      <a class="pill-link" href="https://scholar.google.com/citations?user=f0wnYuYAAAAJ&hl=en" target="_blank">Google Scholar</a>
     </div>
   </section>
 
@@ -498,36 +501,39 @@
     window.addEventListener('scroll', highlightNavLink);
     highlightNavLink(); // Call on page load
 
+    // Nav hairline: hidden while the hero fills the viewport, shown once scrolled.
+    const navBar = document.querySelector('nav');
+    const setNavBorder = () => navBar.classList.toggle('scrolled', window.scrollY > 12);
+    window.addEventListener('scroll', setNavBorder, { passive: true });
+    setNavBorder();
+
     // Minimal scroll-reveal: fade + rise content blocks as they enter view.
     // The .reveal class is added by JS, so the page stays fully visible if JS
     // is off; a scroll+rect check (robust everywhere) toggles .is-visible.
-    const revealTargets = document.querySelectorAll(
-      '.section-eyebrow, .sub-eyebrow, .work-item, .experience-card, .research-item, .impact-list, .media-feature, .edu-detail'
-    );
+    // Soft reveal: when a SECTION scrolls into view, all of its content blocks
+    // fade + rise in together, with a gentle stagger. Section headers
+    // (.section-eyebrow) are intentionally left in place — only the content
+    // beneath them animates.
+    const revealSelector =
+      '.sub-eyebrow, .work-item, .experience-card, .research-item, .impact-list, .media-feature, .edu-detail, #contact p, .contact-links';
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (revealTargets.length && !reduceMotion) {
-      revealTargets.forEach(el => el.classList.add('reveal'));
-      const revealInView = () => {
-        const trigger = window.innerHeight * 0.9;
-        revealTargets.forEach(el => {
-          if (!el.classList.contains('is-visible') &&
-              el.getBoundingClientRect().top < trigger) {
-            el.classList.add('is-visible');
-          }
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      document.querySelectorAll(revealSelector).forEach(el => el.classList.add('reveal'));
+      const revealSection = (section) => {
+        section.querySelectorAll(revealSelector).forEach((el, i) => {
+          el.style.transitionDelay = Math.min(i * 70, 350) + 'ms';
+          el.classList.add('is-visible');
         });
       };
-      let ticking = false;
-      const onScroll = () => {
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(() => { revealInView(); ticking = false; });
-        }
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll);
-      revealInView(); // reveal whatever is already in view on load
-      // Failsafe: never leave content hidden if scroll detection ever fails.
-      setTimeout(() => revealTargets.forEach(el => el.classList.add('is-visible')), 2500);
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            revealSection(entry.target);
+            obs.unobserve(entry.target); // reveal once, then stop watching
+          }
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.01 });
+      document.querySelectorAll('section[id]').forEach(sec => io.observe(sec));
     }
 
     // Magnet scroll: the first downward scroll from the hero glides the whole

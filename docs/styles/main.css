@@ -575,13 +575,18 @@ nav {
   background: rgba(255, 255, 255, 0.86);
   backdrop-filter: saturate(180%) blur(12px);
   -webkit-backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid transparent;
   padding: 16px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 10;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.25s ease;
+}
+
+/* Hairline appears only once you leave the hero (see nav.scrolled toggle in JS) */
+nav.scrolled {
+  border-bottom-color: var(--border);
 }
 
 nav .left {
@@ -1195,8 +1200,8 @@ li {
    fully visible if JS is off. */
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(20px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
