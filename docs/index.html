@@ -6,18 +6,9 @@
   <meta name="description" content="Abhitay Shinde is a Data Scientist focused on causal inference, experimentation, GenAI personalization, and growth optimization across fintech and product analytics." />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V9RNG3QS4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} // Google Analytics helper
-    gtag('js', new Date());
-
-    gtag('config', 'G-6V9RNG3QS4');
-  </script>
+  <script src="scripts/main.js" defer></script>
   <title>Abhitay Shinde | Data Scientist</title>
   <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
-  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="favicon/web-app-manifest-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="favicon/web-app-manifest-512x512.png">
   <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
   <link rel="shortcut icon" href="favicon/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -112,7 +103,7 @@
         <a href="#publications">Publications</a>
         <a href="#education">Education</a>
         <a href="#contact">Contact</a>
-        <a class="btn" href="Shinde Resume.pdf" target="_blank">Resume</a>
+        <a class="btn" href="Shinde-Resume.pdf" target="_blank">Resume</a>
       </div>
     </div>
   </nav>
@@ -528,115 +519,6 @@
     © 2026 Abhitay Shinde
   </footer>
 
-  <script>
-    // Highlight active nav link based on scroll position
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav .right a[href^="#"]');
-
-    function highlightNavLink() {
-      let current = '';
-
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 120;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-          current = section.getAttribute('id');
-        }
-      });
-
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.add('active');
-        }
-      });
-    }
-
-    // Mobile nav toggle
-    const navRight = document.querySelector('nav .right');
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinksWrap = document.querySelector('.nav-links');
-
-    if (navRight && navToggle && navLinksWrap) {
-      navToggle.addEventListener('click', () => {
-        const isOpen = navRight.classList.toggle('open');
-        navToggle.setAttribute('aria-expanded', String(isOpen));
-      });
-
-      navLinksWrap.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          navRight.classList.remove('open');
-          navToggle.setAttribute('aria-expanded', 'false');
-        });
-      });
-    }
-
-    window.addEventListener('scroll', highlightNavLink);
-    highlightNavLink(); // Call on page load
-
-    // Nav hairline: hidden while the hero fills the viewport, shown once scrolled.
-    const navBar = document.querySelector('nav');
-    const setNavBorder = () => navBar.classList.toggle('scrolled', window.scrollY > 12);
-    window.addEventListener('scroll', setNavBorder, { passive: true });
-    setNavBorder();
-
-    // Minimal scroll-reveal: fade + rise content blocks as they enter view.
-    // The .reveal class is added by JS, so the page stays fully visible if JS
-    // is off; a scroll+rect check (robust everywhere) toggles .is-visible.
-    // Soft reveal: when a SECTION scrolls into view, all of its content blocks
-    // fade + rise in together, with a gentle stagger. Section headers
-    // (.section-eyebrow) are intentionally left in place — only the content
-    // beneath them animates.
-    const revealSelector =
-      '.sub-eyebrow, .work-item, .experience-card, .research-item, .impact-list, .media-feature, .edu-detail, #contact p, .contact-links';
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduceMotion && 'IntersectionObserver' in window) {
-      document.querySelectorAll(revealSelector).forEach(el => el.classList.add('reveal'));
-      const revealSection = (section) => {
-        section.querySelectorAll(revealSelector).forEach((el, i) => {
-          el.style.transitionDelay = Math.min(i * 70, 350) + 'ms';
-          el.classList.add('is-visible');
-        });
-      };
-      const io = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            revealSection(entry.target);
-            obs.unobserve(entry.target); // reveal once, then stop watching
-          }
-        });
-      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.01 });
-      document.querySelectorAll('section[id]').forEach(sec => io.observe(sec));
-    }
-
-    // Magnet scroll: the first downward scroll from the hero glides the whole
-    // hero out to the next section in one motion (and snaps back up near the top).
-    (function () {
-      const first = document.querySelector('#experience');
-      const navEl = document.querySelector('nav');
-      if (!first || !navEl || reduceMotion) return;
-      let animating = false;
-      const targetTop = () =>
-        Math.max(0, first.getBoundingClientRect().top + window.scrollY - navEl.offsetHeight);
-      const glideTo = (y) => {
-        animating = true;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-        setTimeout(() => { animating = false; }, 780);
-      };
-      window.addEventListener('wheel', (e) => {
-        if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-        const t = targetTop();
-        if (animating) { e.preventDefault(); return; }
-        if (e.deltaY > 0 && window.scrollY < t - 40) {
-          e.preventDefault();
-          glideTo(t);
-        } else if (e.deltaY < 0 && window.scrollY > 30 && window.scrollY < t + 60) {
-          e.preventDefault();
-          glideTo(0);
-        }
-      }, { passive: false });
-    })();
-  </script>
 
 </body>
 </html>

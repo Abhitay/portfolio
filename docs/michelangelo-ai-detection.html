@@ -5,17 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Case study: M(iche)Langelo, an end-to-end pipeline for AI-generated art detection, style analysis, captioning, and restyling using CLIP, BLIP, and transfer-learned SuSy." />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V9RNG3QS4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} // Google Analytics helper
-    gtag('js', new Date());
-    gtag('config', 'G-6V9RNG3QS4');
-  </script>
+  <script src="scripts/main.js" defer></script>
   <title>M(iche)Langelo | AI-Generated Art Detection</title>
   <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
-  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="favicon/web-app-manifest-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="favicon/web-app-manifest-512x512.png">
   <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
   <link rel="shortcut icon" href="favicon/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,7 +96,7 @@
         <a href="index.html#publications">Publications</a>
         <a href="index.html#education">Education</a>
         <a href="index.html#contact">Contact</a>
-        <a class="btn" href="Shinde Resume.pdf" target="_blank">Resume</a>
+        <a class="btn" href="Shinde-Resume.pdf" target="_blank">Resume</a>
       </div>
     </div>
   </nav>
@@ -414,77 +406,6 @@
 
   <footer>© 2026 Abhitay Shinde</footer>
 
-  <script>
-    const allInternalLinks = document.querySelectorAll('a[href^="#"]');
-    allInternalLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href').substring(1);
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) {
-          document.querySelectorAll('.highlight-flash').forEach(el => el.classList.remove('highlight-flash'));
-          setTimeout(() => {
-            targetSection.classList.add('highlight-flash');
-            setTimeout(() => targetSection.classList.remove('highlight-flash'), 1200);
-          }, 100);
-        }
-      });
-    });
-
-    const navRight = document.querySelector('nav .right');
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinksWrap = document.querySelector('.nav-links');
-    if (navRight && navToggle && navLinksWrap) {
-      navToggle.addEventListener('click', () => {
-        const isOpen = navRight.classList.toggle('open');
-        navToggle.setAttribute('aria-expanded', String(isOpen));
-      });
-      navLinksWrap.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          navRight.classList.remove('open');
-          navToggle.setAttribute('aria-expanded', 'false');
-        });
-      });
-    }
-
-    const sideIndex = document.querySelector('.side-index.collapsible');
-    const sideToggle = sideIndex?.querySelector('.side-index-toggle');
-    const sideBody = sideIndex?.querySelector('.side-index-body');
-    const sideClose = sideIndex?.querySelector('.side-index-close');
-    const sideMedia = window.matchMedia('(max-width: 768px)');
-    if (sideIndex && sideToggle && sideBody) {
-      const openPanel = () => {
-        sideIndex.classList.add('open');
-        sideToggle.setAttribute('aria-expanded', 'true');
-        sideBody.hidden = false;
-      };
-      const closePanel = () => {
-        sideIndex.classList.remove('open');
-        sideToggle.setAttribute('aria-expanded', 'false');
-        if (sideMedia.matches) {
-          setTimeout(() => {
-            if (!sideIndex.classList.contains('open')) sideBody.hidden = true;
-          }, 180);
-        } else {
-          sideBody.hidden = true;
-        }
-      };
-      sideToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (sideIndex.classList.contains('open')) closePanel();
-        else openPanel();
-      });
-      sideClose?.addEventListener('click', closePanel);
-      sideIndex.addEventListener('mouseenter', () => {
-        if (!sideMedia.matches) openPanel();
-      });
-      sideIndex.addEventListener('mouseleave', () => {
-        if (!sideMedia.matches) closePanel();
-      });
-      sideMedia.addEventListener('change', () => {
-        sideBody.hidden = !sideIndex.classList.contains('open');
-      });
-    }
-  </script>
 
 </body>
 </html>
