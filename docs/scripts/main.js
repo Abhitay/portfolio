@@ -64,52 +64,6 @@ gtag('config', 'G-6V9RNG3QS4');
   setBorder();
 })();
 
-/* ---------- Magnet scroll: the first downward scroll glides the whole hero out
-   to the next section in one motion (and snaps back up near the top). ---------- */
-(function () {
-  const first = document.querySelector('#experience');
-  const navEl = document.querySelector('nav');
-  const hero = document.querySelector('.hero-home');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!first || !navEl || !hero || reduceMotion) return;
-
-  let animating = false;
-  const targetTop = () =>
-    Math.max(0, first.getBoundingClientRect().top + window.scrollY - navEl.offsetHeight);
-
-  const glideTo = (y) => {
-    animating = true;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-    setTimeout(() => { animating = false; }, 780);
-  };
-
-  window.addEventListener('wheel', (e) => {
-    if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-    const t = targetTop();
-    if (animating) { e.preventDefault(); return; }
-    if (e.deltaY > 0 && window.scrollY < t - 40) {
-      e.preventDefault();
-      glideTo(t);
-    } else if (e.deltaY < 0 && window.scrollY > 30 && window.scrollY < t + 60) {
-      e.preventDefault();
-      glideTo(0);
-    }
-  }, { passive: false });
-})();
-
-/* ---------- Flash the target section when an internal link is clicked ---------- */
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', function () {
-    const target = document.getElementById(this.getAttribute('href').slice(1));
-    if (!target) return;
-    document.querySelectorAll('.highlight-flash').forEach(el => el.classList.remove('highlight-flash'));
-    setTimeout(() => {
-      target.classList.add('highlight-flash');
-      setTimeout(() => target.classList.remove('highlight-flash'), 3000);
-    }, 100);
-  });
-});
-
 /* ---------- "Best viewed on desktop" prompt before opening a dense case study ---------- */
 (function () {
   const caseStudyLinks = document.querySelectorAll(
@@ -204,11 +158,130 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   sideMedia.addEventListener('change', () => { sideBody.hidden = !sideIndex.classList.contains('open'); });
 })();
 
+/* ---------- Magnet scroll: the first downward scroll glides the whole hero out
+   to the next section in one motion (and snaps back up near the top). ---------- */
+(function () {
+  const first = document.querySelector('#experience');
+  const navEl = document.querySelector('nav');
+  const hero = document.querySelector('.hero-home');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!first || !navEl || !hero || reduceMotion) return;
+
+  let animating = false;
+  const targetTop = () =>
+    Math.max(0, first.getBoundingClientRect().top + window.scrollY - navEl.offsetHeight);
+
+  const glideTo = (y) => {
+    animating = true;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+    setTimeout(() => { animating = false; }, 780);
+  };
+
+  window.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    const t = targetTop();
+    if (animating) { e.preventDefault(); return; }
+    if (e.deltaY > 0 && window.scrollY < t - 40) {
+      e.preventDefault();
+      glideTo(t);
+    } else if (e.deltaY < 0 && window.scrollY > 30 && window.scrollY < t + 60) {
+      e.preventDefault();
+      glideTo(0);
+    }
+  }, { passive: false });
+})();
+
+/* ---------- Margin rail: the section label inks in as you read past it ---------- */
+(function () {
+  const rails = document.querySelectorAll('.rail');
+  if (!rails.length) return;
+
+  const update = () => {
+    const h = window.innerHeight;
+
+    rails.forEach(rail => {
+      const r = rail.getBoundingClientRect();
+      /* How far the bottom edge of the screen has travelled into the section:
+         0 when it touches the section's top, 1 when it reaches its bottom. One
+         measure for every section, tall or short — the label fills as much as
+         the reader has scrolled past. */
+      const p = (h - r.top) / r.height;
+      rail.style.setProperty('--fill', Math.min(1, Math.max(0, p)) * 100 + '%');
+    });
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
+})();
+
+/* ---------- Earlier experience: condensed rows that unfold ----------
+   The toggle is built here rather than in the markup, so a visitor without
+   scripting is never left with a dead control — they just get the full list. */
+(function () {
+  const wrap = document.querySelector('#early-experience');
+  const list = wrap?.querySelector('.early-list');
+  const eyebrow = wrap?.querySelector('.sub-eyebrow');
+  if (!wrap || !list || !eyebrow) return;
+
+  const count = list.querySelectorAll('.experience-card').length;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'early-toggle';
+  btn.setAttribute('aria-controls', list.id);
+  eyebrow.insertAdjacentElement('afterend', btn);
+
+  const label = (condensed) => {
+    btn.textContent = condensed ? `Show ${count} earlier roles` : 'Hide earlier roles';
+    btn.setAttribute('aria-expanded', String(!condensed));
+  };
+
+  wrap.classList.add('is-condensed');
+  label(true);
+
+  let animating = false;
+
+  btn.addEventListener('click', () => {
+    if (animating) return;
+
+    const from = list.offsetHeight;
+    const condensed = wrap.classList.toggle('is-condensed');
+    label(condensed);
+    if (reduceMotion) return;
+
+    const to = list.offsetHeight;
+    animating = true;
+    if (!condensed) wrap.classList.add('is-unfolding');
+
+    list.style.overflow = 'hidden';
+    list.style.height = from + 'px';
+    void list.offsetHeight; /* flush, so the height below is a change to animate from */
+    list.style.transition = 'height 0.42s cubic-bezier(0.22, 1, 0.36, 1)';
+    list.style.height = to + 'px';
+
+    const settle = () => {
+      if (!animating) return;
+      animating = false;
+      ['height', 'overflow', 'transition'].forEach(p => list.style.removeProperty(p));
+      wrap.classList.remove('is-unfolding');
+    };
+
+    list.addEventListener('transitionend', function onEnd(e) {
+      if (e.target !== list || e.propertyName !== 'height') return;
+      list.removeEventListener('transitionend', onEnd);
+      settle();
+    });
+    setTimeout(settle, 700);
+  });
+})();
+
 /* ---------- Soft reveal: a section's content fades + rises in as it enters view ----------
    Section headers (.section-eyebrow) are deliberately excluded so they stay put. */
 (function () {
   const revealSelector =
-    '.sub-eyebrow, .work-item, .experience-card, .research-item, .impact-list, .media-feature, .edu-detail, #contact p, .contact-links';
+    '.sub-eyebrow, .work-item, .experience-card, .research-item, .media-feature, .edu-detail, #contact p, .contact-links';
   const targets = document.querySelectorAll(revealSelector);
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!targets.length || reduceMotion || !('IntersectionObserver' in window)) return;

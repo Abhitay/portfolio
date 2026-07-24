@@ -362,6 +362,7 @@ html {
   scroll-padding-top: 90px;
 }
 
+
 body {
   margin: 0;
   background: var(--bg);
@@ -630,6 +631,99 @@ body.home section {
   max-width: 1470px;
 }
 
+/* The left gutter carries the timeline; the right one carries the section it
+   belongs to — a running head turned on its side, set in the same uppercase
+   micro-type as the eyebrow it echoes. Text comes from data-rail so it is not
+   duplicated into the stylesheet. */
+body.home section:has(> .rail) {
+  position: relative;
+}
+
+/* A full-height strip in the right gutter, holding nothing but the label. It is
+   absolute so it costs no layout; the label inside is sticky, so it rides along
+   the bottom of the screen for as long as its section is on it, then leaves with
+   the section. Sticky has to be a real element — a pseudo can't be one — so the
+   text lives on ::before of the strip and still comes from the attribute. */
+.rail {
+  position: absolute;
+  /* Hug the outer edge of the gutter, 20px in from the window. The margin is
+     8.8% of the page but this box is measured against the section, which is
+     82.4% of it — so the same distance is 8.8/82.4 = 10.68% here, and it tracks
+     the margin at every width instead of needing a value per breakpoint. */
+  right: calc(-10.68% + 20px);
+  top: 0;
+  bottom: 0;
+  width: 13px;
+  pointer-events: none;
+  text-decoration: none;
+  /* Spans the whole section: the label is present the moment the section is, and
+     the fill in main.js measures against this box, so it must match the section. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.rail::before {
+  content: attr(data-rail);
+  position: sticky;
+  bottom: 28px;
+  display: block;
+  writing-mode: vertical-rl;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  /* Doubles as a progress bar: two text-clipped layers, a faint one that always
+     shows and a black one whose height is --fill, set from scroll in main.js.
+     Scroll-driven CSS animations would do this without script, but Firefox
+     still lacks them. */
+  background-image:
+    linear-gradient(var(--text), var(--text)),
+    linear-gradient(var(--faint), var(--faint));
+  background-size: 100% var(--fill, 0%), 100% 100%;
+  background-position: top, top;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* The hero's rail is the scroll cue, so it is the one that has to be clickable —
+   and instead of a fill it gets the old track's motion: a band of ink running
+   down through the letters on a loop, same timing curve as before. */
+a.rail {
+  pointer-events: auto;
+}
+
+a.rail::before {
+  background-image:
+    linear-gradient(transparent, var(--text), transparent),
+    linear-gradient(var(--faint), var(--faint));
+  background-size: 100% 70%, 100% 100%;
+  animation: rail-sweep 2.8s linear infinite;
+}
+
+/* Linear and gapless on purpose: the old whip-then-hold curve read as a stutter
+   once the band was crossing letterforms instead of a plain hairline. */
+@keyframes rail-sweep {
+  from { background-position: 0 -80%, 0 0; }
+  to { background-position: 0 180%, 0 0; }
+}
+
+a.rail:hover::before {
+  background-image:
+    linear-gradient(var(--text), var(--text)),
+    linear-gradient(var(--text), var(--text));
+  background-size: 100% 100%, 100% 100%;
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.rail::before {
+    animation: none;
+  }
+}
+
 /* Numbered section eyebrow — "01 · Experience" */
 /* Section header: small uppercase kicker on the left, a creative serif caption
    pushed to the right — using the full width, no divider line. */
@@ -681,30 +775,6 @@ body.home section {
   text-transform: uppercase;
   color: var(--muted);
   margin: 40px 0 16px 0;
-}
-
-@keyframes sectionHighlight {
-  0%, 100% {
-    transform: scale(1);
-  }
-  5% {
-    transform: scale(1.015) translateX(-3px);
-  }
-  10% {
-    transform: scale(1.015) translateX(3px);
-  }
-  15% {
-    transform: scale(1.015) translateX(-3px);
-  }
-  20% {
-    transform: scale(1.015) translateX(0);
-  }
-}
-
-.highlight-flash {
-  animation: sectionHighlight 3s ease-out;
-  border-radius: 12px;
-  transition: none;
 }
 
 h1 {
@@ -764,71 +834,6 @@ li {
   position: relative;
 }
 
-/* Minimal scroll cue, tucked into the right margin gutter: a vertical label
-   above a hairline track down which a short black segment runs on a loop. */
-.scroll-cue {
-  position: absolute;
-  /* Sits out in the right margin. A fixed inset, not a vw slice, so the
-     narrower right margin can never push it off-screen. */
-  right: -34px;
-  bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  text-decoration: none;
-  color: var(--faint);
-}
-
-.scroll-cue-text {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-}
-
-.scroll-cue-track {
-  position: relative;
-  width: 1px;
-  height: 66px;
-  background: var(--border);
-  overflow: hidden;
-}
-
-.scroll-cue-track::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1px;
-  height: 18px;
-  background: var(--text);
-  animation: scroll-cue-run 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-@keyframes scroll-cue-run {
-  0% { transform: translateY(-18px); }
-  65%, 100% { transform: translateY(66px); }
-}
-
-.scroll-cue:hover .scroll-cue-text {
-  color: var(--text);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-cue-track::after {
-    animation: none;
-    transform: translateY(22px);
-  }
-}
-
-@media (max-width: 900px) {
-  .scroll-cue {
-    display: none;
-  }
-}
 
 .hero p {
   font-size: 18px;
@@ -1341,16 +1346,18 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   margin: 0 0 6px 0;
 }
 
+/* Author credit and the Google Scholar link share one quiet line under the
+   title. Sentence case, not the uppercase label it used to be — an uppercase
+   link still reads as a caption no matter how it is underlined. */
 .research-meta {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   font-weight: 500;
-  margin: 0 0 8px 0;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
+  margin: 0 0 10px 0;
 }
 
-.research-item > p:last-child {
+/* The description is the only unclassed paragraph in the item */
+.research-item > p:not([class]) {
   font-size: 14px;
   color: var(--text);
   margin: 0;
@@ -1658,15 +1665,15 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   margin: 0;
 }
 
-/* Date rides the margin timeline, right-aligned toward the spine, level with
-   the (card-centered) node */
+/* Date rides the margin timeline, level with the (card-centered) node. Left
+   aligned, so every date starts on the same vertical edge out in the gutter. */
 #experience .dates {
   position: absolute;
   left: -105px;
   top: 50%;
   transform: translateY(-50%);
   width: 64px;
-  text-align: right;
+  text-align: left;
   white-space: normal;
   font-size: 10.5px;
   line-height: 1.5;
@@ -1718,6 +1725,113 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   padding-top: 12px;
 }
 
+/* --- Earlier experience: the three intern roles condense to one hairline row
+   each, then unfold into full cards. Collapsed still means "on the page" — the
+   markup is untouched, so the spine keeps running to 2021 and search engines
+   keep reading it. The .is-condensed class is added by JS, so with scripting
+   off the section simply stays open. --- */
+.early-toggle {
+  display: inline-block;
+  margin: -4px 0 14px 0;
+  padding: 0 0 2px 0;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-strong);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.early-toggle:hover {
+  color: var(--text);
+  border-bottom-color: var(--text);
+}
+
+.early-toggle:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+/* The unfold clips vertically while the height eases, so bleed the clip box out
+   into the left gutter — otherwise it would shear off the timeline dates and
+   nodes along with it. Only where the margin timeline exists; below that the
+   dates sit inline and there is nothing out there to protect. */
+@media (min-width: 1361px) {
+  .early-list {
+    margin-left: -110px;
+    padding-left: 110px;
+  }
+}
+
+/* Condensed: logo, role and company on a single line, tags and bullets away */
+#early-experience.is-condensed .experience-card {
+  padding: 13px 0;
+}
+
+#early-experience.is-condensed .experience-header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+#early-experience.is-condensed .exp-id {
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
+#early-experience.is-condensed .exp-id > div {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 10px;
+}
+
+#early-experience.is-condensed .company-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+
+#early-experience.is-condensed .company-logo img {
+  padding: 3px;
+}
+
+#early-experience.is-condensed .role {
+  font-size: 15px;
+}
+
+#early-experience.is-condensed .role-focus,
+#early-experience.is-condensed .impact-strip,
+#early-experience.is-condensed .experience-card > ul {
+  display: none;
+}
+
+/* Unfold: cards arrive in sequence, on the same curve and cadence as the
+   section's scroll reveal */
+@keyframes early-unfold {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #early-experience.is-unfolding .experience-card > *:not(.dates) {
+    animation: early-unfold 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  #early-experience.is-unfolding .experience-card:nth-of-type(2) > *:not(.dates) {
+    animation-delay: 70ms;
+  }
+
+  #early-experience.is-unfolding .experience-card:nth-of-type(3) > *:not(.dates) {
+    animation-delay: 140ms;
+  }
+}
+
 /* Metric emphasis reads fine without a card background */
 .experience-card strong {
   box-shadow: none;
@@ -1726,10 +1840,54 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 
 /* Not enough side-margin for the timeline: retire it, bring the date inline
    at the top of the details column. */
-@media (max-width: 1360px) {
-  #experience .experience-card::before, #experience .experience-card::after {
-    display: none;
+/* Between 1200 and 1360px the margin is ~104–118px — too tight for the full
+   gutter above, but not too tight for the timeline itself. Everything shrinks
+   by the same reasoning as the budget above (edge clearance + date column +
+   gap + spine), just to a tighter set of numbers: 12 + 58 + 12 + 18. */
+@media (min-width: 1200px) and (max-width: 1360px) {
+  #experience .experience-card::after,
+  #experience .experience-card::before {
+    left: -18px;
   }
+
+  #experience .dates {
+    left: -92px;
+    width: 58px;
+    font-size: 10px;
+  }
+
+  .early-list {
+    margin-left: -95px;
+    padding-left: 95px;
+  }
+}
+
+/* Tightest gutter that still holds a date: 9px type in a 52px column, spine
+   pulled in to -10. At a 920px window that leaves ~7px of air at the screen
+   edge and 7px between the date and the node — any narrower and they touch,
+   so below 900px the dates go inline. */
+@media (min-width: 900px) and (max-width: 1199px) {
+  #experience .experience-card::after,
+  #experience .experience-card::before {
+    left: -10px;
+  }
+
+  #experience .dates {
+    left: -73px;
+    width: 52px;
+    font-size: 9px;
+  }
+
+  .early-list {
+    margin-left: -78px;
+    padding-left: 78px;
+  }
+}
+
+@media (max-width: 899px) {
+  /* Only the date column moves inline here — the spine and nodes need ~26px of
+     margin, which still exists all the way down to the one-column breakpoint,
+     so the timeline itself survives split-screen widths. */
   #experience .dates {
     position: static;
     grid-column: 2;
@@ -1748,6 +1906,22 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   #experience .experience-card.concurrent-first .dates {
     top: auto;
     transform: none;
+  }
+
+  /* With no margin timeline, a condensed row would stack its date on a line of
+     its own. Put it back beside the role instead, in the column the timeline
+     date used to occupy. */
+  #early-experience.is-condensed .dates {
+    grid-column: 1;
+    grid-row: 1;
+    order: 0;
+    align-self: center;
+    margin: 0;
+  }
+
+  #early-experience.is-condensed .experience-header {
+    grid-column: 2;
+    grid-row: 1;
   }
 }
 
@@ -1834,17 +2008,6 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   color: var(--faint);
 }
 
-/* Leadership & Impact: simple bullet list (no cards) */
-.impact-list {
-  margin: 4px 0 0 0;
-  padding-left: 20px;
-}
-
-.impact-list li {
-  margin-bottom: 10px;
-  line-height: 1.6;
-}
-
 /* --- Education: labelled coursework / focus chips --- */
 .edu-detail {
   margin-top: 6px;
@@ -1896,15 +2059,32 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   margin-top: 16px;
 }
 
-.media-links a {
+/* Action links: the arrow is CSS, so it can lean forward on hover — that nudge
+   plus the darkening rule is what makes these read as buttons rather than
+   incidental underlined words. Size is inherited, so the same rule serves the
+   full-size media links and the small one on each research item. */
+.media-links a, .research-meta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-weight: 500;
+  color: var(--text);
   border-bottom: 1px solid var(--border-strong);
   padding-bottom: 1px;
   transition: border-color 0.15s ease;
 }
 
-.media-links a:hover {
+.media-links a::after, .research-meta a::after {
+  content: "→";
+  transition: transform 0.18s ease;
+}
+
+.media-links a:hover, .research-meta a:hover {
   border-color: var(--text);
+}
+
+.media-links a:hover::after, .research-meta a:hover::after {
+  transform: translateX(3px);
 }
 
 /* ---------- MOBILE (<=768px) ---------- */
@@ -2121,6 +2301,18 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   }
   #experience .dates {
     grid-column: 1;
+  }
+  /* One column, 16px page padding: no margin left for a timeline or a rail */
+  #experience .experience-card::before, #experience .experience-card::after,
+  .rail {
+    display: none;
+  }
+  /* One column here, so the condensed row's two-column pairing has to unwind or
+     it spawns a phantom second column */
+  #early-experience.is-condensed .dates,
+  #early-experience.is-condensed .experience-header {
+    grid-column: 1;
+    grid-row: auto;
   }
   .experience-card {
     padding: 22px 0;

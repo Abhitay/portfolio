@@ -94,7 +94,7 @@
 
   <!-- NAVBAR -->
   <nav>
-    <div class="left"><a href="index.html">Abhitay Shinde</a></div>
+    <div class="left"><a href="#about">Abhitay Shinde</a></div>
     <div class="right">
       <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
       <div class="nav-links">
@@ -127,14 +127,12 @@
       <a href="https://scholar.google.com/citations?user=f0wnYuYAAAAJ&hl=en" target="_blank">Google Scholar</a>
     </div>
 
-    <a class="scroll-cue" href="#experience" aria-label="Scroll to content">
-      <span class="scroll-cue-text">Scroll</span>
-      <span class="scroll-cue-track"></span>
-    </a>
+    <a class="rail" href="#experience" data-rail="Scroll" aria-label="Scroll to experience"></a>
   </section>
 
   <!-- EXPERIENCE -->
   <section id="experience">
+    <span class="rail" data-rail="01 · Experience" aria-hidden="true"></span>
     <h2 class="section-eyebrow"><span class="sec-kicker">01 · Experience</span><span class="sec-caption">Where I've <span class="cap-em">built</span><span class="type-caret" aria-hidden="true"></span></span></h2>
 
     <div id="professional-experience">
@@ -255,68 +253,70 @@
     <div id="early-experience">
       <p class="sub-eyebrow">Earlier Experience &amp; Internships</p>
 
-      <div class="experience-card">
-        <span class="dates">May 2023 – Nov 2023</span>
-        <div class="experience-header">
-          <div class="exp-id">
-            <span class="company-logo"><img src="logos/nfil.jpeg" alt="Navin Fluorine logo"></span>
-            <div>
-              <h4 class="role">Data Science Intern <span class="role-focus">Operational Analytics</span></h4>
-              <p class="company">Navin Fluorine International Limited · Mumbai, IN</p>
+      <div class="early-list" id="early-list">
+        <div class="experience-card">
+          <span class="dates">May 2023 – Nov 2023</span>
+          <div class="experience-header">
+            <div class="exp-id">
+              <span class="company-logo"><img src="logos/nfil.jpeg" alt="Navin Fluorine logo"></span>
+              <div>
+                <h4 class="role">Data Science Intern <span class="role-focus">Operational Analytics</span></h4>
+                <p class="company">Navin Fluorine International Limited · Mumbai, IN</p>
+              </div>
             </div>
           </div>
+          <div class="impact-strip">
+            <span class="impact-item">Predictive Maintenance</span>
+            <span class="impact-item">Operational Analytics</span>
+          </div>
+          <ul>
+            <li>Reduced equipment downtime by 35% and cut ingestion latency by 40% by architecting a predictive pipeline with XGBoost and Airflow.</li>
+            <li>Lifted recall 15% and shortened repair cycles by deploying anomaly detection using XGBoost and Isolation Forest to surface high-risk events.</li>
+          </ul>
         </div>
-        <div class="impact-strip">
-          <span class="impact-item">Predictive Maintenance</span>
-          <span class="impact-item">Operational Analytics</span>
-        </div>
-        <ul>
-          <li>Reduced equipment downtime by 35% and cut ingestion latency by 40% by architecting a predictive pipeline with XGBoost and Airflow.</li>
-          <li>Lifted recall 15% and shortened repair cycles by deploying anomaly detection using XGBoost and Isolation Forest to surface high-risk events.</li>
-        </ul>
-      </div>
 
-      <div class="experience-card">
-        <span class="dates">Dec 2021 – May 2022</span>
-        <div class="experience-header">
-          <div class="exp-id">
-            <span class="company-logo"><img src="logos/e_revbay.jpeg" alt="E-Revbay logo"></span>
-            <div>
-              <h4 class="role">Founding IT Intern <span class="role-focus">Acquisition &amp; Retention Analytics</span></h4>
-              <p class="company">E-Revbay Pvt. Ltd. · Mumbai, IN</p>
+        <div class="experience-card">
+          <span class="dates">Dec 2021 – May 2022</span>
+          <div class="experience-header">
+            <div class="exp-id">
+              <span class="company-logo"><img src="logos/e_revbay.jpeg" alt="E-Revbay logo"></span>
+              <div>
+                <h4 class="role">Founding IT Intern <span class="role-focus">Acquisition &amp; Retention Analytics</span></h4>
+                <p class="company">E-Revbay Pvt. Ltd. · Mumbai, IN</p>
+              </div>
             </div>
           </div>
+          <div class="impact-strip">
+            <span class="impact-item">Acquisition Analytics</span>
+            <span class="impact-item">Retention Analytics</span>
+          </div>
+          <ul>
+            <li>Increased qualified customer leads by 50% per quarter by leading acquisition analytics pipelines using Equifax data, SQL, and Python.</li>
+            <li>Eliminated 25% of manager intervention time and accelerated response by building real-time dashboards and root-cause pipelines in Tableau.</li>
+          </ul>
         </div>
-        <div class="impact-strip">
-          <span class="impact-item">Acquisition Analytics</span>
-          <span class="impact-item">Retention Analytics</span>
-        </div>
-        <ul>
-          <li>Increased qualified customer leads by 50% per quarter by leading acquisition analytics pipelines using Equifax data, SQL, and Python.</li>
-          <li>Eliminated 25% of manager intervention time and accelerated response by building real-time dashboards and root-cause pipelines in Tableau.</li>
-        </ul>
-      </div>
 
-      <div class="experience-card">
-        <span class="dates">Jun 2021 – Aug 2021</span>
-        <div class="experience-header">
-          <div class="exp-id">
-            <span class="company-logo"><img src="logos/verzeo.jpeg" alt="Verzeo logo"></span>
-            <div>
-              <h4 class="role">Artificial Intelligence Intern</h4>
-              <p class="company">Verzeo · Remote</p>
+        <div class="experience-card">
+          <span class="dates">Jun 2021 – Aug 2021</span>
+          <div class="experience-header">
+            <div class="exp-id">
+              <span class="company-logo"><img src="logos/verzeo.jpeg" alt="Verzeo logo"></span>
+              <div>
+                <h4 class="role">Artificial Intelligence Intern</h4>
+                <p class="company">Verzeo · Remote</p>
+              </div>
             </div>
           </div>
+          <div class="impact-strip">
+            <span class="impact-item">Data Preprocessing</span>
+            <span class="impact-item">Computer Vision</span>
+            <span class="impact-item">CNN</span>
+          </div>
+          <ul>
+            <li>Processed tabular diamond datasets for classification, improving model accuracy by 17% through data cleaning and feature engineering.</li>
+            <li>Built flower image recognition with CNN techniques, achieving 85% accuracy while reducing error rates by 15%.</li>
+          </ul>
         </div>
-        <div class="impact-strip">
-          <span class="impact-item">Data Preprocessing</span>
-          <span class="impact-item">Computer Vision</span>
-          <span class="impact-item">CNN</span>
-        </div>
-        <ul>
-          <li>Processed tabular diamond datasets for classification, improving model accuracy by 17% through data cleaning and feature engineering.</li>
-          <li>Built flower image recognition with CNN techniques, achieving 85% accuracy while reducing error rates by 15%.</li>
-        </ul>
       </div>
     </div>
 
@@ -324,6 +324,7 @@
 
   <!-- SELECTED PROJECTS -->
   <section id="projects">
+    <span class="rail" data-rail="02 · Selected Projects" aria-hidden="true"></span>
     <h2 class="section-eyebrow"><span class="sec-kicker">02 · Selected Projects</span><span class="sec-caption">Side <span class="cap-em">Quests</span><span class="type-caret" aria-hidden="true"></span></span></h2>
 
     <div id="case-studies" class="work-list">
@@ -376,6 +377,7 @@
 
   <!-- PUBLICATIONS & MEDIA -->
   <section id="publications">
+    <span class="rail" data-rail="03 · Publications &amp; Media" aria-hidden="true"></span>
     <h2 class="section-eyebrow"><span class="sec-kicker">03 · Publications &amp; Media</span><span class="sec-caption">On the <span class="cap-em">record</span><span class="type-caret" aria-hidden="true"></span></span></h2>
 
     <div id="media-praise">
@@ -396,8 +398,8 @@
             segments river plastic from drone imagery.
           </p>
           <p class="media-links">
-            <a href="https://theprint.in/ani-press-releases/hackathon-on-plastic-free-rivers-with-ai-grand-finale-concludes-successfully-at-reva-university/1756535/" target="_blank">Read media coverage →</a>
-            <a href="https://www.youtube.com/watch?v=iPcEjU4BPOk" target="_blank">Watch event recap →</a>
+            <a href="https://theprint.in/ani-press-releases/hackathon-on-plastic-free-rivers-with-ai-grand-finale-concludes-successfully-at-reva-university/1756535/" target="_blank">Read media coverage</a>
+            <a href="https://www.youtube.com/watch?v=iPcEjU4BPOk" target="_blank">Watch event recap</a>
           </p>
         </div>
       </div>
@@ -409,13 +411,13 @@
       <div class="research-open">
         <div class="research-item">
           <h4 class="research-title"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:9yKSN-GCB0IC" target="_blank">Predictive maintenance for metro systems</a></h4>
-          <p class="research-meta"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:9yKSN-GCB0IC" target="_blank">Google Scholar · Lead Author</a></p>
+          <p class="research-meta">Lead Author · <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:9yKSN-GCB0IC" target="_blank">Google Scholar</a></p>
           <p>Demonstrated a sensor-driven pipeline that predicts equipment failures so operations teams can schedule targeted maintenance and reduce downtime.</p>
         </div>
 
         <div class="research-item">
           <h4 class="research-title"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:u5HHmVD_uO8C" target="_blank">Diabetes detection optimized for recall</a></h4>
-          <p class="research-meta"><a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:u5HHmVD_uO8C" target="_blank">Google Scholar · Lead Author</a></p>
+          <p class="research-meta">Lead Author · <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=f0wnYuYAAAAJ&citation_for_view=f0wnYuYAAAAJ:u5HHmVD_uO8C" target="_blank">Google Scholar</a></p>
           <p>Prioritized recall in model design to reduce missed diagnoses, improving early detection reliability for clinical use.</p>
         </div>
 
@@ -433,21 +435,11 @@
       </div>
     </div>
 
-    <div id="leadership">
-      <p class="sub-eyebrow">Leadership &amp; Impact</p>
-
-      <ul class="impact-list">
-        <li>Built product analytics from zero to scale as a founding team member for MyLoanBhai, TestMyPolicy, and FinQy 2.0.</li>
-        <li>Scaled data-backed operations across 35 cities and 3 countries.</li>
-        <li>Lead author on 4+ peer-reviewed IEEE papers with 15+ citations.</li>
-        <li>Won a global AI hackathon, placing 1st out of 750 teams across 19 countries.</li>
-      </ul>
-    </div>
-
   </section>
 
   <!-- EDUCATION -->
   <section id="education">
+    <span class="rail" data-rail="04 · Education" aria-hidden="true"></span>
     <h2 class="section-eyebrow"><span class="sec-kicker">04 · Education</span><span class="sec-caption">The Paper <span class="cap-em">Chase</span><span class="type-caret" aria-hidden="true"></span></span></h2>
 
     <div class="experience-card">
@@ -503,6 +495,7 @@
 
   <!-- CONTACT -->
   <section id="contact" class="contact">
+    <span class="rail" data-rail="05 · Contact" aria-hidden="true"></span>
     <h2 class="section-eyebrow"><span class="sec-kicker">05 · Contact</span><span class="sec-caption">Say <span class="cap-em">hello</span><span class="type-caret" aria-hidden="true"></span></span></h2>
     <p>Always happy to discuss data science, experimentation, causal inference, and GenAI applications.</p>
 
