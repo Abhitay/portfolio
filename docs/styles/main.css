@@ -128,7 +128,7 @@
 .side-index {
   position: fixed;
   top: 120px;
-  right: 28px;
+  right: 16px;
   width: 180px;
   background: var(--bg);
   border: 1px solid var(--border);
@@ -603,18 +603,31 @@ nav .btn:hover {
 }
 /* ---------- SECTIONS & TYPOGRAPHY ---------- */
 section {
-  width: 74%;
-  max-width: 1320px;
+  width: 79.2%;
+  max-width: 1412px;
   margin: 0 auto;
   padding: 56px 0;
   transition: background 0.3s ease;
 }
 
 /* Nested sections (e.g. the TL;DR box wrapped in <section id="tldr">) must fill
-   their parent column, not re-apply the 13% side margins. */
+   their parent column, not re-apply the 10.4% side margins. */
 section section {
   width: 100%;
   max-width: none;
+}
+
+/* The homepage runs a wider column — 125px margins at a 1440px window. The
+   case studies keep the narrower one above, because their fixed "On this page"
+   index lives in the right margin and needs the room.
+
+   That 125px left margin is a budget the experience timeline has to fit inside:
+   20px clear of the window edge + a 64px date column + 15px + the spine at
+   -22px. Change the width here and those offsets have to be re-derived, or the
+   dates collide with the nodes. */
+body.home section {
+  width: 82.4%;
+  max-width: 1470px;
 }
 
 /* Numbered section eyebrow — "01 · Experience" */
@@ -755,7 +768,9 @@ li {
    above a hairline track down which a short black segment runs on a loop. */
 .scroll-cue {
   position: absolute;
-  right: -6.5vw;
+  /* Sits out in the right margin. A fixed inset, not a vw slice, so the
+     narrower right margin can never push it off-screen. */
+  right: -34px;
   bottom: 24px;
   display: flex;
   flex-direction: column;
@@ -1593,7 +1608,7 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 #experience .experience-card::after {
   content: "";
   position: absolute;
-  left: -34px;
+  left: -22px;
   top: 0;
   bottom: 0;
   width: 1px;
@@ -1604,7 +1619,7 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 #experience .experience-card::before {
   content: "";
   position: absolute;
-  left: -34px;
+  left: -22px;
   top: 50%;
   transform: translateY(-50%);
   width: 8px;
@@ -1647,10 +1662,10 @@ section > *:last-child:not(.tldr):not(.recommendation) {
    the (card-centered) node */
 #experience .dates {
   position: absolute;
-  left: -132px;
+  left: -105px;
   top: 50%;
   transform: translateY(-50%);
-  width: 84px;
+  width: 64px;
   text-align: right;
   white-space: normal;
   font-size: 10.5px;
@@ -1711,7 +1726,7 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 
 /* Not enough side-margin for the timeline: retire it, bring the date inline
    at the top of the details column. */
-@media (max-width: 1080px) {
+@media (max-width: 1360px) {
   #experience .experience-card::before, #experience .experience-card::after {
     display: none;
   }
@@ -2019,10 +2034,10 @@ section > *:last-child:not(.tldr):not(.recommendation) {
     width: 100%;
     justify-content: center;
   }
-  section {
+  section, body.home section {
     width: auto;
     max-width: none;
-    padding: 36px 20px;
+    padding: 36px 16px;
   }
 
   h1 {
