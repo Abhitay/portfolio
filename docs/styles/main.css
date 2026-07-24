@@ -663,6 +663,14 @@ body.home section:has(> .rail) {
   justify-content: flex-end;
 }
 
+/* Sticky is bounded by the strip's padding box, so this ends the outgoing
+   label's travel 44px above the section seam — otherwise two contiguous
+   sections' labels butt together (measured gap: 0). The hero cue owns its whole
+   screen, so it opts out. */
+.rail:not(a) {
+  padding-bottom: 44px;
+}
+
 .rail::before {
   content: attr(data-rail);
   position: sticky;
@@ -688,33 +696,28 @@ body.home section:has(> .rail) {
   -webkit-text-fill-color: transparent;
 }
 
-/* The hero's rail is the scroll cue, so it is the one that has to be clickable —
-   and instead of a fill it gets the old track's motion: a band of ink running
-   down through the letters on a loop, same timing curve as before. */
+/* The hero's rail is the scroll cue, so it is the one that has to be clickable. */
 a.rail {
   pointer-events: auto;
 }
 
+/* It pulses the whole word instead of sweeping a band: a moving gradient clipped
+   to text snaps glyph by glyph and reads as buggy, but colour is uniform across
+   the element, so the word breathes as one. */
 a.rail::before {
-  background-image:
-    linear-gradient(transparent, var(--text), transparent),
-    linear-gradient(var(--faint), var(--faint));
-  background-size: 100% 70%, 100% 100%;
-  animation: rail-sweep 2.8s linear infinite;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--faint);
+  animation: rail-pulse 2.4s ease-in-out infinite;
 }
 
-/* Linear and gapless on purpose: the old whip-then-hold curve read as a stutter
-   once the band was crossing letterforms instead of a plain hairline. */
-@keyframes rail-sweep {
-  from { background-position: 0 -80%, 0 0; }
-  to { background-position: 0 180%, 0 0; }
+@keyframes rail-pulse {
+  0%, 100% { color: var(--faint); }
+  50% { color: var(--text); }
 }
 
 a.rail:hover::before {
-  background-image:
-    linear-gradient(var(--text), var(--text)),
-    linear-gradient(var(--text), var(--text));
-  background-size: 100% 100%, 100% 100%;
+  color: var(--text);
   animation: none;
 }
 
