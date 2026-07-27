@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 800" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .box  { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .fill { fill:#f6f4f1; stroke:#e7e3dd; stroke-width:1.5; }
+    .lbl  { fill:#0a0a0a; font-size:24px; }
+    .sm   { fill:#0a0a0a; font-size:21px; }
+    .mut  { fill:#6f6b66; font-size:19px; }
+    .edge { stroke:#0a0a0a; stroke-width:1.6; fill:none; }
+    .dash { stroke:#6f6b66; stroke-width:1.6; fill:none; stroke-dasharray:6 5; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7.5,3 L0,6 Z" fill="#0a0a0a"/>
+    </marker>
+    <marker id="am" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7.5,3 L0,6 Z" fill="#6f6b66"/>
+    </marker>
+  </defs>
+  <rect width="1900" height="800" fill="#ffffff"/>
+
+  <!-- JSONL traces cylinder -->
+  <path class="fill" d="M102 104 v64 a78 12 0 0 0 156 0 v-64"/>
+  <ellipse class="fill" cx="180" cy="104" rx="78" ry="12"/>
+  <text class="sm" x="180" y="146" text-anchor="middle">JSONL traces</text>
+
+  <!-- Top row -->
+  <rect class="box" x="400" y="96" width="240" height="68" rx="8"/>
+  <text class="sm" x="520" y="124" text-anchor="middle">Normalize</text>
+  <text class="mut" x="520" y="148" text-anchor="middle">question, chunks, answer</text>
+
+  <rect class="box" x="760" y="96" width="280" height="68" rx="8"/>
+  <text class="sm" x="900" y="124" text-anchor="middle">Model judge</text>
+  <text class="mut" x="900" y="148" text-anchor="middle">verdict + failure reason</text>
+
+  <rect class="box" x="1150" y="96" width="260" height="68" rx="8"/>
+  <text class="sm" x="1280" y="124" text-anchor="middle">Embed + cluster</text>
+  <text class="mut" x="1280" y="148" text-anchor="middle">failure reasons</text>
+
+  <rect class="box" x="1490" y="96" width="300" height="68" rx="8"/>
+  <text class="sm" x="1640" y="124" text-anchor="middle">Named failure modes</text>
+  <text class="mut" x="1640" y="148" text-anchor="middle">with counts</text>
+
+  <!-- Bottom row -->
+  <rect class="box" x="1500" y="596" width="280" height="68" rx="8"/>
+  <text class="sm" x="1640" y="624" text-anchor="middle">Generate</text>
+  <text class="mut" x="1640" y="648" text-anchor="middle">EvalCase records</text>
+
+  <rect class="box" x="1040" y="596" width="280" height="68" rx="8"/>
+  <text class="sm" x="1180" y="636" text-anchor="middle">Schema validation</text>
+
+  <rect class="fill" x="580" y="596" width="280" height="68" rx="8"/>
+  <text class="sm" x="720" y="636" text-anchor="middle">Regression suite</text>
+
+  <!-- Retrieval system (center) -->
+  <rect class="fill" x="300" y="346" width="240" height="68" rx="8"/>
+  <text class="sm" x="420" y="386" text-anchor="middle">Retrieval system</text>
+
+  <!-- Branch nodes -->
+  <rect class="box" x="1040" y="706" width="280" height="60" rx="8"/>
+  <text class="mut" x="1180" y="742" text-anchor="middle">Invalid cases discarded</text>
+
+  <rect class="box" x="500" y="706" width="440" height="60" rx="8"/>
+  <text class="mut" x="720" y="734" text-anchor="middle">Seeded-bug validation —</text>
+  <text class="mut" x="720" y="756" text-anchor="middle">does it catch known breakage?</text>
+
+  <!-- loop edges -->
+  <path class="edge" d="M258 130 L398 130" marker-end="url(#a)"/>
+  <path class="edge" d="M640 130 L758 130" marker-end="url(#a)"/>
+  <path class="edge" d="M1040 130 L1148 130" marker-end="url(#a)"/>
+  <path class="edge" d="M1410 130 L1488 130" marker-end="url(#a)"/>
+  <path class="edge" d="M1640 164 L1640 594" marker-end="url(#a)"/>
+  <path class="edge" d="M1500 630 L1322 630" marker-end="url(#a)"/>
+  <path class="edge" d="M1040 630 L1002 630" marker-end="url(#a)"/>
+  <path class="edge" d="M580 618 L498 418" marker-end="url(#a)"/>
+  <path class="edge" d="M408 346 L232 172" marker-end="url(#a)"/>
+  <!-- branch edges -->
+  <path class="dash" d="M1180 664 L1180 704" marker-end="url(#am)"/>
+  <path class="dash" d="M720 664 L720 704" marker-end="url(#am)"/>
+
+  <!-- connector labels -->
+  <text class="mut" x="560" y="530" text-anchor="middle">tests</text>
+  <text class="mut" x="345" y="250" text-anchor="middle">emits</text>
+</svg>

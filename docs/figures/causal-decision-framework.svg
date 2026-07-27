@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1700 760" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .box  { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .fill { fill:#f6f4f1; stroke:#e7e3dd; stroke-width:1.5; }
+    .strong { fill:#f6f4f1; stroke:#d3cec6; stroke-width:2.5; }
+    .lbl  { fill:#0a0a0a; font-size:24px; }
+    .sm   { fill:#0a0a0a; font-size:21px; }
+    .mut  { fill:#6f6b66; font-size:18px; }
+    .edge { stroke:#0a0a0a; stroke-width:1.6; fill:none; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7.5,3 L0,6 Z" fill="#0a0a0a"/></marker>
+  </defs>
+  <rect width="1700" height="760" fill="#ffffff"/>
+
+  <!-- question -->
+  <rect class="fill" x="600" y="36" width="500" height="72" rx="8"/>
+  <text class="lbl" x="850" y="80" text-anchor="middle">A product / growth decision</text>
+
+  <!-- three study columns -->
+  <!-- col centers: 320, 850, 1380 -->
+  <!-- col 1 -->
+  <rect class="box" x="140" y="210" width="360" height="72" rx="8"/>
+  <text class="sm" x="320" y="242" text-anchor="middle">Feature evaluation</text>
+  <text class="mut" x="320" y="266" text-anchor="middle">did it really lift retention?</text>
+  <rect class="box" x="180" y="352" width="280" height="64" rx="8"/>
+  <text class="sm" x="320" y="391" text-anchor="middle">PSM · DiD</text>
+  <text class="mut" x="320" y="470" text-anchor="middle">true feature effect,</text>
+  <text class="mut" x="320" y="494" text-anchor="middle">selection bias removed</text>
+
+  <!-- col 2 -->
+  <rect class="box" x="670" y="210" width="360" height="72" rx="8"/>
+  <text class="sm" x="850" y="242" text-anchor="middle">Growth optimization</text>
+  <text class="mut" x="850" y="266" text-anchor="middle">where should spend go?</text>
+  <rect class="box" x="710" y="352" width="280" height="64" rx="8"/>
+  <text class="sm" x="850" y="391" text-anchor="middle">Uplift · Media Mix</text>
+  <text class="mut" x="850" y="470" text-anchor="middle">incremental LTV</text>
+  <text class="mut" x="850" y="494" text-anchor="middle">by channel</text>
+
+  <!-- col 3 -->
+  <rect class="box" x="1200" y="210" width="360" height="72" rx="8"/>
+  <text class="sm" x="1380" y="242" text-anchor="middle">Root-cause analysis</text>
+  <text class="mut" x="1380" y="266" text-anchor="middle">why did the metric drop?</text>
+  <rect class="box" x="1240" y="352" width="280" height="64" rx="8"/>
+  <text class="sm" x="1380" y="391" text-anchor="middle">DiD · cohort mix</text>
+  <text class="mut" x="1380" y="470" text-anchor="middle">real driver isolated,</text>
+  <text class="mut" x="1380" y="494" text-anchor="middle">not seasonality</text>
+
+  <!-- decision -->
+  <rect class="strong" x="560" y="612" width="580" height="88" rx="8"/>
+  <text class="sm" x="850" y="648" text-anchor="middle">Decision-first analytics</text>
+  <text class="mut" x="850" y="676" text-anchor="middle">ship · no-ship · reallocate — with evidence</text>
+
+  <!-- edges: question -> each study -->
+  <path class="edge" d="M700 108 L340 206" marker-end="url(#a)"/>
+  <path class="edge" d="M850 108 L850 206" marker-end="url(#a)"/>
+  <path class="edge" d="M1000 108 L1360 206" marker-end="url(#a)"/>
+  <!-- study -> method -->
+  <path class="edge" d="M320 282 L320 348" marker-end="url(#a)"/>
+  <path class="edge" d="M850 282 L850 348" marker-end="url(#a)"/>
+  <path class="edge" d="M1380 282 L1380 348" marker-end="url(#a)"/>
+  <!-- method -> outcome (implicit via text) -> decision -->
+  <path class="edge" d="M320 510 L800 614" marker-end="url(#a)"/>
+  <path class="edge" d="M850 510 L850 608" marker-end="url(#a)"/>
+  <path class="edge" d="M1380 510 L900 614" marker-end="url(#a)"/>
+</svg>

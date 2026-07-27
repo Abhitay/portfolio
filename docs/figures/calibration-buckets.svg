@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1560 700" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .grid   { stroke:#e7e3dd; stroke-width:1; }
+    .axis   { stroke:#0a0a0a; stroke-width:1.6; }
+    .claim  { fill:#ffffff; stroke:#0a0a0a; stroke-width:1.8; }
+    .deliv  { fill:#0a0a0a; }
+    .lbl    { fill:#0a0a0a; font-size:22px; }
+    .tick   { fill:#6f6b66; font-size:17px; }
+    .mut    { fill:#6f6b66; font-size:18px; }
+    .gap    { fill:#6f6b66; font-size:15px; }
+  </style>
+  <rect width="1560" height="700" fill="#ffffff"/>
+
+  <!-- legend -->
+  <rect class="claim" x="300" y="42" width="28" height="20" rx="3"/>
+  <text class="lbl" x="338" y="60">claimed confidence</text>
+  <rect class="deliv" x="640" y="42" width="28" height="20" rx="3"/>
+  <text class="lbl" x="678" y="60">delivered accuracy</text>
+
+  <!-- gridlines + y ticks -->
+  <line class="grid" x1="240" y1="245" x2="1360" y2="245"/>
+  <line class="grid" x1="240" y1="350" x2="1360" y2="350"/>
+  <line class="grid" x1="240" y1="455" x2="1360" y2="455"/>
+  <text class="tick" x="222" y="146" text-anchor="end">1.0</text>
+  <text class="tick" x="222" y="251" text-anchor="end">0.75</text>
+  <text class="tick" x="222" y="356" text-anchor="end">0.5</text>
+  <text class="tick" x="222" y="461" text-anchor="end">0.25</text>
+  <text class="tick" x="222" y="566" text-anchor="end">0</text>
+
+  <!-- axes -->
+  <line class="axis" x1="240" y1="140" x2="240" y2="560"/>
+  <line class="axis" x1="240" y1="560" x2="1360" y2="560"/>
+
+  <!-- bars -->
+  <rect class="claim" x="284" y="518" width="64" height="42"/>
+  <rect class="deliv" x="356" y="539" width="64" height="21"/>
+  <text class="gap" x="352" y="506" text-anchor="middle">0.05</text>
+
+  <rect class="claim" x="508" y="434" width="64" height="126"/>
+  <rect class="deliv" x="580" y="505" width="64" height="55"/>
+  <text class="gap" x="576" y="422" text-anchor="middle">0.17</text>
+
+  <rect class="claim" x="732" y="350" width="64" height="210"/>
+  <rect class="deliv" x="804" y="447" width="64" height="113"/>
+  <text class="gap" x="800" y="338" text-anchor="middle">0.23</text>
+
+  <rect class="claim" x="956" y="266" width="64" height="294"/>
+  <rect class="deliv" x="1028" y="371" width="64" height="189"/>
+  <text class="gap" x="1024" y="254" text-anchor="middle">0.25</text>
+
+  <rect class="claim" x="1180" y="182" width="64" height="378"/>
+  <rect class="deliv" x="1252" y="291" width="64" height="269"/>
+  <text class="gap" x="1248" y="170" text-anchor="middle">0.26</text>
+
+  <!-- x bucket labels -->
+  <g class="tick" text-anchor="middle">
+    <text x="352" y="588">0.0–0.2</text>
+    <text x="576" y="588">0.2–0.4</text>
+    <text x="800" y="588">0.4–0.6</text>
+    <text x="1024" y="588">0.6–0.8</text>
+    <text x="1248" y="588">0.8–1.0</text>
+  </g>
+  <text class="mut" x="800" y="626" text-anchor="middle">confidence bucket</text>
+
+  <!-- honesty note -->
+  <text class="mut" x="1540" y="640" text-anchor="end">Illustrative shape — per-bin accuracy not logged.</text>
+  <text class="mut" x="1540" y="666" text-anchor="end">Measured ECE = 0.214 (the average gap).</text>
+</svg>

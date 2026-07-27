@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1760 680" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .grid { stroke:#e7e3dd; stroke-width:1; }
+    .axis { stroke:#0a0a0a; stroke-width:1.6; }
+    .hit  { stroke:#0a0a0a; stroke-width:2.6; fill:none; }
+    .false{ stroke:#0a0a0a; stroke-width:2.2; fill:none; stroke-dasharray:9 6; }
+    .base { stroke:#6f6b66; stroke-width:1.6; fill:none; stroke-dasharray:2 5; }
+    .pick { stroke:#6f6b66; stroke-width:1.4; fill:none; stroke-dasharray:6 5; }
+    .dot  { fill:#0a0a0a; }
+    .lbl  { fill:#0a0a0a; font-size:22px; }
+    .tick { fill:#6f6b66; font-size:17px; }
+    .mut  { fill:#6f6b66; font-size:19px; }
+  </style>
+  <rect width="1760" height="680" fill="#ffffff"/>
+
+  <!-- horizontal gridlines + y labels -->
+  <g>
+    <line class="grid" x1="260" y1="146" x2="1520" y2="146"/>
+    <line class="grid" x1="260" y1="249" x2="1520" y2="249"/>
+    <line class="grid" x1="260" y1="353" x2="1520" y2="353"/>
+    <line class="grid" x1="260" y1="456" x2="1520" y2="456"/>
+    <text class="tick" x="238" y="152" text-anchor="end">0.8</text>
+    <text class="tick" x="238" y="255" text-anchor="end">0.6</text>
+    <text class="tick" x="238" y="359" text-anchor="end">0.4</text>
+    <text class="tick" x="238" y="462" text-anchor="end">0.2</text>
+    <text class="tick" x="238" y="566" text-anchor="end">0.0</text>
+  </g>
+
+  <!-- axes -->
+  <line class="axis" x1="260" y1="120" x2="260" y2="560"/>
+  <line class="axis" x1="260" y1="560" x2="1520" y2="560"/>
+
+  <!-- chosen operating point -->
+  <line class="pick" x1="710" y1="120" x2="710" y2="560"/>
+  <text class="mut" x="710" y="108" text-anchor="middle">chosen · 0.80</text>
+
+  <!-- exact-match baseline -->
+  <line class="base" x1="260" y1="202" x2="1520" y2="202"/>
+  <text class="tick" x="268" y="194">exact-match baseline · 0.69</text>
+
+  <!-- false-hit rate (dashed) -->
+  <polyline class="false" points="260,481 485,541 710,553 935,556 1070,559 1160,560 1250,560 1340,560 1430,560 1520,560"/>
+  <!-- hit rate (solid) -->
+  <polyline class="hit" points="260,150 485,171 710,185 935,194 1070,197 1160,199 1250,200 1340,201 1430,201 1520,202"/>
+
+  <!-- data points -->
+  <g class="dot">
+    <circle cx="260" cy="150" r="4"/><circle cx="485" cy="171" r="4"/><circle cx="710" cy="185" r="5"/><circle cx="935" cy="194" r="4"/><circle cx="1070" cy="197" r="4"/><circle cx="1160" cy="199" r="4"/><circle cx="1250" cy="200" r="4"/><circle cx="1340" cy="201" r="4"/><circle cx="1430" cy="201" r="4"/><circle cx="1520" cy="202" r="4"/>
+    <circle cx="260" cy="481" r="4"/><circle cx="485" cy="541" r="4"/><circle cx="710" cy="553" r="5"/><circle cx="935" cy="556" r="4"/><circle cx="1070" cy="559" r="4"/><circle cx="1160" cy="560" r="4"/><circle cx="1250" cy="560" r="4"/><circle cx="1340" cy="560" r="4"/><circle cx="1430" cy="560" r="4"/><circle cx="1520" cy="560" r="4"/>
+  </g>
+
+  <!-- chosen-point value labels -->
+  <text class="tick" x="726" y="180">0.724</text>
+  <text class="tick" x="726" y="546">1.35%</text>
+
+  <!-- series end labels -->
+  <text class="lbl" x="1536" y="200">Hit rate</text>
+  <text class="lbl" x="1536" y="480">False-hit rate</text>
+
+  <!-- region labels -->
+  <text class="mut" x="400" y="320" text-anchor="middle" font-style="italic">cheap and wrong</text>
+  <text class="mut" x="1240" y="320" text-anchor="middle" font-style="italic">safe and expensive</text>
+
+  <!-- x ticks -->
+  <g class="tick" text-anchor="middle">
+    <text x="260" y="588">0.70</text><text x="485" y="588">0.75</text><text x="710" y="588">0.80</text><text x="935" y="588">0.85</text><text x="1070" y="588">0.88</text><text x="1160" y="588">0.90</text><text x="1250" y="588">0.92</text><text x="1340" y="588">0.94</text><text x="1430" y="588">0.96</text><text x="1520" y="588">0.98</text>
+  </g>
+  <text class="mut" x="890" y="628" text-anchor="middle">similarity threshold</text>
+</svg>

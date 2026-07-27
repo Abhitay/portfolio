@@ -90,8 +90,8 @@
     <div class="right">
       <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
       <div class="nav-links">
-                <a href="index.html#experience">Experience</a>
         <a href="index.html#projects">Projects</a>
+                <a href="index.html#experience">Experience</a>
         <a href="index.html#publications">Publications</a>
         <a href="index.html#education">Education</a>
         <a href="index.html#contact">Contact</a>
@@ -231,7 +231,7 @@
       LLM-as-a-judge critic before anything reaches the analyst.
     </p>
     <div class="fig">
-      <img src="figures/llm_document_generation_pipeline_with_judge_and_human_loop.png" alt="Agentic pipeline diagram: a document idea flows to a research agent that pulls from a customer-document RAG store and live internet data, then to a writer LLM, then to an LLM judge that critiques and loops feedback back to the writer; the final document routes back to the user for human intervention.">
+      <img src="figures/graph-rag-pipeline.svg" alt="Graph RAG pipeline diagram. A query passes to a planner that emits a JSON tool-routing policy, forking across three evidence layers: a ChromaDB vector store, structured Parquet tables, and a NetworkX graph layer. The three converge into evidence fusion, then a writer produces a grounded draft, which an LLM-as-a-judge critic scores against a grounding rubric and regenerates on failure, before a human-in-the-loop checkpoint releases the answer.">
       <p class="caption">The agentic loop: a research agent gathers grounded context from document and live-data sources, a writer drafts, and an LLM-as-a-judge critic critiques and regenerates until the draft clears the rubric, with a human-in-the-loop checkpoint before anything ships.</p>
     </div>
     <div class="cards">

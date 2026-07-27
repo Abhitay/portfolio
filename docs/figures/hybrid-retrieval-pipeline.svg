@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2360 620" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .box  { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .fill { fill:#f6f4f1; stroke:#e7e3dd; stroke-width:1.5; }
+    .lbl  { fill:#0a0a0a; font-size:24px; }
+    .sm   { fill:#0a0a0a; font-size:21px; }
+    .mut  { fill:#6f6b66; font-size:19px; }
+    .edge { stroke:#0a0a0a; stroke-width:1.6; fill:none; }
+    .dash { stroke:#6f6b66; stroke-width:1.6; fill:none; stroke-dasharray:6 5; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7.5,3 L0,6 Z" fill="#0a0a0a"/>
+    </marker>
+    <marker id="am" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7.5,3 L0,6 Z" fill="#6f6b66"/>
+    </marker>
+  </defs>
+  <rect width="2360" height="620" fill="#ffffff"/>
+
+  <!-- lane annotations -->
+  <text class="mut" x="615" y="92" text-anchor="middle">strong on meaning · weak on exact strings</text>
+  <text class="mut" x="595" y="520" text-anchor="middle">strong on exact strings · weak on paraphrase</text>
+
+  <!-- User question -->
+  <rect class="fill" x="40" y="268" width="180" height="64" rx="8"/>
+  <text class="lbl" x="130" y="292" text-anchor="middle">User</text>
+  <text class="lbl" x="130" y="320" text-anchor="middle">question</text>
+
+  <!-- Upper lane -->
+  <rect class="box" x="300" y="118" width="180" height="64" rx="8"/>
+  <text class="lbl" x="390" y="158" text-anchor="middle">Embed (BGE)</text>
+  <rect class="box" x="520" y="118" width="210" height="64" rx="8"/>
+  <text class="sm" x="625" y="146" text-anchor="middle">FAISS vector</text>
+  <text class="sm" x="625" y="170" text-anchor="middle">search</text>
+  <rect class="box" x="780" y="118" width="120" height="64" rx="8"/>
+  <text class="lbl" x="840" y="158" text-anchor="middle">top 50</text>
+
+  <!-- Lower lane -->
+  <rect class="box" x="300" y="418" width="180" height="64" rx="8"/>
+  <text class="lbl" x="390" y="458" text-anchor="middle">Tokenize</text>
+  <rect class="box" x="520" y="418" width="150" height="64" rx="8"/>
+  <text class="lbl" x="595" y="458" text-anchor="middle">BM25</text>
+  <rect class="box" x="780" y="418" width="120" height="64" rx="8"/>
+  <text class="lbl" x="840" y="458" text-anchor="middle">top 50</text>
+
+  <!-- Fusion + rerank + generation chain -->
+  <rect class="fill" x="950" y="268" width="220" height="64" rx="8"/>
+  <text class="sm" x="1060" y="294" text-anchor="middle">Reciprocal Rank Fusion</text>
+  <text class="mut" x="1060" y="318" text-anchor="middle">1 / (60 + rank)</text>
+
+  <rect class="box" x="1210" y="268" width="200" height="64" rx="8"/>
+  <text class="sm" x="1310" y="294" text-anchor="middle">Cross-encoder</text>
+  <text class="sm" x="1310" y="318" text-anchor="middle">rerank</text>
+
+  <rect class="box" x="1450" y="268" width="150" height="64" rx="8"/>
+  <text class="lbl" x="1525" y="308" text-anchor="middle">Top 8 chunks</text>
+
+  <rect class="box" x="1640" y="268" width="210" height="64" rx="8"/>
+  <text class="sm" x="1745" y="294" text-anchor="middle">Gemini Flash-Lite</text>
+  <text class="mut" x="1745" y="318" text-anchor="middle">cited answer</text>
+
+  <rect class="box" x="1890" y="268" width="210" height="64" rx="8"/>
+  <text class="sm" x="1995" y="294" text-anchor="middle">Flash-Lite</text>
+  <text class="mut" x="1995" y="318" text-anchor="middle">faithfulness check</text>
+
+  <rect class="fill" x="2140" y="268" width="180" height="64" rx="8"/>
+  <text class="sm" x="2230" y="294" text-anchor="middle">Answer +</text>
+  <text class="sm" x="2230" y="318" text-anchor="middle">citations</text>
+
+  <!-- JSONL traces cylinder -->
+  <path class="fill" d="M2155 470 v60 a75 12 0 0 0 150 0 v-60"/>
+  <ellipse class="fill" cx="2230" cy="470" rx="75" ry="12"/>
+  <text class="sm" x="2230" y="512" text-anchor="middle">JSONL traces</text>
+  <text class="mut" x="2230" y="575" text-anchor="middle">feeds the eval harness (Fig 2)</text>
+
+  <!-- edges -->
+  <path class="edge" d="M222 292 L296 164" marker-end="url(#a)"/>
+  <path class="edge" d="M222 308 L296 436" marker-end="url(#a)"/>
+  <path class="edge" d="M480 150 L516 150" marker-end="url(#a)"/>
+  <path class="edge" d="M730 150 L776 150" marker-end="url(#a)"/>
+  <path class="edge" d="M480 450 L516 450" marker-end="url(#a)"/>
+  <path class="edge" d="M670 450 L776 450" marker-end="url(#a)"/>
+  <path class="edge" d="M902 156 L946 286" marker-end="url(#a)"/>
+  <path class="edge" d="M902 444 L946 314" marker-end="url(#a)"/>
+  <path class="edge" d="M1170 300 L1206 300" marker-end="url(#a)"/>
+  <path class="edge" d="M1410 300 L1446 300" marker-end="url(#a)"/>
+  <path class="edge" d="M1600 300 L1636 300" marker-end="url(#a)"/>
+  <path class="edge" d="M1850 300 L1886 300" marker-end="url(#a)"/>
+  <path class="edge" d="M2100 300 L2136 300" marker-end="url(#a)"/>
+  <path class="dash" d="M2230 332 L2230 456" marker-end="url(#am)"/>
+</svg>

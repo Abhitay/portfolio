@@ -98,8 +98,8 @@
     <div class="right">
       <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
       <div class="nav-links">
-        <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
         <a href="#publications">Publications</a>
         <a href="#education">Education</a>
         <a href="#contact">Contact</a>
@@ -127,13 +127,164 @@
       <a href="https://scholar.google.com/citations?user=f0wnYuYAAAAJ&hl=en" target="_blank">Google Scholar</a>
     </div>
 
-    <a class="rail" href="#experience" data-rail="Scroll" aria-label="Scroll to experience"></a>
+    <a class="rail" href="#projects" data-rail="Scroll" aria-label="Scroll to projects"></a>
+  </section>
+
+  <!-- SELECTED PROJECTS -->
+  <section id="projects">
+    <span class="rail" data-rail="01 · Selected Projects" aria-hidden="true"></span>
+    <h2 class="section-eyebrow"><span class="sec-kicker">01 · Selected Projects</span><span class="sec-caption">Side <span class="cap-em">Quests</span><span class="type-caret" aria-hidden="true"></span></span></h2>
+
+    <div id="case-studies" class="work-list">
+      <a class="work-item" href="hybrid-retrieval-eval-harness.html">
+        <div class="work-aside">
+          <div class="card-tags">
+            <span class="tag">RAG</span>
+            <span class="tag">Hybrid Search</span>
+            <span class="tag">Reranking</span>
+            <span class="tag">LLM-as-Judge</span>
+          </div>
+          <span class="read-time">12 min read</span>
+        </div>
+        <div class="work-main">
+          <h3>Hybrid RAG Retrieval + Automated Evaluation Harness</h3>
+          <p>
+            Dense vectors miss error codes; keyword search misses paraphrase. I built both, fused them by
+            rank, and reranking took recall@10 from 0.78 to 0.94. A second system then turned the bot's own
+            traces into a validated regression suite that found its real failure mode.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+
+      <a class="work-item" href="human-gated-agent-orchestration.html">
+        <div class="work-aside">
+          <div class="card-tags">
+            <span class="tag">Agents</span>
+            <span class="tag">Tool Calling</span>
+            <span class="tag">Human-in-the-Loop</span>
+            <span class="tag">Pydantic</span>
+          </div>
+          <span class="read-time">9 min read</span>
+        </div>
+        <div class="work-main">
+          <h3>Human-Gated Agent for Refund Automation</h3>
+          <p>
+            Typed tools with validation at the boundary, a plan-act loop with a step budget, and a hard
+            approval gate that stopped 100% of high-risk actions, including a refund on an ineligible order.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+
+      <a class="work-item" href="semantic-caching-tradeoff.html">
+        <div class="work-aside">
+          <div class="card-tags">
+            <span class="tag">LLMOps</span>
+            <span class="tag">Semantic Cache</span>
+            <span class="tag">Embeddings</span>
+            <span class="tag">FAISS</span>
+          </div>
+          <span class="read-time">9 min read</span>
+        </div>
+        <div class="work-main">
+          <h3>Semantic Caching for LLM Cost & Latency</h3>
+          <p>
+            Matching questions by meaning took the hit rate to 0.72 and latency down 3.5×, but the
+            loosest, best-looking threshold serves 15% wrong answers. So I built the false-hit measurement
+            before choosing a threshold.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+
+      <a class="work-item" href="finetuned-guarded-text-to-sql.html">
+        <div class="work-aside">
+          <div class="card-tags">
+            <span class="tag">LoRA</span>
+            <span class="tag">Fine-Tuning</span>
+            <span class="tag">Guardrails</span>
+            <span class="tag">Text-to-SQL</span>
+          </div>
+          <span class="read-time">13 min read</span>
+        </div>
+        <div class="work-main">
+          <h3>Fine-Tuned, Guarded Text-to-SQL Copilot</h3>
+          <p>
+            LoRA on a 4-bit base trained locally on Apple silicon (+5 points on Spider), behind an
+            AST-parsing guard that blocked 300 of 300 attacks, with a confidence score whose calibration is
+            measured, not assumed.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+
+      <a class="work-item" href="graph-rag-hybrid-retrieval.html">
+        <div class="work-aside">
+          <div class="card-tags">
+            <span class="tag">Graph RAG</span>
+            <span class="tag">Neo4j</span>
+            <span class="tag">FAISS</span>
+            <span class="tag">Retrieval</span>
+          </div>
+          <span class="read-time">9 min read</span>
+        </div>
+        <div class="work-main">
+          <h3>IBM Agentic Library: Graph RAG for Document Q&amp;A</h3>
+          <p>
+            Built a Graph RAG pipeline with Neo4j and FAISS for structured retrieval.
+            Knowledge-graph modeling improved retrieval precision by 30%+ over naive search.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+
+      <a class="work-item" href="causal-product-analytics-suite.html">
+        <div class="work-aside">
+          <div class="card-tags">
+            <span class="tag">Causal Inference</span>
+            <span class="tag">Experimentation</span>
+            <span class="tag">PSM</span>
+            <span class="tag">Uplift Modeling</span>
+          </div>
+          <span class="read-time">12 min suite read</span>
+        </div>
+        <div class="work-main">
+          <h3>Product Analytics Suite</h3>
+          <p>
+            A combined suite of three analyses covering feature impact, growth allocation,
+            and root-cause diagnosis using PSM, DiD, uplift modeling, and MMM.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+
+      <a class="work-item" href="michelangelo-ai-detection.html">
+        <div class="work-aside">
+          <div class="card-tags">
+            <span class="tag">CLIP</span>
+            <span class="tag">BLIP</span>
+            <span class="tag">Vision</span>
+            <span class="tag">AI Detection</span>
+          </div>
+          <span class="read-time">7 min read</span>
+        </div>
+        <div class="work-main">
+          <h3>M(iche)Langelo: Analysis on AI-Generated Art</h3>
+          <p>
+            Built an end-to-end Reddit pipeline for style, caption, and source detection using CLIP, BLIP, and SuSy.
+            Transfer learning to a 3-class SuSy head improved MidJourney and DALL-E detection on real-world art streams.
+          </p>
+          <span class="arrow-link">Explore the analysis →</span>
+        </div>
+      </a>
+    </div>
   </section>
 
   <!-- EXPERIENCE -->
   <section id="experience">
-    <span class="rail" data-rail="01 · Experience" aria-hidden="true"></span>
-    <h2 class="section-eyebrow"><span class="sec-kicker">01 · Experience</span><span class="sec-caption">Where I've <span class="cap-em">built</span><span class="type-caret" aria-hidden="true"></span></span></h2>
+    <span class="rail" data-rail="02 · Experience" aria-hidden="true"></span>
+    <h2 class="section-eyebrow"><span class="sec-kicker">02 · Experience</span><span class="sec-caption">Where I've <span class="cap-em">built</span><span class="type-caret" aria-hidden="true"></span></span></h2>
 
     <div id="professional-experience">
       <div class="experience-card">
@@ -322,58 +473,7 @@
 
   </section>
 
-  <!-- SELECTED PROJECTS -->
-  <section id="projects">
-    <span class="rail" data-rail="02 · Selected Projects" aria-hidden="true"></span>
-    <h2 class="section-eyebrow"><span class="sec-kicker">02 · Selected Projects</span><span class="sec-caption">Side <span class="cap-em">Quests</span><span class="type-caret" aria-hidden="true"></span></span></h2>
 
-    <div id="case-studies" class="work-list">
-      <a class="work-item" href="graph-rag-hybrid-retrieval.html">
-        <div class="work-aside">
-          <span class="tag">LLMs · Graph RAG · Retrieval</span>
-          <span class="read-time">9 min read</span>
-        </div>
-        <div class="work-main">
-          <h3>IBM Agentic Library: Graph RAG for Document Q&amp;A</h3>
-          <p>
-            Built a Graph RAG pipeline with Neo4j and FAISS for structured retrieval.
-            Knowledge-graph modeling improved retrieval precision by 30%+ over naive search.
-          </p>
-          <span class="arrow-link">Explore the analysis →</span>
-        </div>
-      </a>
-
-      <a class="work-item" href="causal-product-analytics-suite.html">
-        <div class="work-aside">
-          <span class="tag">Analytics · Experimentation</span>
-          <span class="read-time">12 min suite read</span>
-        </div>
-        <div class="work-main">
-          <h3>Product Analytics Suite</h3>
-          <p>
-            A combined suite of three analyses covering feature impact, growth allocation,
-            and root-cause diagnosis using PSM, DiD, uplift modeling, and MMM.
-          </p>
-          <span class="arrow-link">Explore the analysis →</span>
-        </div>
-      </a>
-
-      <a class="work-item" href="michelangelo-ai-detection.html">
-        <div class="work-aside">
-          <span class="tag">NLP · Vision · Detection</span>
-          <span class="read-time">7 min read</span>
-        </div>
-        <div class="work-main">
-          <h3>M(iche)Langelo: Analysis on AI-Generated Art</h3>
-          <p>
-            Built an end-to-end Reddit pipeline for style, caption, and source detection using CLIP, BLIP, and SuSy.
-            Transfer learning to a 3-class SuSy head improved MidJourney and DALL-E detection on real-world art streams.
-          </p>
-          <span class="arrow-link">Explore the analysis →</span>
-        </div>
-      </a>
-    </div>
-  </section>
 
   <!-- PUBLICATIONS & MEDIA -->
   <section id="publications">

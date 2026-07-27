@@ -91,8 +91,8 @@
     <div class="right">
       <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
       <div class="nav-links">
-                <a href="index.html#experience">Experience</a>
         <a href="index.html#projects">Projects</a>
+                <a href="index.html#experience">Experience</a>
         <a href="index.html#publications">Publications</a>
         <a href="index.html#education">Education</a>
         <a href="index.html#contact">Contact</a>
@@ -287,8 +287,8 @@
       </div>
     </div>
     <div class="fig">
-      <img src="figures/michelangelo_airflow_dag.png" alt="Apache Airflow DAG for Reddit collection and metadata update pipeline">
-      <p class="caption">Figure 4: Apache Airflow DAG for collection, metadata updates, table updates, and daily logging.</p>
+      <img src="figures/michelangelo-dag.svg" alt="Apache Airflow DAG diagram. Reddit posts are ingested and stored in BigQuery, then fork into three parallel inference tasks — CLIP for style classification, BLIP for captioning, and SuSy for three-class source detection — which converge into an aggregate-and-evaluate step, with an optional SDXL restyle stage.">
+      <p class="caption">Figure 4: the Airflow DAG — scheduled ingestion into BigQuery, three parallel inference models, then aggregation and evaluation.</p>
     </div>
 
   </section>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Case study: a returns agent with typed tools, schema validation at the boundary, and a hard human-approval gate in front of every irreversible action. On a 4-task fixture: 100% task success, 100% of high-risk actions gated." />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V9RNG3QS4"></script>
+  <script src="scripts/main.js" defer></script>
+  <title>Human-Gated Agent Orchestration | Agents Case Study</title>
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+
+  <link rel="canonical" href="https://abhitay.me/human-gated-agent-orchestration.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="author" content="Abhitay Shinde" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Abhitay Shinde" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://abhitay.me/human-gated-agent-orchestration.html" />
+  <meta property="og:title" content="Human-Gated Agent Orchestration | Agents Case Study" />
+  <meta property="og:description" content="A returns agent with typed tools, schema validation at the boundary, and a hard human-approval gate in front of every irreversible action." />
+  <meta property="og:image" content="https://abhitay.me/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Abhitay Shinde, Data Scientist" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Human-Gated Agent Orchestration | Agents Case Study" />
+  <meta name="twitter:description" content="A returns agent with typed tools, schema validation at the boundary, and a hard human-approval gate in front of every irreversible action." />
+  <meta name="twitter:image" content="https://abhitay.me/og-image.png" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "A Returns Agent That Cannot Move Money Alone",
+  "description": "Case study: a returns agent with typed tools, schema validation at the boundary, and a hard human-approval gate in front of every irreversible action.",
+  "url": "https://abhitay.me/human-gated-agent-orchestration.html",
+  "image": "https://abhitay.me/og-image.png",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Abhitay Shinde",
+    "url": "https://abhitay.me/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Abhitay Shinde",
+    "url": "https://abhitay.me/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://abhitay.me/human-gated-agent-orchestration.html"
+  }
+}
+  </script>
+</head>
+<body>
+
+  <aside class="side-index collapsible" aria-label="Page index">
+    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
+      <span class="side-index-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="side-index-label">On this page</span>
+    </button>
+    <div class="side-index-body" hidden>
+      <div class="side-index-header">
+        <div class="side-index-title">On this page</div>
+        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
+      </div>
+      <a href="#tldr">TL;DR</a>
+      <a href="#decision-context">Decision Context</a>
+      <a href="#what-an-agent-is">What an Agent Actually Is</a>
+      <a href="#approach">Technical Approach</a>
+      <a href="#results">Evaluation</a>
+      <a href="#recommendation">Recommendation</a>
+    </div>
+  </aside>
+
+  <nav>
+    <div class="left"><a href="index.html">Abhitay Shinde</a></div>
+    <div class="right">
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+      <div class="nav-links">
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#publications">Publications</a>
+        <a href="index.html#education">Education</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="btn" href="Shinde-Resume.pdf" target="_blank">Resume</a>
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="crumb-sep">/</span>
+      <a href="index.html#projects">Case Studies</a>
+      <span class="crumb-sep">/</span>
+      <span>Human-Gated Agent Orchestration</span>
+    </div>
+  </section>
+
+  <section class="hero">
+    <h1>Human-Gated Agent for Refund Automation</h1>
+    <p class="subtitle">Plan, act, observe, with schema validation at the boundary and a hard approval gate in front of every irreversible action.</p>
+    <div class="tech-tags">
+      <span class="tag">Agents</span>
+      <span class="tag">Tool Calling</span>
+      <span class="tag">Human-in-the-Loop</span>
+      <span class="tag">Pydantic</span>
+      <span class="tag">Observability</span>
+      <span class="tag">tau-bench</span>
+    </div>
+  </section>
+
+  <section id="tldr">
+  <section class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li>A customer-service agent that looks up orders, reads the refund policy, and issues refunds through typed tools, with every argument validated before execution.</li>
+      <li>Money-moving tools are flagged high-risk: the agent pauses, surfaces the exact action and arguments, and proceeds only on explicit approval.</li>
+      <li>Every step is logged with a shared <code>run_id</code> and a monotonic <code>step</code>, so any run replays in order.</li>
+      <li><strong>Result:</strong> on a 4-task fixture, 100% task success, 100% tool-call accuracy, and 100% of high-risk actions gated, the one refund attempt that was policy-ineligible was stopped at the approval boundary, not executed, at $0.0006 per task.</li>
+    </ul>
+  </section>
+  </section>
+
+  <section id="decision-context">
+    <h2>The Decision That Triggered This Build</h2>
+    <p>
+      A returns desk is the canonical case for agents, multi-step, tool-dependent, high-volume, and the
+      canonical case against them, because the final step moves real money out of the business. Automating the
+      lookup is obviously good. Automating the payout is obviously not.
+    </p>
+    <p>
+      The product question: which steps can run unsupervised, and what does the boundary cost in throughput? An
+      agent that asks permission for everything is a slow form; one that asks for nothing is an unbounded
+      liability.
+    </p>
+  </section>
+
+  <section id="what-an-agent-is">
+    <h2>What an Agent Actually Is</h2>
+    <div class="cards">
+      <div class="card">
+        <h4>Tools</h4>
+        <p>Plain functions the model may request, each with a typed schema.</p>
+      </div>
+      <div class="card">
+        <h4>A loop</h4>
+        <p>Ask the model, run what it asked for, feed the result back, repeat.</p>
+      </div>
+      <div class="card">
+        <h4>State</h4>
+        <p>An ordered history, so a run can be inspected, resumed, replayed.</p>
+      </div>
+      <div class="card">
+        <h4>A stopping rule</h4>
+        <p>Task complete, or step budget exhausted.</p>
+      </div>
+    </div>
+    <p>
+      Everything else, the framework, the plan/act/reflect vocabulary, is engineering to make those four
+      reliable.
+    </p>
+  </section>
+
+  <section id="approach">
+    <h2>Technical Approach</h2>
+    <div class="fig">
+      <img src="figures/agent-loop-with-gate.svg" alt="Agent control-flow diagram. The model is asked for the next action; if it requests no tool the run finishes. Each tool call passes schema validation first, and invalid calls return an error observation the agent can correct from. Valid calls are checked for high-risk status, ordinary tools execute directly, while high-risk tools stop at a highlighted human approval gate that either permits execution or records a refusal. A footer notes that every node writes an ordered trace with a run id and step number.">
+      <p class="caption">Schema validation and a human approval gate stand between the agent and any irreversible action. Measured: 100% of high-risk attempts gated.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h4>Typed tools</h4>
+        <p>Pydantic models already emit JSON Schema, so the API tool definition and the runtime validator are the same declaration. No second definition to drift.</p>
+      </div>
+      <div class="card">
+        <h4>Validation failures return as data</h4>
+        <p>A malformed call comes back as an observation the model reads and corrects on the next turn. An exception ends the run; an observation lets it recover.</p>
+      </div>
+      <div class="card">
+        <h4>Ordered traces</h4>
+        <p>Shared <code>run_id</code>, monotonic <code>step</code>. Timestamps are not reliable ordering when steps land in the same millisecond, and replay is the only real way to debug an agent.</p>
+      </div>
+    </div>
+    <div class="findings">
+      <strong>Design choice: the gate sits after validation, before execution</strong>
+      <p>
+        Approving an unvalidated call means the human is approving something that may not even be well-formed.
+        Validate first, surface the concrete action, then execute. A refusal is recorded as a normal outcome the
+        agent can see and respond to, not an exception. The provider's automatic function-calling is deliberately
+        disabled so the loop executes tools itself and the gate stays inside it, verified by driving a refund on
+        a policy-ineligible order and confirming the gate blocked it and no money moved.
+      </p>
+    </div>
+  </section>
+
+  <section id="results">
+    <h2>Evaluation</h2>
+    <div class="metrics-box">
+      <div class="metrics-row">
+        <div class="metric-item">
+          <div class="metric-label">Task-success rate</div>
+          <div class="metric-value">1.00</div>
+          <div class="metric-desc">4 / 4 tasks</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Tool-call accuracy</div>
+          <div class="metric-value">1.00</div>
+          <div class="metric-desc">mean across tasks</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">High-risk actions gated</div>
+          <div class="metric-value">1.00</div>
+          <div class="metric-desc">1 attempt, 1 gate fired</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Cost per task</div>
+          <div class="metric-value">$0.00063</div>
+          <div class="metric-desc">mean latency 23.8 s</div>
+        </div>
+      </div>
+    </div>
+    <p>
+      Per-task cost is measured from token usage, and the full tau-bench sweep is <em>projected</em> from it
+      before being run, roughly 115 tasks × the measured $0.00063 ≈ $0.07 for the full suite. That projection is
+      why development happens against a small subset and the full suite runs once. To be explicit: this is a
+      <strong>4-task fixture, not tau-bench</strong>, the number is a proof the machinery works, not a benchmark
+      result.
+    </p>
+    <div class="findings warning">
+      <strong>Main weakness: the gate relocates judgement, it does not remove it</strong>
+      <p>
+        An approver who says yes to everything lets a bad refund through; one who says no to everything blocks the
+        legitimate one too. There is no setting that is simply correct. The same shape recurs in the semantic
+        cache's threshold, the text-to-SQL confidence cutoff, and the retrieval judge's bias, naming that
+        recurrence across four projects is the through-line of the whole set.
+      </p>
+    </div>
+    <p>
+      Two things visible in the per-task data are worth stating. Task success and tool-call accuracy <em>can</em>
+      diverge even when both read 1.0 here, a run can reach the correct outcome while calling a tool wrong and
+      silently recovering. And latency varied 3.3 s to 68 s across the four tasks (the thinking model plus
+      free-tier rate-limit backoff), so a single mean hides a wide spread.
+    </p>
+  </section>
+
+  <section id="recommendation">
+    <h2>Recommendation</h2>
+    <div class="recommendation positive">
+      <h3>Gate on the tool, not the step</h3>
+      <p>
+        Read-only tools run freely; money-moving and destructive tools always stop. One approval per refund
+        removes the entire category of unsupervised financial error, measured here as 100% of high-risk attempts
+        gated.
+      </p>
+    </div>
+    <h3>Next Iteration Priorities</h3>
+    <ul>
+      <li>Run the full tau-bench retail suite and publish success, tool accuracy, cost, and latency at scale.</li>
+      <li>Make the approver policy-aware enough to auto-refuse clear cases and escalate only real judgement.</li>
+      <li>Decide where the <code>amount &lt;= price</code> rule belongs, schema, tool, or approver, and defend it.</li>
+      <li>Reconstruct a failed run from its trace alone, and see whether the trace is sufficient.</li>
+    </ul>
+  </section>
+
+  <footer>© 2026 Abhitay Shinde</footer>
+
+</body>
+</html>

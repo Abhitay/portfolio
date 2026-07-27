@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Case study: an exact-match and a semantic cache over the same request stream, measured for hit rate, latency, and the false-hit rate the headline metric hides. At threshold 0.80: 0.724 hit rate, 1.35% false hits, 3.5× latency improvement." />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V9RNG3QS4"></script>
+  <script src="scripts/main.js" defer></script>
+  <title>Semantic Caching Tradeoff | LLMOps Case Study</title>
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+
+  <link rel="canonical" href="https://abhitay.me/semantic-caching-tradeoff.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="author" content="Abhitay Shinde" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Abhitay Shinde" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://abhitay.me/semantic-caching-tradeoff.html" />
+  <meta property="og:title" content="Semantic Caching Tradeoff | LLMOps Case Study" />
+  <meta property="og:description" content="An exact-match and a semantic cache over the same request stream, and the false-hit rate the headline metric hides." />
+  <meta property="og:image" content="https://abhitay.me/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Abhitay Shinde, Data Scientist" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Semantic Caching Tradeoff | LLMOps Case Study" />
+  <meta name="twitter:description" content="An exact-match and a semantic cache over the same request stream, and the false-hit rate the headline metric hides." />
+  <meta name="twitter:image" content="https://abhitay.me/og-image.png" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Semantic Caching, and the Failure It Introduces",
+  "description": "Case study: an exact-match and a semantic cache over the same request stream, measured for hit rate, latency, and the false-hit rate the headline metric hides.",
+  "url": "https://abhitay.me/semantic-caching-tradeoff.html",
+  "image": "https://abhitay.me/og-image.png",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Abhitay Shinde",
+    "url": "https://abhitay.me/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Abhitay Shinde",
+    "url": "https://abhitay.me/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://abhitay.me/semantic-caching-tradeoff.html"
+  }
+}
+  </script>
+</head>
+<body>
+
+  <aside class="side-index collapsible" aria-label="Page index">
+    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
+      <span class="side-index-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="side-index-label">On this page</span>
+    </button>
+    <div class="side-index-body" hidden>
+      <div class="side-index-header">
+        <div class="side-index-title">On this page</div>
+        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
+      </div>
+      <a href="#tldr">TL;DR</a>
+      <a href="#decision-context">Decision Context</a>
+      <a href="#why-exact-matching-fails">Why Exact Matching Fails</a>
+      <a href="#approach">Technical Approach</a>
+      <a href="#results">Evaluation</a>
+      <a href="#recommendation">Recommendation</a>
+    </div>
+  </aside>
+
+  <nav>
+    <div class="left"><a href="index.html">Abhitay Shinde</a></div>
+    <div class="right">
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+      <div class="nav-links">
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#publications">Publications</a>
+        <a href="index.html#education">Education</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="btn" href="Shinde-Resume.pdf" target="_blank">Resume</a>
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="crumb-sep">/</span>
+      <a href="index.html#projects">Case Studies</a>
+      <span class="crumb-sep">/</span>
+      <span>Semantic Caching Tradeoff</span>
+    </div>
+  </section>
+
+  <section class="hero">
+    <h1>Semantic Caching for LLM Cost & Latency</h1>
+    <p class="subtitle">Matching questions by meaning cuts cost sharply, and starts answering questions nobody asked.</p>
+    <div class="tech-tags">
+      <span class="tag">LLMOps</span>
+      <span class="tag">Semantic Cache</span>
+      <span class="tag">Embeddings</span>
+      <span class="tag">FAISS</span>
+      <span class="tag">Cost Optimization</span>
+      <span class="tag">Latency</span>
+    </div>
+  </section>
+
+  <section id="tldr">
+  <section class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li>An exact-match cache and a semantic cache over the same request stream, measured against a no-cache baseline for hit rate, latency, and model calls avoided.</li>
+      <li>The correctness metric the hit rate hides: a <em>false-hit rate</em> scored against Stack Exchange's human-confirmed duplicate links.</li>
+      <li>The operating point is chosen from a swept curve against a stated false-hit budget, not a default.</li>
+      <li><strong>Result:</strong> at the chosen threshold, semantic caching lifts hit rate to 0.724 from the exact-match baseline of 0.691, holds false hits to 1.35% (inside a 2% budget), and delivers a 3.5× latency improvement, on 3,316 real questions.</li>
+    </ul>
+  </section>
+  </section>
+
+  <section id="decision-context">
+    <h2>The Decision That Triggered This Build</h2>
+    <p>
+      In a high-volume question-answering product, a large share of traffic re-asks something already answered,
+      worded differently. Every one of those is a paid, slow model call producing an answer that already exists.
+    </p>
+    <p>
+      The product question: how much of that is reclaimable, and what is the failure mode of reclaiming it? An
+      exact cache is safe and weak. A semantic cache is powerful and introduces a risk the exact cache never had.
+    </p>
+  </section>
+
+  <section id="why-exact-matching-fails">
+    <h2>Why Exact Matching Fails</h2>
+    <div class="cards">
+      <div class="card">
+        <h4>Users do not repeat themselves verbatim</h4>
+        <p>The same handful of meanings arrives under many spellings, punctuation, capitalisation, "hey", "please". An exact cache pays full price for each, and here it topped out at a 0.691 hit rate.</p>
+      </div>
+      <div class="card">
+        <h4>Meaning-level matching collapses that</h4>
+        <p>Many spellings, one cached answer, lifting the hit rate to 0.724 while cutting model calls by the same fraction.</p>
+      </div>
+      <div class="card">
+        <h4>And it introduces a new way to be wrong</h4>
+        <p>Matching on similarity means sometimes matching something that is merely similar, the false hit the whole project exists to measure.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="approach">
+    <h2>Technical Approach</h2>
+    <div class="fig">
+      <img src="figures/semantic-cache-flow.svg" alt="Flowchart. An incoming question is embedded and matched against cached question vectors by nearest-neighbour search. If similarity meets the threshold the cached answer returns in about ten milliseconds at no cost; otherwise the model is called at roughly nine hundred milliseconds and billed, and the new question and answer join the cache. A note marks that a cache hit may be a true match or a false one, distinguishable only with human duplicate labels.">
+      <p class="caption">Every request is a threshold decision. The threshold is the entire design, at 0.80 it bought a 3.5× speedup for a 1.35% false-hit rate.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h4>Stream, do not load</h4>
+        <p>The dump is one XML document of a few hundred megabytes (293 MB of <code>Posts.xml</code>); parsing it whole exhausts a 16GB machine. <code>iterparse</code> with <code>elem.clear()</code> keeps memory flat regardless of file size. That one line is the difference between a script that runs and one that swaps.</p>
+      </div>
+      <div class="card">
+        <h4>Duplicate links become meaning-groups</h4>
+        <p>Links are pairwise, but A↔B and B↔C means all three are the same question. The groups are the connected components of that graph, union-find, a few lines. 1,945 duplicate pairs resolved into the ground-truth meaning-groups everything else is scored against.</p>
+      </div>
+      <div class="card">
+        <h4>Cosine on an interpretable scale</h4>
+        <p>Vectors (BGE) are L2-normalised into an inner-product index, so the threshold and its sweep read directly off [-1, 1].</p>
+      </div>
+    </div>
+    <div class="findings">
+      <strong>Design choice: the model call stays simulated, deliberately</strong>
+      <p>
+        Every metric here, hit rate, latency, calls avoided, false-hit rate, depends on <em>which question
+        matched</em> and never on the answer's text. Paying for real generations would change what the notebook
+        costs to run and none of its results. This project needs no API key at all.
+      </p>
+    </div>
+  </section>
+
+  <section id="results">
+    <h2>Evaluation</h2>
+    <div class="metrics-box">
+      <div class="metrics-row">
+        <div class="metric-item">
+          <div class="metric-label">Semantic hit rate</div>
+          <div class="metric-value">0.724</div>
+          <div class="metric-desc">exact-match baseline 0.691</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">False-hit rate</div>
+          <div class="metric-value">0.0135</div>
+          <div class="metric-desc">budget 0.02</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Model calls avoided</div>
+          <div class="metric-value">72.4%</div>
+          <div class="metric-desc">at chosen threshold 0.80</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Latency improvement</div>
+          <div class="metric-value">3.5×</div>
+          <div class="metric-desc">5,000-request stream</div>
+        </div>
+      </div>
+    </div>
+    <p class="section-note">The threshold sweep, a representative slice of the full 10-point sweep:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Threshold</th>
+          <th>Hit rate</th>
+          <th>False-hit rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0.70</td>
+          <td>0.792</td>
+          <td>0.154</td>
+        </tr>
+        <tr>
+          <td>0.75</td>
+          <td>0.752</td>
+          <td>0.037</td>
+        </tr>
+        <tr>
+          <td><strong>0.80</strong></td>
+          <td><strong>0.724</strong></td>
+          <td><strong>0.0135</strong></td>
+        </tr>
+        <tr>
+          <td>0.85</td>
+          <td>0.706</td>
+          <td>0.0068</td>
+        </tr>
+        <tr>
+          <td>0.90</td>
+          <td>0.698</td>
+          <td>0.0009</td>
+        </tr>
+        <tr>
+          <td>0.92</td>
+          <td>0.695</td>
+          <td>0.000</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="fig">
+      <img src="figures/cache-threshold-tradeoff.svg" alt="Line chart plotting cache hit rate and false-hit rate against the similarity threshold from 0.70 to 0.98. Hit rate falls from 0.79 to 0.69 as the threshold tightens; the false-hit rate falls from 0.15 to zero. A dotted horizontal line marks the exact-match baseline hit rate of 0.69, and a vertical marker identifies the chosen operating point at 0.80 where the false-hit rate is 1.35%.">
+      <p class="caption">Hit rate and false-hit rate move together. The loosest threshold has the best hit rate and a 15% false-hit rate, choosing a threshold is choosing how much wrongness a saving is worth.</p>
+    </div>
+    <div class="findings warning">
+      <strong>Main weakness: the headline metric is blind to the failure</strong>
+      <p>
+        This is the project's sharpest result, and it is in the data above: the loosest threshold (0.70) produces
+        the best hit rate (0.792) and the lowest latency, and a 15.4% false-hit rate. Judged on every metric a
+        normal dashboard shows, the worst configuration looks like the best one. The failure is silent: a fluent,
+        confident, cached answer, with nothing logged. This is why the false-hit rate had to be built
+        <em>before</em> the threshold could be chosen, and why the chosen point is 0.80, not 0.70.
+      </p>
+    </div>
+  </section>
+
+  <section id="recommendation">
+    <h2>Recommendation</h2>
+    <div class="recommendation positive">
+      <h3>Adopt semantic caching, threshold chosen from the curve</h3>
+      <p>
+        Pick the operating point against an explicit false-hit budget. Where a wrong answer is cheap, a
+        game-help bot, move down the curve and take the savings. Where it is expensive, move up and pay for the
+        calls. The measured curve makes that a decision with numbers on it, not a guess.
+      </p>
+    </div>
+    <h3>Next Iteration Priorities</h3>
+    <ul>
+      <li>Require the best match to beat the runner-up by a margin; test whether that beats raising the threshold.</li>
+      <li>Segment by question type, exact-token lookups likely need a stricter threshold than open-ended ones.</li>
+      <li>Bound the cache with LRU eviction and measure what that costs in hit rate.</li>
+      <li>Log every hit with its matched question and score, so false hits are auditable after the fact.</li>
+    </ul>
+  </section>
+
+  <footer>© 2026 Abhitay Shinde</footer>
+
+</body>
+</html>

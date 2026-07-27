@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 900" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .box    { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .fill   { fill:#f6f4f1; stroke:#e7e3dd; stroke-width:1.5; }
+    .strong { fill:#ffffff; stroke:#d3cec6; stroke-width:2.5; }
+    .allow  { fill:#f6f4f1; stroke:#d3cec6; stroke-width:2.5; }
+    .title  { fill:#0a0a0a; font-size:27px; }
+    .lbl    { fill:#0a0a0a; font-size:22px; }
+    .code   { fill:#0a0a0a; font-family:'SF Mono', ui-monospace, Menlo, Consolas, monospace; font-size:19px; }
+    .mut    { fill:#6f6b66; font-size:18px; }
+    .edge   { stroke:#0a0a0a; stroke-width:1.6; fill:none; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7.5,3 L0,6 Z" fill="#0a0a0a"/>
+    </marker>
+  </defs>
+  <rect width="1800" height="900" fill="#ffffff"/>
+  <line x1="900" y1="40" x2="900" y2="760" stroke="#e7e3dd" stroke-width="1.5"/>
+
+  <!-- ===== LEFT: keyword blocklist ===== -->
+  <text class="title" x="460" y="64" text-anchor="middle">Keyword blocklist</text>
+  <line x1="90" y1="82" x2="830" y2="82" stroke="#e7e3dd" stroke-width="1.5"/>
+
+  <rect class="box" x="90" y="110" width="740" height="54" rx="6"/>
+  <text class="code" x="112" y="144">SELECT title FROM t WHERE x = 'how to delete a save'</text>
+  <path class="edge" d="M460 164 L460 196" marker-end="url(#a)"/>
+  <rect class="box" x="310" y="198" width="300" height="48" rx="24"/>
+  <text class="lbl" x="460" y="229" text-anchor="middle">contains "delete"</text>
+  <path class="edge" d="M460 246 L460 278" marker-end="url(#a)"/>
+  <rect class="strong" x="360" y="280" width="200" height="54" rx="8"/>
+  <text class="lbl" x="460" y="315" text-anchor="middle">✕  REFUSED</text>
+  <text class="mut" x="460" y="366" text-anchor="middle">false alarm — "delete" sits inside a string literal</text>
+
+  <rect class="box" x="90" y="430" width="740" height="54" rx="6"/>
+  <text class="code" x="112" y="464">CREATE TABLE evil (x INTEGER)</text>
+  <path class="edge" d="M460 484 L460 516" marker-end="url(#a)"/>
+  <rect class="box" x="320" y="518" width="280" height="48" rx="24"/>
+  <text class="lbl" x="460" y="549" text-anchor="middle">no listed keyword</text>
+  <path class="edge" d="M460 566 L460 598" marker-end="url(#a)"/>
+  <rect class="allow" x="360" y="600" width="200" height="54" rx="8"/>
+  <text class="lbl" x="460" y="635" text-anchor="middle">✓  ALLOWED</text>
+  <text class="mut" x="460" y="686" text-anchor="middle">bypass — nobody thought to list "create"</text>
+
+  <rect class="fill" x="300" y="756" width="320" height="54" rx="8"/>
+  <text class="lbl" x="460" y="791" text-anchor="middle">4 of 6 test cases wrong</text>
+
+  <!-- ===== RIGHT: AST guard ===== -->
+  <text class="title" x="1340" y="64" text-anchor="middle">AST guard (sqlglot)</text>
+  <line x1="970" y1="82" x2="1710" y2="82" stroke="#e7e3dd" stroke-width="1.5"/>
+
+  <rect class="box" x="1190" y="110" width="300" height="54" rx="6"/>
+  <text class="lbl" x="1340" y="145" text-anchor="middle">SQL string</text>
+  <path class="edge" d="M1340 164 L1340 196" marker-end="url(#a)"/>
+  <rect class="box" x="1140" y="198" width="400" height="54" rx="6"/>
+  <text class="lbl" x="1340" y="233" text-anchor="middle">Parse to syntax tree</text>
+  <path class="edge" d="M1340 252 L1340 284" marker-end="url(#a)"/>
+
+  <rect class="box" x="1040" y="286" width="600" height="52" rx="6"/>
+  <text class="lbl" x="1340" y="319" text-anchor="middle">1 · exactly one statement?</text>
+  <path class="edge" d="M1340 338 L1340 362" marker-end="url(#a)"/>
+  <rect class="box" x="1040" y="364" width="600" height="52" rx="6"/>
+  <text class="lbl" x="1340" y="397" text-anchor="middle">2 · statement is SELECT?</text>
+  <path class="edge" d="M1340 416 L1340 440" marker-end="url(#a)"/>
+  <rect class="box" x="1040" y="442" width="600" height="66" rx="6"/>
+  <text class="lbl" x="1340" y="470" text-anchor="middle">3 · all tables in allowlist?</text>
+  <text class="mut" x="1340" y="494" text-anchor="middle">walks nested subqueries</text>
+
+  <path class="edge" d="M1340 508 L1340 552" marker-end="url(#a)"/>
+  <text class="mut" x="1364" y="536">all pass</text>
+  <rect class="allow" x="1240" y="554" width="200" height="54" rx="8"/>
+  <text class="lbl" x="1340" y="589" text-anchor="middle">✓  ALLOWED</text>
+
+  <!-- refused branch -->
+  <path class="edge" d="M1640 468 L1690 468 L1690 656" marker-end="url(#a)"/>
+  <text class="mut" x="1678" y="566" text-anchor="end">any check fails</text>
+  <rect class="strong" x="1420" y="658" width="280" height="54" rx="8"/>
+  <text class="lbl" x="1560" y="693" text-anchor="middle">✕  REFUSED + reason</text>
+
+  <rect class="fill" x="1180" y="756" width="320" height="54" rx="8"/>
+  <text class="lbl" x="1340" y="791" text-anchor="middle">300 / 300 blocked</text>
+
+  <text class="mut" x="1340" y="848" text-anchor="middle">denies by default — verbs invented after this was written are refused too</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 880" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .box  { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .fill { fill:#f6f4f1; stroke:#e7e3dd; stroke-width:1.5; }
+    .dia  { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .lbl  { fill:#0a0a0a; font-size:23px; }
+    .sm   { fill:#0a0a0a; font-size:21px; }
+    .mut  { fill:#6f6b66; font-size:18px; }
+    .edge { stroke:#0a0a0a; stroke-width:1.6; fill:none; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7.5,3 L0,6 Z" fill="#0a0a0a"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="880" fill="#ffffff"/>
+
+  <rect class="fill" x="470" y="40" width="260" height="60" rx="8"/>
+  <text class="lbl" x="600" y="78" text-anchor="middle">Incoming question</text>
+
+  <rect class="box" x="510" y="140" width="180" height="60" rx="8"/>
+  <text class="lbl" x="600" y="178" text-anchor="middle">Embed</text>
+
+  <rect class="box" x="410" y="240" width="380" height="68" rx="8"/>
+  <text class="sm" x="600" y="268" text-anchor="middle">FAISS nearest neighbour</text>
+  <text class="mut" x="600" y="292" text-anchor="middle">among cached questions</text>
+
+  <polygon class="dia" points="600,335 762,400 600,465 438,400"/>
+  <text class="sm" x="600" y="394" text-anchor="middle">similarity ≥</text>
+  <text class="sm" x="600" y="418" text-anchor="middle">threshold?</text>
+
+  <!-- yes branch -->
+  <rect class="fill" x="120" y="518" width="320" height="82" rx="8"/>
+  <text class="sm" x="280" y="552" text-anchor="middle">CACHE HIT</text>
+  <text class="mut" x="280" y="578" text-anchor="middle">return stored answer</text>
+  <text class="mut" x="280" y="632" text-anchor="middle">~10 ms · $0</text>
+
+  <!-- no branch -->
+  <rect class="box" x="810" y="470" width="220" height="60" rx="8"/>
+  <text class="lbl" x="920" y="508" text-anchor="middle">Call model</text>
+  <rect class="box" x="790" y="580" width="260" height="64" rx="8"/>
+  <text class="sm" x="920" y="608" text-anchor="middle">Store question</text>
+  <text class="mut" x="920" y="632" text-anchor="middle">vector + answer</text>
+  <rect class="box" x="810" y="694" width="220" height="60" rx="8"/>
+  <text class="lbl" x="920" y="732" text-anchor="middle">Return answer</text>
+  <text class="mut" x="920" y="786" text-anchor="middle">~900 ms · billed</text>
+
+  <!-- edges -->
+  <path class="edge" d="M600 100 L600 138" marker-end="url(#a)"/>
+  <path class="edge" d="M600 200 L600 238" marker-end="url(#a)"/>
+  <path class="edge" d="M600 308 L600 333" marker-end="url(#a)"/>
+  <path class="edge" d="M438 400 L280 400 L280 516" marker-end="url(#a)"/>
+  <text class="mut" x="360" y="388" text-anchor="middle">yes</text>
+  <path class="edge" d="M762 400 L920 400 L920 468" marker-end="url(#a)"/>
+  <text class="mut" x="838" y="388" text-anchor="middle">no</text>
+  <path class="edge" d="M920 530 L920 578" marker-end="url(#a)"/>
+  <path class="edge" d="M920 644 L920 692" marker-end="url(#a)"/>
+
+  <!-- bracketed note under the yes branch -->
+  <line x1="128" y1="678" x2="128" y2="792" stroke="#d3cec6" stroke-width="2"/>
+  <text class="mut" x="150" y="696">a hit may be TRUE (same meaning-group)</text>
+  <text class="mut" x="150" y="722">or FALSE (merely similar) —</text>
+  <text class="mut" x="150" y="748">only human duplicate labels</text>
+  <text class="mut" x="150" y="774">can tell you which.</text>
+</svg>

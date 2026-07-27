@@ -2,10 +2,31 @@
    what its markup actually contains. Loaded with `defer`, so the DOM is ready. */
 
 /* ---------- Google Analytics ---------- */
+/* Self-exclusion: open the site once with ?ga=off to stop this browser being
+   counted (it remembers via localStorage); ?ga=on undoes it. Must run before
+   config, since gtag reads the disable flag when the page_view fires. */
+(function () {
+  const flag = new URLSearchParams(location.search).get('ga');
+  if (flag === 'off') localStorage.setItem('ga-off', '1');
+  if (flag === 'on') localStorage.removeItem('ga-off');
+  if (localStorage.getItem('ga-off')) window['ga-disable-G-6V9RNG3QS4'] = true;
+})();
+
 window.dataLayer = window.dataLayer || [];
 function gtag() { dataLayer.push(arguments); }
 gtag('js', new Date());
 gtag('config', 'G-6V9RNG3QS4');
+
+/* The three portfolio actions GA can't infer on its own: resume opened, a
+   contact link used, a case study opened. Enhanced Measurement (a GA4 dashboard
+   toggle) already covers page views, scroll, and outbound/file clicks. */
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a');
+  if (!a) return;
+  if (a.getAttribute('href')?.endsWith('.pdf')) gtag('event', 'resume_open');
+  else if (a.closest('.hero-contact, #contact')) gtag('event', 'contact_click', { link_text: a.textContent.trim() });
+  else if (a.classList.contains('work-item')) gtag('event', 'case_study_open', { case_study: a.querySelector('h3')?.textContent.trim() });
+});
 
 /* ---------- Active nav link ---------- */
 (function () {
@@ -67,7 +88,9 @@ gtag('config', 'G-6V9RNG3QS4');
 /* ---------- "Best viewed on desktop" prompt before opening a dense case study ---------- */
 (function () {
   const caseStudyLinks = document.querySelectorAll(
-    'a[href*="feature-impact.html"], a[href*="growth-allocation.html"], a[href*="ai-insights-copilot.html"]'
+    'a[href*="feature-impact.html"], a[href*="growth-allocation.html"], a[href*="ai-insights-copilot.html"], ' +
+    'a[href*="hybrid-retrieval-eval-harness.html"], a[href*="human-gated-agent-orchestration.html"], ' +
+    'a[href*="semantic-caching-tradeoff.html"], a[href*="finetuned-guarded-text-to-sql.html"]'
   );
   if (!caseStudyLinks.length) return;
 
@@ -161,7 +184,7 @@ gtag('config', 'G-6V9RNG3QS4');
 /* ---------- Magnet scroll: the first downward scroll glides the whole hero out
    to the next section in one motion (and snaps back up near the top). ---------- */
 (function () {
-  const first = document.querySelector('#experience');
+  const first = document.querySelector('#projects');
   const navEl = document.querySelector('nav');
   const hero = document.querySelector('.hero-home');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

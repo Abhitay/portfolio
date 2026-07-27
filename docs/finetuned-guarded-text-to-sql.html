@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Case study: a LoRA fine-tuned Qwen2.5-Coder text-to-SQL model trained locally on Apple silicon, behind an AST-parsing guard that blocked 300 of 300 red-team queries, with a measured confidence calibration." />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V9RNG3QS4"></script>
+  <script src="scripts/main.js" defer></script>
+  <title>Fine-Tuned, Guarded Text-to-SQL | Fine-Tuning Case Study</title>
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+
+  <link rel="canonical" href="https://abhitay.me/finetuned-guarded-text-to-sql.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="author" content="Abhitay Shinde" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Abhitay Shinde" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://abhitay.me/finetuned-guarded-text-to-sql.html" />
+  <meta property="og:title" content="Fine-Tuned, Guarded Text-to-SQL | Fine-Tuning Case Study" />
+  <meta property="og:description" content="A LoRA fine-tuned text-to-SQL model trained locally on Apple silicon, behind an AST-parsing guard and a calibrated confidence score." />
+  <meta property="og:image" content="https://abhitay.me/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Abhitay Shinde, Data Scientist" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Fine-Tuned, Guarded Text-to-SQL | Fine-Tuning Case Study" />
+  <meta name="twitter:description" content="A LoRA fine-tuned text-to-SQL model trained locally on Apple silicon, behind an AST-parsing guard and a calibrated confidence score." />
+  <meta name="twitter:image" content="https://abhitay.me/og-image.png" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "A Fine-Tuned SQL Copilot That Cannot Drop Your Tables",
+  "description": "Case study: a LoRA fine-tuned Qwen2.5-Coder text-to-SQL model trained locally on Apple silicon, behind an AST-parsing guard and a measured confidence calibration.",
+  "url": "https://abhitay.me/finetuned-guarded-text-to-sql.html",
+  "image": "https://abhitay.me/og-image.png",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Abhitay Shinde",
+    "url": "https://abhitay.me/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Abhitay Shinde",
+    "url": "https://abhitay.me/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://abhitay.me/finetuned-guarded-text-to-sql.html"
+  }
+}
+  </script>
+</head>
+<body>
+
+  <aside class="side-index collapsible" aria-label="Page index">
+    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
+      <span class="side-index-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="side-index-label">On this page</span>
+    </button>
+    <div class="side-index-body" hidden>
+      <div class="side-index-header">
+        <div class="side-index-title">On this page</div>
+        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
+      </div>
+      <a href="#tldr">TL;DR</a>
+      <a href="#decision-context">Decision Context</a>
+      <a href="#why-small-and-local">Why Small and Local</a>
+      <a href="#approach">Fine-Tuning</a>
+      <a href="#guardrails">Why Keyword Blocking Fails</a>
+      <a href="#confidence">A Score That Keeps Its Promise</a>
+      <a href="#results">Evaluation</a>
+      <a href="#recommendation">Recommendation</a>
+    </div>
+  </aside>
+
+  <nav>
+    <div class="left"><a href="index.html">Abhitay Shinde</a></div>
+    <div class="right">
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+      <div class="nav-links">
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#publications">Publications</a>
+        <a href="index.html#education">Education</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="btn" href="Shinde-Resume.pdf" target="_blank">Resume</a>
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="crumb-sep">/</span>
+      <a href="index.html#projects">Case Studies</a>
+      <span class="crumb-sep">/</span>
+      <span>Fine-Tuned, Guarded Text-to-SQL</span>
+    </div>
+  </section>
+
+  <section class="hero">
+    <h1>Fine-Tuned, Guarded Text-to-SQL Copilot</h1>
+    <p class="subtitle">A small model taught to write SQL on a laptop, behind a parser-based guard and a confidence score honest enough to act on.</p>
+    <div class="tech-tags">
+      <span class="tag">LoRA</span>
+      <span class="tag">Fine-Tuning</span>
+      <span class="tag">Apple Silicon / MLX</span>
+      <span class="tag">Text-to-SQL</span>
+      <span class="tag">Guardrails</span>
+      <span class="tag">sqlglot</span>
+      <span class="tag">Calibration</span>
+    </div>
+  </section>
+
+  <section id="tldr">
+  <section class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li>LoRA adapters trained on a 4-bit quantized Qwen2.5-Coder-1.5B, running locally on Apple silicon via MLX rather than a rented CUDA GPU, peak memory 1.1 GB, on a 16GB M1 Pro.</li>
+      <li>Every generated query is parsed into an AST and allowed only if it is a single <code>SELECT</code> touching approved tables. A keyword blocklist was built first and shown to fail in both directions.</li>
+      <li>Confidence gates correctness and is <em>calibrated</em>, not assumed: ECE is measured, and queries below a threshold go to a human.</li>
+      <li><strong>Result:</strong> fine-tuning lifts Spider execution accuracy from 42.5% to 47.5% (+5 points) and cuts invalid SQL from 40% to 36%; behind the guard the fine-tuned model reaches 60% execution accuracy with 12% invalid SQL, and the guard blocks 100% of a 300-query red team while a keyword blocklist got 4 of 6 test cases wrong.</li>
+    </ul>
+  </section>
+  </section>
+
+  <section id="decision-context">
+    <h2>The Decision That Triggered This Build</h2>
+    <p>
+      Natural-language SQL puts data access in the hands of people who cannot read SQL. That is the entire value,
+      and precisely why the system must protect them: they cannot spot a query that is wrong, and certainly not
+      one that is destructive.
+    </p>
+    <p>
+      Two questions. Can a model small enough to run locally be taught to write correct SQL for a specific schema
+      and dialect? And can the surrounding system be made safe enough that a non-technical analyst using it is not
+      a risk to the database?
+    </p>
+  </section>
+
+  <section id="why-small-and-local">
+    <h2>Why Small and Local</h2>
+    <div class="cards">
+      <div class="card">
+        <h4>The constraint is real</h4>
+        <p>4-bit CUDA training tooling does not run on Apple silicon at all, and 7–8B quantized weights plus optimizer state will not fit in 16GB shared with the OS. MLX does the same job, frozen quantized base, trainable adapters, natively on Metal. Measured peak memory in training was 1.1 GB at rank 16 on 8 layers; the constraint had headroom to spare.</p>
+      </div>
+      <div class="card">
+        <h4>Small makes the result clearer, not weaker</h4>
+        <p>A larger model already writes passable SQL, so fine-tuning moves it modestly. A small coder model fails in exactly the ways LoRA fixes, wrong dialect, invented columns, malformed joins, so the base-versus-tuned gap is wider. The failure dump bears this out: the base model's invalid queries are real schema errors ("no such column: T2.Country", aggregate-in-GROUP-BY), not formatting noise.</p>
+      </div>
+      <div class="card">
+        <h4>It makes the copilot genuinely offline</h4>
+        <p>Local inference means no per-query cost and no schema leaving the machine, which is why the execution-accuracy numbers cost zero API quota: the fine-tuned model generates every query on the M1.</p>
+      </div>
+    </div>
+    <p><em>"I picked the smallest model that could learn the task, because the question I cared about was how much capability LoRA buys per parameter, not how high I could push absolute accuracy."</em></p>
+  </section>
+
+  <section id="approach">
+    <h2>Fine-Tuning</h2>
+    <div class="fig">
+      <img src="figures/lora-adapter.svg" alt="Diagram of a LoRA-adapted layer. An input vector feeds two parallel paths: a large frozen pretrained weight matrix marked as not updated, and a low-rank path through a tall thin trainable matrix A followed by a wide short trainable matrix B initialised to zero, scaled by alpha over rank. The two paths sum to produce the output.">
+      <p class="caption">LoRA freezes the pretrained weight and trains two small matrices beside it, rank 16 on 8 layers, peak 1.1 GB, on a 16GB laptop.</p>
+    </div>
+    <p>
+      No equations: the base weight matrix is frozen; two small matrices train beside it and are added to its
+      output. <strong>Rank</strong> is how much room the adjustment gets (16 here); <strong>alpha</strong> how
+      strongly it applies (32). <code>B</code> starts at zero, so the adapted model begins exactly equal to the
+      base and improves from there.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <h4>The prompt template is a contract</h4>
+        <p>One module, imported by both the training project and the serving project. If they drift, the model is asked to work against a format it never saw, and the failure looks like "the fine-tune didn't work" rather than "the prompt changed".</p>
+      </div>
+      <div class="card">
+        <h4>Schema serialisation is a real trade</h4>
+        <p>Table name plus column names is the choice; types and sample rows roughly triple the token count for a modest gain, and sequence length is the binding constraint in 16GB. Examples over the cap are dropped and counted, never truncated, 73 of 7,000 (1.0%), because a truncated example teaches the model to emit truncated SQL.</p>
+      </div>
+      <div class="card">
+        <h4>The baseline is measured before training</h4>
+        <p>Deliberately, 42.5% execution accuracy, 40% invalid SQL on 200 Spider dev examples, so the fine-tuned comparison cannot be quietly flattered after the fact.</p>
+      </div>
+    </div>
+    <div class="findings warning">
+      <strong>The result that surprised me: LM loss and task accuracy diverge</strong>
+      <p>
+        The standard rule says <em>watch validation loss; when it rises while training loss falls, you are
+        overfitting, so stop.</em> The run showed the exception. Validation (next-token) loss bottomed at iter
+        200 (1.41) and then climbed steadily to 2.09 at iter 2000, the textbook overfitting signal. But
+        execution accuracy did the opposite: +0 points at 200 iters, +1 at 600, +5 at 2000. For a task metric,
+        the language-modelling loss is the <em>wrong</em> early-stopping signal; you have to evaluate the task
+        itself. Early-stopping on val loss would have shipped a model with no gain at all.
+      </p>
+    </div>
+  </section>
+
+  <section id="guardrails">
+    <h2>Why Keyword Blocking Does Not Work</h2>
+    <p>
+      The blocklist is built first, and it fails 4 of 6 test cases, in both directions at once.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <h4>Two false alarms</h4>
+        <p>Legitimate queries refused because the word "delete" appears inside a string literal, and inside a comment, places where it has no power at all. Users blocked for no reason route around the tool, which is how shadow database access starts.</p>
+      </div>
+      <div class="card">
+        <h4>A bypass</h4>
+        <p><code>CREATE TABLE</code> passes because nobody thought to list "create". Every new pattern is another round of whack-a-mole.</p>
+      </div>
+      <div class="card">
+        <h4>A category it cannot see</h4>
+        <p>A blocklist of <em>verbs</em> has nothing to say about <em>which tables</em> you may read. An ordinary <code>SELECT</code> walks restricted data straight out.</p>
+      </div>
+    </div>
+    <div class="fig">
+      <img src="figures/sql-guard-ast.svg" alt="Side-by-side comparison. The left panel shows a keyword blocklist refusing a legitimate query because the word delete appears inside a string literal, and allowing a CREATE TABLE statement because that keyword was never listed, failing four of six test cases. The right panel shows the AST guard parsing SQL into a syntax tree and applying three structural checks in sequence, exactly one statement, the statement is a SELECT, and every table including those in nested subqueries appears in the allowlist, allowing the query only if all three pass and otherwise refusing with a stated reason, blocking all three hundred red-team queries.">
+      <p class="caption">String matching inspects characters. What matters is structure, the blocklist got 4 of 6 wrong; the AST guard blocked 300 of 300.</p>
+    </div>
+    <p>
+      Then the AST guard: parse with <code>sqlglot</code>, allow only a single <code>SELECT</code> touching
+      approved tables. The shift is from <em>denying what you can think of</em> to <em>allowing only what you
+      approved</em>, a verb invented after the code was written is refused by default. Because the parser walks
+      the whole tree, a restricted table reached through a nested subquery is caught for free. Measured: 300 of
+      300 red-team queries blocked across 20 databases, 100%. It also caught the fine-tuned model's own
+      mistakes: when the model emitted a malformed nested subquery, the guard refused it as unparseable rather
+      than executing garbage.
+    </p>
+  </section>
+
+  <section id="confidence">
+    <h2>A Score That Keeps Its Promise</h2>
+    <div class="fig">
+      <img src="figures/calibration-buckets.svg" alt="Grouped bar chart showing confidence calibration. For each confidence bucket, an outlined bar shows the confidence the system claimed and a solid bar shows the accuracy it actually delivered. The gap between the pair in each bucket is what expected calibration error averages, here 0.21.">
+      <p class="caption">A confidence score is a promise. Calibration measures whether it is kept, bucket by bucket, because averages hide the failure. Measured ECE: 0.21.</p>
+    </div>
+    <p>
+      The guard stops catastrophe. It does nothing about a safe <code>SELECT</code> that answers the wrong
+      question. So each query carries a confidence score, and anything below a threshold goes to a human. That
+      plan is sound only if the score means something. <strong>Calibration</strong> is whether it does;
+      <strong>ECE</strong> is the average gap between claimed and delivered confidence, measured in bins. Measured
+      here: ECE = 0.21, moderately miscalibrated, and honestly reported as such rather than assumed to be
+      trustworthy.
+    </p>
+  </section>
+
+  <section id="results">
+    <h2>Evaluation</h2>
+    <div class="metrics-box">
+      <div class="metrics-row">
+        <div class="metric-item">
+          <div class="metric-label">Execution accuracy</div>
+          <div class="metric-value">0.425 → 0.475</div>
+          <div class="metric-desc">base vs fine-tuned (+5.0), 200 Spider dev</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Invalid-SQL rate</div>
+          <div class="metric-value">0.40 → 0.36</div>
+          <div class="metric-desc">base vs fine-tuned</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">LoRA config</div>
+          <div class="metric-value">r16 · α32</div>
+          <div class="metric-desc">8 layers · 2000 iters</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Peak memory · throughput</div>
+          <div class="metric-value">1.1 GB</div>
+          <div class="metric-desc">21 tok/s, M1 Pro 16GB</div>
+        </div>
+      </div>
+    </div>
+    <div class="metrics-box">
+      <div class="metrics-row">
+        <div class="metric-item">
+          <div class="metric-label">Execution accuracy (behind guard)</div>
+          <div class="metric-value">0.60</div>
+          <div class="metric-desc">fine-tuned, 50 examples</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Invalid-SQL rate</div>
+          <div class="metric-value">0.12</div>
+          <div class="metric-desc">behind the guard</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Red-team block rate</div>
+          <div class="metric-value">1.00</div>
+          <div class="metric-desc">300 / 300, 20 databases</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">ECE (10 bins)</div>
+          <div class="metric-value danger">0.214</div>
+          <div class="metric-desc">keyword blocklist: 4 / 6 cases wrong</div>
+        </div>
+      </div>
+    </div>
+    <p class="section-note">The escalation tradeoff, the confidence score doing real work, cutting wrong auto-runs from 13 to 3 (50 examples):</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Confidence threshold</th>
+          <th>Auto-run correct</th>
+          <th>Auto-run wrong</th>
+          <th>Sent to human</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0.0 (no gate)</td>
+          <td>30</td>
+          <td>13</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>0.5</td>
+          <td>29</td>
+          <td>6</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td>0.7</td>
+          <td>29</td>
+          <td>3</td>
+          <td>11</td>
+        </tr>
+        <tr>
+          <td>1.0 (gate everything)</td>
+          <td>28</td>
+          <td>2</td>
+          <td>13</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="findings warning">
+      <strong>Main weakness: safety and correctness are different problems</strong>
+      <p>
+        Every query the guard admits is safe; a significant share (40% of them) still answer the wrong question.
+        The guard is a hard boundary against catastrophe and offers nothing against being confidently, safely
+        wrong. The confidence threshold addresses that, and it is strictly weaker: it depends on the score being
+        calibrated, and at ECE 0.21 the score is only moderately trustworthy, the escalation table above is
+        honest about how many wrong queries still slip through at each threshold.
+      </p>
+    </div>
+  </section>
+
+  <section id="recommendation">
+    <h2>Recommendation</h2>
+    <div class="recommendation positive">
+      <h3>Ship the parser-based guard unconditionally</h3>
+      <p>
+        A small amount of code that blocked 100% of a 300-query red team and refuses a destructive statement no
+        matter how confident anything claims to be. Add the fine-tuned model behind it, it beats the base by 5
+        points and halves invalid SQL, and always return the generated SQL alongside the results.
+      </p>
+    </div>
+    <h3>Next Iteration Priorities</h3>
+    <ul>
+      <li>Train past 2000 iters and past a full epoch, evaluating on execution accuracy not val loss, since the two diverge, the gain had not plateaued at +5.</li>
+      <li>Sweep LoRA rank and report where returns flatten, that answers "why rank 16" with data.</li>
+      <li>Expand the red team; treat any leak as a bug, and add the case before fixing it.</li>
+      <li>Improve calibration (temperature scaling on the confidence head) and re-measure ECE per bin.</li>
+    </ul>
+  </section>
+
+  <footer>© 2026 Abhitay Shinde</footer>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1820 640" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .box  { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .fill { fill:#f6f4f1; stroke:#e7e3dd; stroke-width:1.5; }
+    .lbl  { fill:#0a0a0a; font-size:24px; }
+    .sm   { fill:#0a0a0a; font-size:21px; }
+    .mut  { fill:#6f6b66; font-size:18px; }
+    .edge { stroke:#0a0a0a; stroke-width:1.6; fill:none; }
+    .dash { stroke:#6f6b66; stroke-width:1.6; fill:none; stroke-dasharray:6 5; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7.5,3 L0,6 Z" fill="#0a0a0a"/></marker>
+    <marker id="am" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7.5,3 L0,6 Z" fill="#6f6b66"/></marker>
+  </defs>
+  <rect width="1820" height="640" fill="#ffffff"/>
+
+  <!-- ingest -->
+  <rect class="fill" x="40" y="278" width="220" height="76" rx="8"/>
+  <text class="sm" x="150" y="308" text-anchor="middle">Ingest</text>
+  <text class="mut" x="150" y="334" text-anchor="middle">Reddit posts</text>
+
+  <!-- store -->
+  <rect class="box" x="330" y="278" width="220" height="76" rx="8"/>
+  <text class="sm" x="440" y="308" text-anchor="middle">Store</text>
+  <text class="mut" x="440" y="334" text-anchor="middle">BigQuery</text>
+
+  <!-- three inference tasks -->
+  <rect class="box" x="640" y="110" width="260" height="76" rx="8"/>
+  <text class="sm" x="770" y="140" text-anchor="middle">CLIP</text>
+  <text class="mut" x="770" y="166" text-anchor="middle">style classification</text>
+
+  <rect class="box" x="640" y="278" width="260" height="76" rx="8"/>
+  <text class="sm" x="770" y="308" text-anchor="middle">BLIP</text>
+  <text class="mut" x="770" y="334" text-anchor="middle">captioning</text>
+
+  <rect class="box" x="640" y="446" width="260" height="76" rx="8"/>
+  <text class="sm" x="770" y="476" text-anchor="middle">SuSy</text>
+  <text class="mut" x="770" y="502" text-anchor="middle">source (3-class)</text>
+
+  <!-- evaluate -->
+  <rect class="fill" x="980" y="278" width="240" height="76" rx="8"/>
+  <text class="sm" x="1100" y="308" text-anchor="middle">Aggregate</text>
+  <text class="sm" x="1100" y="334" text-anchor="middle">+ evaluate</text>
+
+  <!-- restyle optional -->
+  <rect class="box" x="1300" y="278" width="240" height="76" rx="8" stroke-dasharray="6 5"/>
+  <text class="sm" x="1420" y="308" text-anchor="middle">Restyle · SDXL</text>
+  <text class="mut" x="1420" y="334" text-anchor="middle">optional</text>
+
+  <!-- edges -->
+  <path class="edge" d="M260 316 L326 316" marker-end="url(#a)"/>
+  <path class="edge" d="M550 308 L636 150" marker-end="url(#a)"/>
+  <path class="edge" d="M550 316 L636 316" marker-end="url(#a)"/>
+  <path class="edge" d="M550 324 L636 482" marker-end="url(#a)"/>
+  <path class="edge" d="M900 150 L976 308" marker-end="url(#a)"/>
+  <path class="edge" d="M900 316 L976 316" marker-end="url(#a)"/>
+  <path class="edge" d="M900 482 L976 324" marker-end="url(#a)"/>
+  <path class="dash" d="M1220 316 L1296 316" marker-end="url(#am)"/>
+
+  <!-- footer -->
+  <line x1="40" y1="580" x2="1540" y2="580" stroke="#e7e3dd" stroke-width="1.5"/>
+  <text class="mut" x="150" y="614">Airflow DAG · scheduled: ingest → store → inference → evaluate</text>
+</svg>

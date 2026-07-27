@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .box   { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .froze { fill:#f6f4f1; stroke:#d3cec6; stroke-width:2; }
+    .big   { fill:#0a0a0a; font-size:40px; }
+    .lbl   { fill:#0a0a0a; font-size:23px; }
+    .mut   { fill:#6f6b66; font-size:18px; }
+    .edge  { stroke:#0a0a0a; stroke-width:1.6; fill:none; }
+    .lock  { stroke:#6f6b66; stroke-width:2; fill:none; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7.5,3 L0,6 Z" fill="#0a0a0a"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="760" fill="#ffffff"/>
+
+  <!-- input -->
+  <text class="big" x="112" y="352" text-anchor="middle">x</text>
+
+  <!-- frozen weight W -->
+  <rect class="froze" x="440" y="180" width="230" height="230" rx="8"/>
+  <path class="lock" d="M548 232 v-8 a7 7 0 0 1 14 0 v8"/>
+  <rect class="lock" x="543" y="232" width="24" height="17" rx="2"/>
+  <text class="big" x="555" y="316" text-anchor="middle">W</text>
+  <text class="mut" x="555" y="348" text-anchor="middle">d × d</text>
+  <text class="mut" x="555" y="440" text-anchor="middle">frozen pretrained weight</text>
+  <text class="mut" x="555" y="464" text-anchor="middle">not updated</text>
+
+  <!-- low-rank path -->
+  <rect class="box" x="470" y="470" width="64" height="150" rx="6"/>
+  <text class="lbl" x="502" y="553" text-anchor="middle">A</text>
+  <text class="mut" x="502" y="642" text-anchor="middle">d × r</text>
+
+  <rect class="box" x="600" y="505" width="190" height="64" rx="6"/>
+  <text class="lbl" x="695" y="545" text-anchor="middle">B</text>
+  <text class="mut" x="695" y="592" text-anchor="middle">r × d</text>
+
+  <text class="mut" x="640" y="678" text-anchor="middle">A, B — trainable · B initialised to zero</text>
+
+  <!-- sum -->
+  <circle class="box" cx="1000" cy="340" r="28"/>
+  <text class="big" x="1000" y="354" text-anchor="middle">+</text>
+  <text class="lbl" x="1120" y="347">output</text>
+
+  <!-- scale note -->
+  <text class="lbl" x="892" y="452" text-anchor="middle">× alpha / r</text>
+  <text class="mut" x="892" y="480" text-anchor="middle">r = 16 · alpha = 32</text>
+
+  <!-- edges -->
+  <path class="edge" d="M132 340 L288 340" marker-end="url(#a)"/>
+  <circle cx="290" cy="340" r="4" fill="#0a0a0a"/>
+  <path class="edge" d="M290 340 L290 300 L436 300" marker-end="url(#a)"/>
+  <path class="edge" d="M290 340 L290 545 L466 545" marker-end="url(#a)"/>
+  <path class="edge" d="M670 300 L970 330" marker-end="url(#a)"/>
+  <path class="edge" d="M534 545 L596 540" marker-end="url(#a)"/>
+  <path class="edge" d="M790 537 L972 356" marker-end="url(#a)"/>
+  <path class="edge" d="M1028 340 L1104 340" marker-end="url(#a)"/>
+
+  <!-- footer -->
+  <line x1="140" y1="704" x2="1260" y2="704" stroke="#e7e3dd" stroke-width="1.5"/>
+  <text class="mut" x="700" y="730" text-anchor="middle">rank r is how much room the adjustment gets; alpha is how strongly it applies.</text>
+  <text class="mut" x="700" y="754" text-anchor="middle">Zero-initialising B means the adapted model starts exactly equal to the base.</text>
+</svg>

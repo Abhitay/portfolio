@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2040 720" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <style>
+    .box  { fill:#ffffff; stroke:#e7e3dd; stroke-width:1.5; }
+    .fill { fill:#f6f4f1; stroke:#e7e3dd; stroke-width:1.5; }
+    .strong { fill:#f6f4f1; stroke:#d3cec6; stroke-width:2.5; }
+    .lbl  { fill:#0a0a0a; font-size:24px; }
+    .sm   { fill:#0a0a0a; font-size:21px; }
+    .mut  { fill:#6f6b66; font-size:18px; }
+    .edge { stroke:#0a0a0a; stroke-width:1.6; fill:none; }
+    .dash { stroke:#6f6b66; stroke-width:1.6; fill:none; stroke-dasharray:6 5; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7.5,3 L0,6 Z" fill="#0a0a0a"/></marker>
+    <marker id="am" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7.5,3 L0,6 Z" fill="#6f6b66"/></marker>
+  </defs>
+  <rect width="2040" height="720" fill="#ffffff"/>
+
+  <!-- query + planner -->
+  <rect class="fill" x="30" y="328" width="150" height="64" rx="8"/>
+  <text class="lbl" x="105" y="368" text-anchor="middle">Query</text>
+
+  <rect class="box" x="250" y="322" width="220" height="76" rx="8"/>
+  <text class="sm" x="360" y="352" text-anchor="middle">Planner</text>
+  <text class="mut" x="360" y="378" text-anchor="middle">tool routing (JSON)</text>
+
+  <!-- three evidence lanes -->
+  <rect class="box" x="560" y="130" width="250" height="76" rx="8"/>
+  <text class="sm" x="685" y="160" text-anchor="middle">Vector store</text>
+  <text class="mut" x="685" y="186" text-anchor="middle">ChromaDB · MiniLM</text>
+
+  <rect class="box" x="560" y="322" width="250" height="76" rx="8"/>
+  <text class="sm" x="685" y="352" text-anchor="middle">Structured tables</text>
+  <text class="mut" x="685" y="378" text-anchor="middle">Parquet · metrics</text>
+
+  <rect class="box" x="560" y="514" width="250" height="76" rx="8"/>
+  <text class="sm" x="685" y="544" text-anchor="middle">Graph layer</text>
+  <text class="mut" x="685" y="570" text-anchor="middle">NetworkX · Neo4j-ready</text>
+
+  <!-- fusion -->
+  <rect class="fill" x="890" y="322" width="200" height="76" rx="8"/>
+  <text class="sm" x="990" y="352" text-anchor="middle">Evidence</text>
+  <text class="sm" x="990" y="378" text-anchor="middle">fusion</text>
+
+  <!-- writer -->
+  <rect class="box" x="1170" y="322" width="200" height="76" rx="8"/>
+  <text class="sm" x="1270" y="352" text-anchor="middle">Writer</text>
+  <text class="mut" x="1270" y="378" text-anchor="middle">grounded draft</text>
+
+  <!-- judge -->
+  <rect class="box" x="1450" y="322" width="220" height="76" rx="8"/>
+  <text class="sm" x="1560" y="352" text-anchor="middle">LLM-as-a-Judge</text>
+  <text class="mut" x="1560" y="378" text-anchor="middle">grounding rubric</text>
+
+  <!-- human -->
+  <rect class="strong" x="1750" y="318" width="200" height="84" rx="8"/>
+  <text class="sm" x="1850" y="352" text-anchor="middle">Human-in-</text>
+  <text class="sm" x="1850" y="378" text-anchor="middle">the-loop</text>
+
+  <!-- answer -->
+  <rect class="fill" x="1750" y="130" width="200" height="72" rx="8"/>
+  <text class="lbl" x="1850" y="174" text-anchor="middle">Answer</text>
+
+  <!-- edges -->
+  <path class="edge" d="M180 360 L246 360" marker-end="url(#a)"/>
+  <path class="edge" d="M470 352 L556 178" marker-end="url(#a)"/>
+  <path class="edge" d="M470 360 L556 360" marker-end="url(#a)"/>
+  <path class="edge" d="M470 368 L556 542" marker-end="url(#a)"/>
+  <path class="edge" d="M810 178 L886 352" marker-end="url(#a)"/>
+  <path class="edge" d="M810 360 L886 360" marker-end="url(#a)"/>
+  <path class="edge" d="M810 542 L886 368" marker-end="url(#a)"/>
+  <path class="edge" d="M1090 360 L1166 360" marker-end="url(#a)"/>
+  <path class="edge" d="M1370 360 L1446 360" marker-end="url(#a)"/>
+  <path class="edge" d="M1670 360 L1746 360" marker-end="url(#a)"/>
+  <text class="mut" x="1710" y="344" text-anchor="middle">pass</text>
+  <path class="edge" d="M1850 318 L1850 204" marker-end="url(#a)"/>
+
+  <!-- regenerate loop: judge -> writer -->
+  <path class="dash" d="M1500 322 C1470 250, 1300 250, 1272 320" marker-end="url(#am)"/>
+  <text class="mut" x="1385" y="242" text-anchor="middle">fail: regenerate</text>
+
+  <!-- lane annotation -->
+  <text class="mut" x="360" y="470" text-anchor="middle">use_vector · use_metrics · use_segments · use_risks</text>
+</svg>

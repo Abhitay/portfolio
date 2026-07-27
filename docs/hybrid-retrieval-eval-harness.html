@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Case study: hybrid retrieval over appliance manuals, dense vectors plus BM25, fused by rank and reranked, with an evaluation suite generated from the bot's own traffic. Reranking lifted recall@10 from 0.78 to 0.94." />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V9RNG3QS4"></script>
+  <script src="scripts/main.js" defer></script>
+  <title>Hybrid Retrieval &amp; Eval Harness | RAG Case Study</title>
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+
+  <link rel="canonical" href="https://abhitay.me/hybrid-retrieval-eval-harness.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="author" content="Abhitay Shinde" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Abhitay Shinde" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://abhitay.me/hybrid-retrieval-eval-harness.html" />
+  <meta property="og:title" content="Hybrid Retrieval &amp; Eval Harness | RAG Case Study" />
+  <meta property="og:description" content="Hybrid retrieval over appliance manuals, dense vectors plus BM25, fused by rank and reranked, with an evaluation suite generated from the bot's own traffic. Reranking lifted recall@10 from 0.78 to 0.94." />
+  <meta property="og:image" content="https://abhitay.me/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Abhitay Shinde, Data Scientist" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hybrid Retrieval &amp; Eval Harness | RAG Case Study" />
+  <meta name="twitter:description" content="Hybrid retrieval over appliance manuals, dense vectors plus BM25, fused by rank and reranked, with an evaluation suite generated from the bot's own traffic." />
+  <meta name="twitter:image" content="https://abhitay.me/og-image.png" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Hybrid Retrieval, and the Suite That Tests It",
+  "description": "Case study: hybrid retrieval over appliance manuals, dense vectors plus BM25, fused by reciprocal rank fusion and reranked, with an evaluation suite generated from the bot's own traffic.",
+  "url": "https://abhitay.me/hybrid-retrieval-eval-harness.html",
+  "image": "https://abhitay.me/og-image.png",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Person",
+    "name": "Abhitay Shinde",
+    "url": "https://abhitay.me/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Abhitay Shinde",
+    "url": "https://abhitay.me/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://abhitay.me/hybrid-retrieval-eval-harness.html"
+  }
+}
+  </script>
+</head>
+<body>
+
+  <aside class="side-index collapsible" aria-label="Page index">
+    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
+      <span class="side-index-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="side-index-label">On this page</span>
+    </button>
+    <div class="side-index-body" hidden>
+      <div class="side-index-header">
+        <div class="side-index-title">On this page</div>
+        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
+      </div>
+      <a href="#tldr">TL;DR</a>
+      <a href="#decision-context">Decision Context</a>
+      <a href="#why-vectors-alone-fail">Why Dense Alone Fails</a>
+      <a href="#approach">Technical Approach</a>
+      <a href="#design-decisions">Choices Made With Data</a>
+      <a href="#evaluation-harness">The Suite That Writes Itself</a>
+      <a href="#results">Evaluation</a>
+      <a href="#recommendation">Recommendation</a>
+    </div>
+  </aside>
+
+  <nav>
+    <div class="left"><a href="index.html">Abhitay Shinde</a></div>
+    <div class="right">
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+      <div class="nav-links">
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#publications">Publications</a>
+        <a href="index.html#education">Education</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="btn" href="Shinde-Resume.pdf" target="_blank">Resume</a>
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="crumb-sep">/</span>
+      <a href="index.html#projects">Case Studies</a>
+      <span class="crumb-sep">/</span>
+      <span>Hybrid Retrieval &amp; Eval Harness</span>
+    </div>
+  </section>
+
+  <section class="hero">
+    <h1>Hybrid RAG Retrieval + Automated Evaluation Harness</h1>
+    <p class="subtitle">Retrieval that survives error codes and paraphrase alike, and an evaluation suite generated from the bot's own traffic.</p>
+    <div class="tech-tags">
+      <span class="tag">RAG</span>
+      <span class="tag">Hybrid Search</span>
+      <span class="tag">BM25</span>
+      <span class="tag">Reciprocal Rank Fusion</span>
+      <span class="tag">Reranking</span>
+      <span class="tag">LLM-as-Judge</span>
+      <span class="tag">Evaluation</span>
+      <span class="tag">FAISS</span>
+    </div>
+  </section>
+
+  <section id="tldr">
+  <section class="tldr">
+    <h2>TL;DR</h2>
+    <ul>
+      <li>Hybrid retrieval over appliance manuals: dense vectors for meaning, BM25 for exact strings like error codes, merged by reciprocal rank fusion and reranked by a cross-encoder.</li>
+      <li>Every answer carries a <code>[chunk_id]</code> citation on each sentence, and a second cheap model call verifies each sentence against the chunk it cites.</li>
+      <li>A second system mines the bot's trace logs, judges the answers, clusters failures into named modes, and emits a schema-validated regression suite, then proves the suite works by seeding known bugs into the pipeline.</li>
+      <li><strong>Result:</strong> reranking lifts recall@10 from 0.78 (vector-only) to 0.94 and nDCG@10 from 0.55 to 0.75 on 36 hand-verified questions; every answer sentence is grounded (123/131 sentences supported, 94%). The eval generator finds a 14% failure rate in the bot's traffic, almost entirely one mode, <em>answering an ambiguous question by assuming an appliance</em>, and agrees with a human judge 87% of the time.</li>
+    </ul>
+  </section>
+  </section>
+
+  <section id="decision-context">
+    <h2>The Decision That Triggered This Build</h2>
+    <p>
+      A support bot answering from official manuals has an unusual failure profile: users arrive with two
+      incompatible query types. <strong>Symptom descriptions</strong> in casual language ("my fridge won't get
+      cold") and <strong>exact tokens</strong> ("error CF", part numbers). These want opposite retrieval
+      strategies, and a system tuned for one is measurably bad at the other.
+    </p>
+    <p>
+      The product question: is one embedding model enough, or does exact matching need to run alongside it?
+      And, because a support bot that invents a repair step is a liability, how do you know the answers stay
+      grounded <em>over time</em>, not just at launch?
+    </p>
+  </section>
+
+  <section id="why-vectors-alone-fail">
+    <h2>Why Dense Retrieval Alone Was Not Enough</h2>
+    <div class="cards">
+      <div class="card">
+        <h4>Error codes carry almost no meaning</h4>
+        <p>To an embedding model, ten error-code passages that differ only in a two-letter code all say the same thing: a fault occurred, unplug it, call service. The token that distinguishes them is the one the model weights least.</p>
+      </div>
+      <div class="card">
+        <h4>Manual vocabulary is not user vocabulary</h4>
+        <p>The manual says "not maintaining temperature"; the user says "not getting cold". Zero content words shared. This is where keyword search fails and dense retrieval wins.</p>
+      </div>
+      <div class="card">
+        <h4>Both failures are silent</h4>
+        <p>Wrong retrieval produces a fluent, confident, wrong answer. No exception, no error rate, nothing on a dashboard. Only an evaluation set catches it, and the generator below confirmed the bot's single largest failure mode is exactly this.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="approach">
+    <h2>Technical Approach</h2>
+    <p>
+      Two retrievers with complementary weaknesses run in parallel and are merged by rank, not by score. Dense
+      vectors handle paraphrase; BM25 handles exact strings. The fused list is reranked by a cross-encoder that
+      reads query and candidate together, and only the top chunks reach generation, where every sentence is
+      cited and then checked against the chunk it cites.
+    </p>
+    <div class="fig">
+      <img src="figures/hybrid-retrieval-pipeline.svg" alt="Pipeline diagram. A user question splits into two parallel retrieval paths, dense vector search via BGE embeddings and FAISS, and BM25 keyword search, each returning fifty candidates. The two ranked lists merge through reciprocal rank fusion, pass through a cross-encoder reranker down to eight chunks, and feed a model call producing a cited answer, which a cheaper model call then checks for faithfulness. A dashed branch shows every generation being written to JSONL trace logs.">
+      <p class="caption">Two retrievers with complementary weaknesses, fused by rank and reranked before generation. Reranking lifted recall@10 from 0.78 to 0.94. Every answer is logged.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h4>Ingest</h4>
+        <p>Extract PDF text, strip the repeating headers and footers (left in, they become the most common text in the corpus and pollute every keyword score), unwrap line breaks, and chunk at ~300 words with 50 overlapping so a repair procedure is never severed mid-step. 13 manuals became 1,475 chunks.</p>
+      </div>
+      <div class="card">
+        <h4>Two indexes</h4>
+        <p>BGE embeddings (<code>BAAI/bge-large-en-v1.5</code>) in a FAISS inner-product index over L2-normalised vectors, so every score is a cosine similarity in [-1, 1]; <code>rank_bm25</code> over the identical chunks.</p>
+      </div>
+      <div class="card">
+        <h4>Fuse by rank</h4>
+        <p>Reciprocal rank fusion, <code>1/(60 + rank)</code> from each list. A chunk both retrievers rank highly collects from both and rises.</p>
+      </div>
+      <div class="card">
+        <h4>Rerank</h4>
+        <p>A cross-encoder (Cohere <code>rerank-english-v3.0</code>) scores the top 50 down to 8. Too slow for the whole corpus, which is why fast retrieval earns the candidate list first.</p>
+      </div>
+    </div>
+    <div class="findings">
+      <strong>Design choice: fuse by rank, not by score</strong>
+      <p>
+        Cosine similarity lands around 0.4–0.8; BM25 is unbounded and routinely exceeds 3. Summing them lets
+        BM25 shout down the vector signal for no principled reason, and any weighting has to be re-tuned the
+        moment the embedding model changes. RRF discards magnitudes and keeps only positions, so it needs no
+        normalisation and no weights.
+      </p>
+    </div>
+  </section>
+
+  <section id="design-decisions">
+    <h2>Choices Made With Data, Not Assertion</h2>
+    <div class="cards">
+      <div class="card">
+        <h4>Chunk size is swept, not asserted</h4>
+        <p>150 / 300 / 600 words on the same gold set, scored by word-span overlap against the source document. The result contradicted the 300-word default: 150-word chunks scored recall 0.806 against 0.722 at 300 and 0.667 at 600, a tighter passage is less diluted by neighbouring text. The sweep is the deliverable; the default was wrong.</p>
+      </div>
+      <div class="card">
+        <h4>Abstention keys off cosine, not the fused score</h4>
+        <p>After fusion the scores are RRF sums around 0.03; after reranking they are on a different scale again. Cosine is the only one on a fixed interpretable interval, so it is what the "not in these manuals" threshold reads. Honest limitation: BGE cosine compresses on a small corpus, an off-topic "who won the World Cup" scored 0.50, above the 0.45 cutoff, so the threshold needs tuning per corpus.</p>
+      </div>
+      <div class="card">
+        <h4>Cost and latency come from the traces</h4>
+        <p>The shared client attaches usage and latency to every response, so per-answer cost is a read over logs already written, not a separate pass. Measured: ~$0.0016 per answer, roughly $1.60 per 1,000 at paid-tier rates.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="evaluation-harness">
+    <h2>The Suite That Writes Itself</h2>
+    <p>
+      The second project treats the first's logs as raw material. The cases a system actually struggles with beat
+      any you would invent, which the run proved: to give the generator something to find, the bot answered its
+      clean gold set <em>plus a slice of realistic traffic</em> (ambiguous questions, out-of-scope ones, questions
+      the manuals do not cover). On the clean gold set alone the bot was faithful and the judge found <em>nothing</em>;
+      the failures live in the traffic, exactly as with real users.
+    </p>
+    <div class="fig">
+      <img src="figures/eval-harness-loop.svg" alt="Circular flow diagram. JSONL traces from the retrieval system are normalised, judged by a model into verdicts with failure reasons, embedded and clustered into named failure modes, turned into structured evaluation cases, and validated against a schema, with invalid cases discarded, producing a regression suite that tests the retrieval system, closing the loop. A side branch shows the suite itself being validated by seeding known bugs.">
+      <p class="caption">The suite is generated from the system's own traces, it found a 14% failure rate, almost all one mode, then validated by seeding known bugs and confirming it catches them.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h4>Mine</h4>
+        <p>Normalise JSONL traces into question / retrieved chunks / answer. Logging is therefore a designed interface rather than debug output: a trace missing its chunk ids is useless here.</p>
+      </div>
+      <div class="card">
+        <h4>Judge</h4>
+        <p>A cheap model rules each answer good or bad and names the failure. Rules can check <em>form</em>, is every sentence cited, does the citation exist, but not whether a passage about a washing machine answers a question about a refrigerator. That is the failure class rules miss entirely.</p>
+      </div>
+      <div class="card">
+        <h4>Cluster</h4>
+        <p>Embed the free-text failure reasons and cluster them, so many individual failures become a handful of named modes with counts. The 8 failures resolved into 5 modes, and 6 of the 8 were one family: the question named no appliance and the answer assumed one.</p>
+      </div>
+      <div class="card">
+        <h4>Generate</h4>
+        <p>Emit Pydantic-validated <code>EvalCase</code> records whose <code>target_failure_mode</code> must be one the clustering actually discovered. An invented mode is rejected rather than silently corrupting the suite. 8 cases were emitted, 0 rejected.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="results">
+    <h2>Evaluation</h2>
+    <div class="metrics-box">
+      <div class="metrics-row">
+        <div class="metric-item">
+          <div class="metric-label">recall@10</div>
+          <div class="metric-value">0.78 → 0.94</div>
+          <div class="metric-desc">vector-only vs hybrid + rerank (36 questions, k=10)</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">nDCG@10</div>
+          <div class="metric-value">0.55 → 0.75</div>
+          <div class="metric-desc">vector-only vs hybrid + rerank</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Citation faithfulness</div>
+          <div class="metric-value">94%</div>
+          <div class="metric-desc">123 / 131 answer sentences supported</div>
+        </div>
+      </div>
+    </div>
+    <p class="section-note">All four systems on the same 36-question gold set, a hybrid number alone proves nothing:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>System</th>
+          <th>recall@10</th>
+          <th>nDCG@10</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>vector-only (baseline)</td>
+          <td>0.778</td>
+          <td>0.547</td>
+        </tr>
+        <tr>
+          <td>BM25-only</td>
+          <td>0.500</td>
+          <td>0.364</td>
+        </tr>
+        <tr>
+          <td>hybrid (RRF)</td>
+          <td>0.722</td>
+          <td>0.460</td>
+        </tr>
+        <tr>
+          <td><strong>hybrid + rerank</strong></td>
+          <td><strong>0.944</strong></td>
+          <td><strong>0.754</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Two honest notes. First, <strong>the reranker is what earns the jump</strong>: RRF alone actually scored
+      <em>below</em> vector-only here (0.722 vs 0.778), because the gold set is symptom-dominated and dense
+      retrieval already handles those, the cross-encoder is what closes the gap and then some. Second, the
+      verified gold set is <strong>35 symptom questions and 1 error-code question</strong>, so the error-code
+      column is a single data point and is reported as such, not as a rate; the genuine error-code-vs-symptom
+      comparison is named as the top next-iteration priority.
+    </p>
+    <div class="metrics-box">
+      <div class="metrics-row">
+        <div class="metric-item">
+          <div class="metric-label">Failure rate found</div>
+          <div class="metric-value">14.0%</div>
+          <div class="metric-desc">8 / 57 traces; dominant mode assumes an unspecified appliance (6 of 8)</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Seeded-bug catch rate</div>
+          <div class="metric-value">100%</div>
+          <div class="metric-desc">stripped citations · "I do not know" · contentless</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Judge vs human</div>
+          <div class="metric-value">86.7%</div>
+          <div class="metric-desc">26 / 30 hand-labelled traces agree</div>
+        </div>
+      </div>
+    </div>
+    <div class="findings warning">
+      <strong>Main weakness: the suite can only catch failures it has seen</strong>
+      <p>
+        The suite is validated by seeding bugs of rising subtlety. Stripping every citation, and replying "I do
+        not know" to everything, are caught at the floor. The subtle case is an answer that is fluent, fully
+        cited, and says nothing. Mining logs gets you the failures you <em>have</em>, never the ones you have not
+        had yet, and on this small corpus the generated assertions also over-trigger on healthy answers, so the
+        100% seeded-bug catch comes with imperfect discrimination that a larger trace corpus would sharpen.
+      </p>
+    </div>
+    <div class="findings warning">
+      <strong>The judge's accuracy gates every other number, so it was measured</strong>
+      <p>
+        A judge is perfectly self-consistent when it is wrong; it will never tell you. So 30 traces were
+        hand-labelled and agreement measured: 87%. The interesting part is the <em>direction</em> of the 4
+        disagreements, every one was the judge flagging an answer the human accepted (the ambiguous-appliance
+        answers a person reads as "good enough for a small model"). The judge is stricter than the human, which
+        for a regression detector is the safer bias, but it is a bias, and naming it is the point. A subtler trap
+        also had to be fixed during the build: with a soft prompt the judge rubber-stamped everything as good, and
+        only an explicit rubric <em>with a worked example</em> made it discriminate.
+      </p>
+    </div>
+  </section>
+
+  <section id="recommendation">
+    <h2>Recommendation</h2>
+    <div class="recommendation positive">
+      <h3>Ship hybrid + rerank, not dense-only</h3>
+      <p>
+        The measured cost is one extra index and one rerank call; the benefit is recall@10 from 0.78 to 0.94 and
+        an entire query class dense retrieval misranks. Measure judge-vs-human agreement before trusting any
+        number the judge produces, here it was 87%, and the disagreements were all in one direction.
+      </p>
+    </div>
+    <h3>Next Iteration Priorities</h3>
+    <ul>
+      <li>Add a batch of hand-verified error-code questions and publish recall@10 / nDCG@10 split by query type, the symptom side is solid; the code side is currently one question.</li>
+      <li>Tune the abstention threshold from the failure dump; BGE cosine compresses on small corpora and the traffic run showed an off-topic query scoring above the constant cutoff.</li>
+      <li>Grow the trace corpus so the generated evals discriminate healthy from broken, not just catch seeded bugs.</li>
+      <li>Re-run the suite after changing chunk size, that is regression testing, and it is the point.</li>
+    </ul>
+  </section>
+
+  <footer>© 2026 Abhitay Shinde</footer>
+
+</body>
+</html>
