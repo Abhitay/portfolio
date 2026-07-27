@@ -149,9 +149,7 @@
         <div class="work-main">
           <h3>Hybrid RAG Retrieval + Automated Evaluation Harness</h3>
           <p>
-            Dense vectors miss error codes; keyword search misses paraphrase. I built both, fused them by
-            rank, and reranking took recall@10 from 0.78 to 0.94. A second system then turned the bot's own
-            traces into a validated regression suite that found its real failure mode.
+            A support bot that answers from product manuals, built to handle both exact error codes and vaguely-worded problems. A companion system turns its own chat logs into test cases that catch where its answers go wrong.
           </p>
           <span class="arrow-link">Explore the analysis →</span>
         </div>
@@ -170,8 +168,7 @@
         <div class="work-main">
           <h3>Human-Gated Agent for Refund Automation</h3>
           <p>
-            Typed tools with validation at the boundary, a plan-act loop with a step budget, and a hard
-            approval gate that stopped 100% of high-risk actions, including a refund on an ineligible order.
+            A customer-service AI agent that looks up orders and issues refunds on its own, but has to pause for human approval before it can actually move any money.
           </p>
           <span class="arrow-link">Explore the analysis →</span>
         </div>
@@ -190,9 +187,7 @@
         <div class="work-main">
           <h3>Semantic Caching for LLM Cost & Latency</h3>
           <p>
-            Matching questions by meaning took the hit rate to 0.72 and latency down 3.5×, but the
-            loosest, best-looking threshold serves 15% wrong answers. So I built the false-hit measurement
-            before choosing a threshold.
+            A cache that recognizes when two questions mean the same thing and reuses the earlier answer, cutting cost and wait time, with a safeguard against serving an answer to the wrong question.
           </p>
           <span class="arrow-link">Explore the analysis →</span>
         </div>
@@ -211,9 +206,7 @@
         <div class="work-main">
           <h3>Fine-Tuned, Guarded Text-to-SQL Copilot</h3>
           <p>
-            LoRA on a 4-bit base trained locally on Apple silicon (+5 points on Spider), behind an
-            AST-parsing guard that blocked 300 of 300 attacks, with a confidence score whose calibration is
-            measured, not assumed.
+            A tool that turns plain-English questions into database queries. It is small enough to run on a laptop, and a guard checks every query and blocks anything that could touch data it should not.
           </p>
           <span class="arrow-link">Explore the analysis →</span>
         </div>
@@ -232,8 +225,7 @@
         <div class="work-main">
           <h3>IBM Agentic Library: Graph RAG for Document Q&amp;A</h3>
           <p>
-            Built a Graph RAG pipeline with Neo4j and FAISS for structured retrieval.
-            Knowledge-graph modeling improved retrieval precision by 30%+ over naive search.
+            A document question-answering system that combines vector search with a knowledge graph, so it can connect related facts across documents instead of just matching keywords.
           </p>
           <span class="arrow-link">Explore the analysis →</span>
         </div>
@@ -252,8 +244,7 @@
         <div class="work-main">
           <h3>Product Analytics Suite</h3>
           <p>
-            A combined suite of three analyses covering feature impact, growth allocation,
-            and root-cause diagnosis using PSM, DiD, uplift modeling, and MMM.
+            Three connected studies that help product teams decide with evidence: whether a feature truly worked, where growth budget actually pays off, and what really caused a metric to drop.
           </p>
           <span class="arrow-link">Explore the analysis →</span>
         </div>
@@ -272,8 +263,7 @@
         <div class="work-main">
           <h3>M(iche)Langelo: Analysis on AI-Generated Art</h3>
           <p>
-            Built an end-to-end Reddit pipeline for style, caption, and source detection using CLIP, BLIP, and SuSy.
-            Transfer learning to a 3-class SuSy head improved MidJourney and DALL-E detection on real-world art streams.
+            An end-to-end pipeline that scans Reddit art posts to flag AI-generated images, identify which model likely made them, and describe their style using vision-language models.
           </p>
           <span class="arrow-link">Explore the analysis →</span>
         </div>
