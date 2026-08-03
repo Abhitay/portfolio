@@ -62,31 +62,6 @@
 
 <body>
 
-<aside class="side-index collapsible" aria-label="Page index">
-  <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
-    <span class="side-index-icon" aria-hidden="true">
-      <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </span>
-    <span class="side-index-label">On this page</span>
-  </button>
-  <div class="side-index-body" hidden>
-    <div class="side-index-header">
-      <div class="side-index-title">On this page</div>
-      <button class="side-index-close" type="button" aria-label="Close section list">×</button>
-    </div>
-    <a href="#tldr">TL;DR</a>
-    <a href="#decision-context">Decision Context</a>
-    <a href="#who-we-were-comparing">Who We Compared</a>
-    <a href="#misleading-metrics">Why Standard Metrics Misled</a>
-    <a href="#data">Data</a>
-    <a href="#roi-fails">Why ROI Fails</a>
-    <a href="#after-correction">After Correction</a>
-    <a href="#recommendation">Recommendation</a>
-  </div>
-</aside>
-
 <nav>
   <div class="left"><a href="index.html">Abhitay Shinde</a></div>
   <div class="right">
@@ -129,20 +104,26 @@
 </section>
 
 <!-- TLDR -->
- <section id="tldr">
-<section class="tldr">
-  <h2>TL;DR: Executive Decision</h2>
-  <ul>
-    <li>ROI-based allocation favors users who would have converted anyway.</li>
-    <li>User quality, saturation, and causality materially change channel rankings.</li>
-    <li>Incremental LTV reveals which channels actually create long-term value.</li>
-    <li><strong>Decision:</strong> Reallocate spend using incremental LTV optimization. Same budget, higher value.</li>
-  </ul>
+<section id="tldr" class="tldr">
+  <h2>TL;DR</h2>
+  <p>ROI-based allocation favors users who would have converted anyway, so it misranks channels once user quality, saturation, and causality are accounted for. Optimizing instead for incremental LTV reveals which channels actually create long-term value. The recommendation: reallocate the same budget by incremental-LTV optimization for higher value.</p>
 </section>
+
+<section id="contents" class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#decision-context">Introduction</a></li>
+    <li><a href="#who-we-were-comparing">What We Compared</a></li>
+    <li><a href="#misleading-metrics">Why Metrics Mislead</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#roi-fails">Why ROI Fails</a></li>
+    <li><a href="#after-correction">Results</a></li>
+    <li><a href="#recommendation">Recommendation</a></li>
+  </ol>
 </section>
 <!-- DECISION CONTEXT -->
 <section id="decision-context">
-  <h2>The Decision That Triggered This Analysis</h2>
+  <h2>Introduction</h2>
   <p class="lead">
     Growth was accelerating, but leadership needed to know whether it was healthy.
   </p>
@@ -158,7 +139,7 @@
 
 <!-- WHO -->
 <section id="who-we-were-comparing">
-  <h2>Who We Were Comparing</h2>
+  <h2>What We Compared</h2>
 
   <p class="lead">
     Acquisition channels do not bring the same kind of users.  
@@ -210,7 +191,7 @@
 
 <!-- METRICS -->
 <section id="misleading-metrics">
-  <h2>Why Standard Metrics Were Misleading</h2>
+  <h2>Why Metrics Mislead</h2>
 
   <p class="lead">
     At first glance, the numbers looked healthy.  
@@ -266,7 +247,7 @@
 
 <!-- DATA -->
 <section id="data">
-  <h2>The Data Behind the Decision</h2>
+  <h2>Data</h2>
 
   <p class="lead">
     To separate <strong>user quality</strong> from <strong>feature impact</strong>,
@@ -328,7 +309,7 @@
 
 
 <section id="roi-fails">
-  <h2>Why ROI-Based Allocation Fails at Scale</h2>
+  <h2>Why ROI Fails</h2>
 
   <p class="lead">
     ROI works early.  
@@ -392,7 +373,7 @@
 
 <!-- WHAT CHANGED -->
 <section id="after-correction">
-  <h2>What Changed After Correcting for Bias</h2>
+  <h2>Results</h2>
 
   <p class="lead">
     Once user quality and selection effects were controlled for,
@@ -467,7 +448,7 @@
 <!-- DECISION -->
  <section>
 <section class="findings">
-  <h2>Final Recommendation</h2>
+  <h2>Recommendation</h2>
   <p><strong>Decision:</strong> Ship the optimized allocation.</p>
   <ul>
     <li>Reallocate spend toward causal value</li>

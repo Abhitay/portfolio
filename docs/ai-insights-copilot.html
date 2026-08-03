@@ -62,35 +62,6 @@
 
 <body>
 
-  <aside class="side-index collapsible" aria-label="Page index">
-    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
-      <span class="side-index-icon" aria-hidden="true">
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <span class="side-index-label">On this page</span>
-    </button>
-    <div class="side-index-body" hidden>
-      <div class="side-index-header">
-        <div class="side-index-title">On this page</div>
-        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
-      </div>
-      <a href="#tldr">TL;DR</a>
-      <a href="#decision-context">Decision Context</a>
-      <a href="#who-we-were-comparing">Who We Compared</a>
-      <a href="#esau-misleads">Why ESAU Can Mislead</a>
-      <a href="#data">Data</a>
-      <a href="#standard-analysis">Standard Analysis</a>
-      <a href="#naive-risk">Why Naive Was Risky</a>
-      <a href="#agentic-investigation">Agentic Investigation</a>
-      <a href="#approach">Counterfactual Approach</a>
-      <a href="#corrected-results">Corrected Results</a>
-      <a href="#segments">Segment Insights</a>
-      <a href="#key-findings">Key Findings</a>
-    </div>
-  </aside>
-
   <!-- NAVBAR -->
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
@@ -130,19 +101,29 @@
   </section>
 
   <!-- TL;DR -->
-   <section id="tldr">
-  <section class="tldr">
+  <section id="tldr" class="tldr">
     <h2>TL;DR</h2>
-    <ul>
-      <li>I evaluated a post-launch engagement decline following a major feed update in a consumer product.</li>
-      <li>Initial analysis using aggregate metrics, t-tests, and naive Difference-in-Differences strongly suggested the feature caused the drop.</li>
-      <li>Deeper analysis correcting for selection bias and cohort shifts showed the feature impact was real but not the primary driver.</li>
-      <li><strong>Final decision:</strong> Do not rollback the feature. Apply a targeted fix and monitor cohort-normalized engagement.</li>
-    </ul>
+    <p>An investigation of a post-launch engagement decline after a major feed update in a consumer product. Initial analysis with aggregate metrics, t-tests, and a naive Difference-in-Differences strongly suggested the feature caused the drop, but deeper analysis correcting for selection bias and cohort shifts showed the feature's impact was real yet not the primary driver. Final decision: do not roll back the feature, apply a targeted fix and monitor cohort-normalized engagement.</p>
   </section>
+
+  <section id="contents" class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#decision-context">Introduction</a></li>
+      <li><a href="#who-we-were-comparing">What We Compared</a></li>
+      <li><a href="#esau-misleads">Why ESAU Misleads</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#standard-analysis">Standard Analysis</a></li>
+      <li><a href="#naive-risk">Why It Was Risky</a></li>
+      <li><a href="#agentic-investigation">Agentic Investigation</a></li>
+      <li><a href="#approach">Counterfactual Approach</a></li>
+      <li><a href="#corrected-results">Results</a></li>
+      <li><a href="#segments">Segment Insights</a></li>
+      <li><a href="#key-findings">Key Findings</a></li>
+    </ol>
   </section>
   <section id="decision-context">
-    <h2>The Decision Leadership Needed</h2>
+    <h2>Introduction</h2>
     <p>The product is a B2C, feed-based application where user engagement directly impacts retention and long-term revenue. Engagement is closely monitored by leadership and often used as an early warning signal for product regressions.</p>
     <p>Shortly after the gradual rollout of a new feed experience, leadership observed a sustained decline in engagement. The timing raised immediate concern that the feature had negatively impacted user behavior. The decision at stake was whether to rollback the feature, pause further rollout, or continue with targeted iteration.</p>
     <div class="fig">
@@ -152,7 +133,7 @@
   </section>
 
 <section id="who-we-were-comparing">
-  <h2>Who We Were Comparing</h2>
+  <h2>What We Compared</h2>
 
   <p class="lead">
     The engagement drop did not affect all users equally.
@@ -204,7 +185,7 @@
 
 
 <section id="esau-misleads">
-  <h2>Why ESAU Can Mislead</h2>
+  <h2>Why ESAU Misleads</h2>
 
   <p class="lead">
     ESAU is a useful signal, but only when the population underneath it is stable.
@@ -259,7 +240,7 @@
 
 
 <section id="data">
-  <h2>The Data Behind the Decision</h2>
+  <h2>Data</h2>
 
   <p class="lead">
     To determine whether the feed update caused the drop,
@@ -317,7 +298,7 @@
 
 
   <section id="standard-analysis">
-  <h2>The Standard Analysis (What Most Teams Would Do)</h2>
+  <h2>Standard Analysis</h2>
 
   <p class="lead">
     The initial evidence appeared to point clearly toward a rollback.
@@ -392,7 +373,7 @@
 
 
   <section id="naive-risk">
-    <h2>Why the Naive Conclusion Was Risky</h2>
+    <h2>Why It Was Risky</h2>
     <div class="card findings danger">
       <strong>Core claim:</strong>
       <p>The naive analysis compared incomparable groups and attributed all change to the most visible event.</p>
@@ -403,7 +384,7 @@
   </section>
 
 <section id="agentic-investigation">
-  <h2>Agentic Investigation: Structuring the Root Cause Analysis</h2>
+  <h2>Agentic Investigation</h2>
 
   <p class="lead">
     Before applying deeper causal methods,
@@ -474,7 +455,7 @@
 
 
 <section id="approach">
-  <h2>My Approach: Estimating the Counterfactual</h2>
+  <h2>Counterfactual Approach</h2>
 
   <p class="lead">
     The critical question was not whether engagement changed,
@@ -553,7 +534,7 @@
 
 
 <section id="corrected-results">
-  <h2>What Changed After Correcting for Bias</h2>
+  <h2>Results</h2>
 
   <p class="lead">
     Once selection effects and cohort shifts were accounted for,
@@ -611,7 +592,7 @@
 
 
   <section id="segments">
-    <h2>Segment-Level Insights</h2>
+    <h2>Segment Insights</h2>
     <div class="card">
       <p>Breaking results down by segment revealed meaningful heterogeneity:</p>
       <ul>
@@ -624,7 +605,7 @@
   </section>
 
   <section id="key-findings">
-  <h2>Key Findings & Inference</h2>
+  <h2>Key Findings</h2>
 
   <p class="lead">
     Correcting for bias materially changed both the interpretation

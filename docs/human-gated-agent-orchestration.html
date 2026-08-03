@@ -60,29 +60,6 @@
 </head>
 <body>
 
-  <aside class="side-index collapsible" aria-label="Page index">
-    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
-      <span class="side-index-icon" aria-hidden="true">
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <span class="side-index-label">On this page</span>
-    </button>
-    <div class="side-index-body" hidden>
-      <div class="side-index-header">
-        <div class="side-index-title">On this page</div>
-        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
-      </div>
-      <a href="#tldr">TL;DR</a>
-      <a href="#decision-context">Decision Context</a>
-      <a href="#what-an-agent-is">What an Agent Actually Is</a>
-      <a href="#approach">Technical Approach</a>
-      <a href="#results">Evaluation</a>
-      <a href="#recommendation">Recommendation</a>
-    </div>
-  </aside>
-
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
     <div class="right">
@@ -121,20 +98,24 @@
     </div>
   </section>
 
-  <section id="tldr">
-  <section class="tldr">
+  <section id="tldr" class="tldr">
     <h2>TL;DR</h2>
-    <ul>
-      <li>A customer-service agent that looks up orders, reads the refund policy, and issues refunds through typed tools, with every argument validated before execution.</li>
-      <li>Money-moving tools are flagged high-risk: the agent pauses, surfaces the exact action and arguments, and proceeds only on explicit approval.</li>
-      <li>Every step is logged with a shared <code>run_id</code> and a monotonic <code>step</code>, so any run replays in order.</li>
-      <li><strong>Result:</strong> on a 4-task fixture, 100% task success, 100% tool-call accuracy, and 100% of high-risk actions gated, the one refund attempt that was policy-ineligible was stopped at the approval boundary, not executed, at $0.0006 per task.</li>
-    </ul>
+    <p>A customer-service agent that looks up orders, reads the refund policy, and issues refunds through typed tools, with every argument validated before it runs. Money-moving tools are flagged high-risk, so the agent pauses, shows the exact action and arguments, and proceeds only on explicit human approval, and every step is logged under a shared run_id for ordered replay. On a 4-task fixture it reached 100% task success and tool-call accuracy with 100% of high-risk actions gated: the one policy-ineligible refund was stopped at the approval boundary, not executed, at $0.0006 per task.</p>
   </section>
+
+  <section id="contents" class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#decision-context">Introduction</a></li>
+      <li><a href="#what-an-agent-is">What an Agent Is</a></li>
+      <li><a href="#approach">Technical Approach</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#recommendation">Recommendation</a></li>
+    </ol>
   </section>
 
   <section id="decision-context">
-    <h2>The Decision That Triggered This Build</h2>
+    <h2>Introduction</h2>
     <p>
       A returns desk is the canonical case for agents, multi-step, tool-dependent, high-volume, and the
       canonical case against them, because the final step moves real money out of the business. Automating the
@@ -148,7 +129,7 @@
   </section>
 
   <section id="what-an-agent-is">
-    <h2>What an Agent Actually Is</h2>
+    <h2>What an Agent Is</h2>
     <div class="cards">
       <div class="card">
         <h4>Tools</h4>
@@ -206,7 +187,7 @@
   </section>
 
   <section id="results">
-    <h2>Evaluation</h2>
+    <h2>Results</h2>
     <div class="metrics-box">
       <div class="metrics-row">
         <div class="metric-item">

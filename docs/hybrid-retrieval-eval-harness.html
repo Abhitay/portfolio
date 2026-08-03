@@ -60,31 +60,6 @@
 </head>
 <body>
 
-  <aside class="side-index collapsible" aria-label="Page index">
-    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
-      <span class="side-index-icon" aria-hidden="true">
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <span class="side-index-label">On this page</span>
-    </button>
-    <div class="side-index-body" hidden>
-      <div class="side-index-header">
-        <div class="side-index-title">On this page</div>
-        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
-      </div>
-      <a href="#tldr">TL;DR</a>
-      <a href="#decision-context">Decision Context</a>
-      <a href="#why-vectors-alone-fail">Why Dense Alone Fails</a>
-      <a href="#approach">Technical Approach</a>
-      <a href="#design-decisions">Choices Made With Data</a>
-      <a href="#evaluation-harness">The Suite That Writes Itself</a>
-      <a href="#results">Evaluation</a>
-      <a href="#recommendation">Recommendation</a>
-    </div>
-  </aside>
-
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
     <div class="right">
@@ -125,20 +100,26 @@
     </div>
   </section>
 
-  <section id="tldr">
-  <section class="tldr">
+  <section id="tldr" class="tldr">
     <h2>TL;DR</h2>
-    <ul>
-      <li>Hybrid retrieval over appliance manuals: dense vectors for meaning, BM25 for exact strings like error codes, merged by reciprocal rank fusion and reranked by a cross-encoder.</li>
-      <li>Every answer carries a <code>[chunk_id]</code> citation on each sentence, and a second cheap model call verifies each sentence against the chunk it cites.</li>
-      <li>A second system mines the bot's trace logs, judges the answers, clusters failures into named modes, and emits a schema-validated regression suite, then proves the suite works by seeding known bugs into the pipeline.</li>
-      <li><strong>Result:</strong> reranking lifts recall@10 from 0.78 (vector-only) to 0.94 and nDCG@10 from 0.55 to 0.75 on 36 hand-verified questions; every answer sentence is grounded (123/131 sentences supported, 94%). The eval generator finds a 14% failure rate in the bot's traffic, almost entirely one mode, <em>answering an ambiguous question by assuming an appliance</em>, and agrees with a human judge 87% of the time.</li>
-    </ul>
+    <p>A support bot for appliance manuals that pairs dense vector search with BM25 keyword search, fused by rank and reranked, so it handles both vaguely-worded symptoms and exact error codes, with every answer sentence cited and checked against its source. A companion system turns the bot's own logs into a regression test suite. Reranking lifted recall@10 from 0.78 to 0.94, 94% of answer sentences are grounded, and the generated suite surfaced a 14% failure rate concentrated in a single mode: answering an ambiguous question by assuming an appliance.</p>
   </section>
+
+  <section id="contents" class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#decision-context">Introduction</a></li>
+      <li><a href="#why-vectors-alone-fail">The Problem</a></li>
+      <li><a href="#approach">Technical Approach</a></li>
+      <li><a href="#design-decisions">Design Decisions</a></li>
+      <li><a href="#evaluation-harness">Evaluation Harness</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#recommendation">Recommendation</a></li>
+    </ol>
   </section>
 
   <section id="decision-context">
-    <h2>The Decision That Triggered This Build</h2>
+    <h2>Introduction</h2>
     <p>
       A support bot answering from official manuals has an unusual failure profile: users arrive with two
       incompatible query types. <strong>Symptom descriptions</strong> in casual language ("my fridge won't get
@@ -153,7 +134,7 @@
   </section>
 
   <section id="why-vectors-alone-fail">
-    <h2>Why Dense Retrieval Alone Was Not Enough</h2>
+    <h2>The Problem</h2>
     <div class="cards">
       <div class="card">
         <h4>Error codes carry almost no meaning</h4>
@@ -182,24 +163,24 @@
       <img src="figures/hybrid-retrieval-pipeline.svg" alt="Pipeline diagram. A user question splits into two parallel retrieval paths, dense vector search via BGE embeddings and FAISS, and BM25 keyword search, each returning fifty candidates. The two ranked lists merge through reciprocal rank fusion, pass through a cross-encoder reranker down to eight chunks, and feed a model call producing a cited answer, which a cheaper model call then checks for faithfulness. A dashed branch shows every generation being written to JSONL trace logs.">
       <p class="caption">Two retrievers with complementary weaknesses, fused by rank and reranked before generation. Reranking lifted recall@10 from 0.78 to 0.94. Every answer is logged.</p>
     </div>
-    <div class="cards">
-      <div class="card">
+    <ol class="steps">
+      <li>
         <h4>Ingest</h4>
         <p>Extract PDF text, strip the repeating headers and footers (left in, they become the most common text in the corpus and pollute every keyword score), unwrap line breaks, and chunk at ~300 words with 50 overlapping so a repair procedure is never severed mid-step. 13 manuals became 1,475 chunks.</p>
-      </div>
-      <div class="card">
-        <h4>Two indexes</h4>
+      </li>
+      <li>
+        <h4>Build two indexes</h4>
         <p>BGE embeddings (<code>BAAI/bge-large-en-v1.5</code>) in a FAISS inner-product index over L2-normalised vectors, so every score is a cosine similarity in [-1, 1]; <code>rank_bm25</code> over the identical chunks.</p>
-      </div>
-      <div class="card">
+      </li>
+      <li>
         <h4>Fuse by rank</h4>
         <p>Reciprocal rank fusion, <code>1/(60 + rank)</code> from each list. A chunk both retrievers rank highly collects from both and rises.</p>
-      </div>
-      <div class="card">
+      </li>
+      <li>
         <h4>Rerank</h4>
         <p>A cross-encoder (Cohere <code>rerank-english-v3.0</code>) scores the top 50 down to 8. Too slow for the whole corpus, which is why fast retrieval earns the candidate list first.</p>
-      </div>
-    </div>
+      </li>
+    </ol>
     <div class="findings">
       <strong>Design choice: fuse by rank, not by score</strong>
       <p>
@@ -212,7 +193,7 @@
   </section>
 
   <section id="design-decisions">
-    <h2>Choices Made With Data, Not Assertion</h2>
+    <h2>Design Decisions</h2>
     <div class="cards">
       <div class="card">
         <h4>Chunk size is swept, not asserted</h4>
@@ -230,7 +211,7 @@
   </section>
 
   <section id="evaluation-harness">
-    <h2>The Suite That Writes Itself</h2>
+    <h2>Evaluation Harness</h2>
     <p>
       The second project treats the first's logs as raw material. The cases a system actually struggles with beat
       any you would invent, which the run proved: to give the generator something to find, the bot answered its
@@ -242,28 +223,28 @@
       <img src="figures/eval-harness-loop.svg" alt="Circular flow diagram. JSONL traces from the retrieval system are normalised, judged by a model into verdicts with failure reasons, embedded and clustered into named failure modes, turned into structured evaluation cases, and validated against a schema, with invalid cases discarded, producing a regression suite that tests the retrieval system, closing the loop. A side branch shows the suite itself being validated by seeding known bugs.">
       <p class="caption">The suite is generated from the system's own traces, it found a 14% failure rate, almost all one mode, then validated by seeding known bugs and confirming it catches them.</p>
     </div>
-    <div class="cards">
-      <div class="card">
+    <ol class="steps">
+      <li>
         <h4>Mine</h4>
         <p>Normalise JSONL traces into question / retrieved chunks / answer. Logging is therefore a designed interface rather than debug output: a trace missing its chunk ids is useless here.</p>
-      </div>
-      <div class="card">
+      </li>
+      <li>
         <h4>Judge</h4>
         <p>A cheap model rules each answer good or bad and names the failure. Rules can check <em>form</em>, is every sentence cited, does the citation exist, but not whether a passage about a washing machine answers a question about a refrigerator. That is the failure class rules miss entirely.</p>
-      </div>
-      <div class="card">
+      </li>
+      <li>
         <h4>Cluster</h4>
         <p>Embed the free-text failure reasons and cluster them, so many individual failures become a handful of named modes with counts. The 8 failures resolved into 5 modes, and 6 of the 8 were one family: the question named no appliance and the answer assumed one.</p>
-      </div>
-      <div class="card">
+      </li>
+      <li>
         <h4>Generate</h4>
         <p>Emit Pydantic-validated <code>EvalCase</code> records whose <code>target_failure_mode</code> must be one the clustering actually discovered. An invented mode is rejected rather than silently corrupting the suite. 8 cases were emitted, 0 rejected.</p>
-      </div>
-    </div>
+      </li>
+    </ol>
   </section>
 
   <section id="results">
-    <h2>Evaluation</h2>
+    <h2>Results</h2>
     <div class="metrics-box">
       <div class="metrics-row">
         <div class="metric-item">

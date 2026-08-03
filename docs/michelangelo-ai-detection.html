@@ -61,31 +61,6 @@
 
 <body>
 
-  <aside class="side-index collapsible" aria-label="Page index">
-    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
-      <span class="side-index-icon" aria-hidden="true">
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <span class="side-index-label">On this page</span>
-    </button>
-    <div class="side-index-body" hidden>
-      <div class="side-index-header">
-        <div class="side-index-title">On this page</div>
-        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
-      </div>
-      <a href="#tldr">TL;DR</a>
-      <a href="#decision-context">Decision Context</a>
-      <a href="#related-work">Related Work</a>
-      <a href="#data">Data</a>
-      <a href="#methods">Methods</a>
-      <a href="#experiments">Experiments</a>
-      <a href="#system-overview">System Overview</a>
-      <a href="#recommendation">Recommendation</a>
-    </div>
-  </aside>
-
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
     <div class="right">
@@ -125,20 +100,26 @@
     </div>
   </section>
 
-  <section id="tldr">
-  <section class="tldr">
+  <section id="tldr" class="tldr">
     <h2>TL;DR</h2>
-    <ul>
-      <li>M(iche)Langelo is a production-style Reddit pipeline for AI-art monitoring and analysis.</li>
-      <li>The system combines CLIP for style, BLIP for captions, and SuSy for source detection.</li>
-      <li>A transfer-learned 3-class SuSy head (authentic, MidJourney, DALL-E 3) improved AI-class detection on real-world Reddit data.</li>
-      <li><strong>Result:</strong> stronger MidJourney and DALL-E detection under domain shift, with interpretability preserved through multimodal outputs.</li>
-    </ul>
+    <p>M(iche)Langelo is a production-style Reddit pipeline for monitoring and analyzing AI-generated art. It combines CLIP for style, BLIP for captions, and SuSy for source detection, with a transfer-learned 3-class SuSy head (authentic, MidJourney, DALL-E 3) that improves AI-class detection on real-world Reddit data. The result is stronger MidJourney and DALL-E detection under domain shift, with interpretability preserved through the multimodal outputs.</p>
   </section>
+
+  <section id="contents" class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#decision-context">Introduction</a></li>
+      <li><a href="#related-work">Related Work</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#methods">Methods</a></li>
+      <li><a href="#experiments">Results</a></li>
+      <li><a href="#system-overview">System Overview</a></li>
+      <li><a href="#recommendation">Recommendation</a></li>
+    </ol>
   </section>
 
   <section id="decision-context">
-    <h2>The Decision That Triggered This Build</h2>
+    <h2>Introduction</h2>
     <p>
       The spread of high-fidelity text-to-image models raised practical trust issues for online visual ecosystems:
       attribution, misuse, and authenticity ambiguity. Existing detectors trained on curated benchmarks showed weak transfer
@@ -181,7 +162,7 @@
   </section>
 
   <section id="data">
-    <h2>The Data Behind the Decision</h2>
+    <h2>Data</h2>
     <p class="lead">
       Data strategy focused on independent fine-tuning sets plus real-world Reddit test streams from model-specific communities.
     </p>
@@ -287,14 +268,14 @@
       </div>
     </div>
     <div class="fig">
-      <img src="figures/michelangelo-dag.svg" alt="Apache Airflow DAG diagram. Reddit posts are ingested and stored in BigQuery, then fork into three parallel inference tasks — CLIP for style classification, BLIP for captioning, and SuSy for three-class source detection — which converge into an aggregate-and-evaluate step, with an optional SDXL restyle stage.">
-      <p class="caption">Figure 4: the Airflow DAG — scheduled ingestion into BigQuery, three parallel inference models, then aggregation and evaluation.</p>
+      <img src="figures/michelangelo-dag.svg" alt="Apache Airflow DAG diagram. Reddit posts are ingested and stored in BigQuery, then fork into three parallel inference tasks (CLIP for style classification, BLIP for captioning, and SuSy for three-class source detection) which converge into an aggregate-and-evaluate step, with an optional SDXL restyle stage.">
+      <p class="caption">Figure 4: the Airflow DAG, with scheduled ingestion into BigQuery, three parallel inference models, then aggregation and evaluation.</p>
     </div>
 
   </section>
 
   <section id="experiments">
-    <h2>Experiments and Findings</h2>
+    <h2>Results</h2>
     <p>
       Baseline CNNs (ResNet variants) underperformed on Reddit’s diverse artistic distributions. BLIP outperformed earlier captioning attempts on semantic richness,
       and CLIP prompt engineering improved style ranking stability. The strongest gains came from SuSy transfer learning under domain shift.

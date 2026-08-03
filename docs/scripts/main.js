@@ -142,45 +142,6 @@ document.addEventListener('click', (e) => {
   });
 })();
 
-/* ---------- Collapsible "On this page" side index ---------- */
-(function () {
-  const sideIndex = document.querySelector('.side-index.collapsible');
-  const sideToggle = sideIndex?.querySelector('.side-index-toggle');
-  const sideBody = sideIndex?.querySelector('.side-index-body');
-  const sideClose = sideIndex?.querySelector('.side-index-close');
-  if (!sideIndex || !sideToggle || !sideBody) return;
-
-  const sideMedia = window.matchMedia('(max-width: 768px)');
-
-  const openPanel = () => {
-    sideIndex.classList.add('open');
-    sideToggle.setAttribute('aria-expanded', 'true');
-    sideBody.hidden = false;
-  };
-
-  const closePanel = () => {
-    sideIndex.classList.remove('open');
-    sideToggle.setAttribute('aria-expanded', 'false');
-    if (sideMedia.matches) {
-      setTimeout(() => {
-        if (!sideIndex.classList.contains('open')) sideBody.hidden = true;
-      }, 180);
-    } else {
-      sideBody.hidden = true;
-    }
-  };
-
-  sideToggle.addEventListener('click', e => {
-    e.preventDefault();
-    sideIndex.classList.contains('open') ? closePanel() : openPanel();
-  });
-
-  sideClose?.addEventListener('click', closePanel);
-  sideIndex.addEventListener('mouseenter', () => { if (!sideMedia.matches) openPanel(); });
-  sideIndex.addEventListener('mouseleave', () => { if (!sideMedia.matches) closePanel(); });
-  sideMedia.addEventListener('change', () => { sideBody.hidden = !sideIndex.classList.contains('open'); });
-})();
-
 /* ---------- Magnet scroll: the first downward scroll glides the whole hero out
    to the next section in one motion (and snaps back up near the top). ---------- */
 (function () {

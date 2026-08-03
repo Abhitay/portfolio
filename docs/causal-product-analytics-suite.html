@@ -62,27 +62,6 @@
 
 <body>
 
-  <aside class="side-index collapsible" aria-label="Page index">
-    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
-      <span class="side-index-icon" aria-hidden="true">
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <span class="side-index-label">On this page</span>
-    </button>
-    <div class="side-index-body" hidden>
-      <div class="side-index-header">
-        <div class="side-index-title">On this page</div>
-        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
-      </div>
-      <a href="#overview">Overview</a>
-      <a href="#case-studies">Included Studies</a>
-      <a href="#toolkit">Methods</a>
-      <a href="#takeaway">Takeaway</a>
-    </div>
-  </aside>
-
   <!-- NAVBAR -->
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
@@ -128,11 +107,20 @@
     </div>
   </section>
 
+  <section id="contents" class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#case-studies">Included Studies</a></li>
+      <li><a href="#toolkit">Methods</a></li>
+      <li><a href="#takeaway">Takeaway</a></li>
+    </ol>
+  </section>
+
   <section id="case-studies">
     <h2>Included Studies</h2>
     <div class="fig">
-      <img src="figures/causal-decision-framework.svg" alt="Decision-framework diagram. A product or growth decision branches into three studies: feature evaluation (did it really lift retention?) using PSM and DiD, growth optimization (where should spend go?) using uplift and media-mix models, and root-cause analysis (why did the metric drop?) using DiD and cohort-mix. Each yields a causal outcome, and together they feed a decision-first analytics call — ship, no-ship, or reallocate, with evidence.">
-      <p class="caption">One question, three causal studies, one evidence-backed decision — the suite as a repeatable ship / no-ship / reallocate framework.</p>
+      <img src="figures/causal-decision-framework.svg" alt="Decision-framework diagram. A product or growth decision branches into three studies: feature evaluation (did it really lift retention?) using PSM and DiD, growth optimization (where should spend go?) using uplift and media-mix models, and root-cause analysis (why did the metric drop?) using DiD and cohort-mix. Each yields a causal outcome, and together they feed a decision-first analytics call: ship, no-ship, or reallocate, with evidence.">
+      <p class="caption">One question, three causal studies, one evidence-backed decision: the suite as a repeatable ship / no-ship / reallocate framework.</p>
     </div>
     <div class="cards">
       <div class="card">
@@ -171,7 +159,7 @@
   </section>
 
   <section id="toolkit">
-    <h2>Methods Used Across the Suite</h2>
+    <h2>Methods</h2>
     <div class="cards leadership-cards">
       <div class="card leadership-card">
         <h4>Counterfactual impact estimation</h4>
@@ -193,7 +181,7 @@
   </section>
 
   <section id="takeaway">
-    <h2>Key Takeaway</h2>
+    <h2>Takeaway</h2>
     <div class="findings">
       <strong>Why this suite matters</strong>
       <p>

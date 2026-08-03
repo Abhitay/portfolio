@@ -60,31 +60,6 @@
 </head>
 <body>
 
-  <aside class="side-index collapsible" aria-label="Page index">
-    <button class="side-index-toggle" aria-expanded="false" aria-label="Open section list">
-      <span class="side-index-icon" aria-hidden="true">
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <span class="side-index-label">On this page</span>
-    </button>
-    <div class="side-index-body" hidden>
-      <div class="side-index-header">
-        <div class="side-index-title">On this page</div>
-        <button class="side-index-close" type="button" aria-label="Close section list">×</button>
-      </div>
-      <a href="#tldr">TL;DR</a>
-      <a href="#decision-context">Decision Context</a>
-      <a href="#who-we-were-comparing">Who We Compared</a>
-      <a href="#why-rag-alone-fails">Why Baseline RAG Fails</a>
-      <a href="#data">Data</a>
-      <a href="#approach">Technical Approach</a>
-      <a href="#results">Evaluation Results</a>
-      <a href="#recommendation">Recommendation</a>
-    </div>
-  </aside>
-
   <nav>
     <div class="left"><a href="index.html">Abhitay Shinde</a></div>
     <div class="right">
@@ -124,20 +99,26 @@
     </div>
   </section>
 
-  <section id="tldr">
-  <section class="tldr">
+  <section id="tldr" class="tldr">
     <h2>TL;DR</h2>
-    <ul>
-      <li>Earnings calls are long, mixed-format documents that are difficult to analyze consistently at scale.</li>
-      <li>Built a hybrid Graph RAG system on a LangGraph-style agentic loop that routes each query across vector search, structured financial tables, and graph reasoning.</li>
-      <li>An LLM-as-a-judge critic scores every answer against a grounding rubric and regenerates failures until they pass, holding ~88% agreement with human reviewers.</li>
-      <li><strong>Result:</strong> the critic loop lifted answers clearing the grounding bar from 62% first-pass to 91%, cutting analyst verification time, with numeric reasoning still the hardest failure mode.</li>
-    </ul>
+    <p>A hybrid Graph RAG system for analyzing long, mixed-format earnings-call transcripts, built on a LangGraph-style agentic loop that routes each query across vector search, structured financial tables, and a graph layer. An LLM-as-a-judge critic scores every answer against a grounding rubric and regenerates failures until they pass, holding about 88% agreement with human reviewers. The critic loop lifted answers clearing the grounding bar from 62% on first pass to 91%, cutting analyst verification time, with numeric reasoning still the hardest failure mode.</p>
   </section>
+
+  <section id="contents" class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#decision-context">Introduction</a></li>
+      <li><a href="#who-we-were-comparing">What We Compared</a></li>
+      <li><a href="#why-rag-alone-fails">The Problem</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#approach">Technical Approach</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#recommendation">Recommendation</a></li>
+    </ol>
   </section>
 
   <section id="decision-context">
-    <h2>The Decision That Triggered This Build</h2>
+    <h2>Introduction</h2>
     <p>
       Earnings calls are core inputs for institutional due diligence, but each transcript can span 50 to 300 pages and mix
       executive narratives, analyst Q&amp;A, and structured tables. Analysts need high-confidence answers quickly across firms and quarters.
@@ -149,7 +130,7 @@
   </section>
 
   <section id="who-we-were-comparing">
-    <h2>What We Needed to Compare</h2>
+    <h2>What We Compared</h2>
     <div class="cards">
       <div class="card">
         <h4>Single-company Q&amp;A</h4>
@@ -174,7 +155,7 @@
   </section>
 
   <section id="why-rag-alone-fails">
-    <h2>Why Baseline RAG Alone Was Not Enough</h2>
+    <h2>The Problem</h2>
     <div class="cards">
       <div class="card">
         <h4>Context isolation</h4>
@@ -192,7 +173,7 @@
   </section>
 
   <section id="data">
-    <h2>The Data Behind the System</h2>
+    <h2>Data</h2>
     <p class="lead">Three evidence layers were integrated to support semantic retrieval and symbolic reasoning in one pipeline.</p>
     <div class="cards">
       <div class="card">
@@ -263,7 +244,7 @@
   </section>
 
   <section id="results">
-    <h2>Evaluation and Benchmarks</h2>
+    <h2>Results</h2>
     <p>
       Each answer is scored by the LLM-as-a-judge critic on the rubric below. The critic held ~88% agreement with
       human reviewers on pass/fail, and its regenerate-on-fail loop raised the share of answers clearing the grounding
