@@ -88,7 +88,6 @@ document.addEventListener('click', (e) => {
 /* ---------- "Best viewed on desktop" prompt before opening a dense case study ---------- */
 (function () {
   const caseStudyLinks = document.querySelectorAll(
-    'a[href*="feature-impact.html"], a[href*="growth-allocation.html"], a[href*="ai-insights-copilot.html"], ' +
     'a[href*="hybrid-retrieval-eval-harness.html"], a[href*="human-gated-agent-orchestration.html"], ' +
     'a[href*="semantic-caching-tradeoff.html"], a[href*="finetuned-guarded-text-to-sql.html"]'
   );

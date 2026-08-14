@@ -54,9 +54,30 @@
 .contact a { display: block; margin-top: 10px; }
 .contact-links {
   display: flex;
-  gap: 12px;
+  gap: 10px 22px;
   flex-wrap: wrap;
   margin-top: 16px;
+  font-size: 15px;
+}
+
+/* Contact links match the hero: quiet grey text with an underline, not pills. */
+.contact-links .pill-link,
+.contact-links .pill-link.primary {
+  display: inline;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 1px;
+}
+.contact-links .pill-link:hover,
+.contact-links .pill-link.primary:hover {
+  background: none;
+  color: var(--text);
+  border-color: var(--text);
 }
 
 /* Breadcrumb and back-link */
@@ -804,11 +825,14 @@ body:not(.home) .steps p,
 body:not(.home) .tldr p {
   max-width: none;
 }
-/* Tool tags in a case-study hero read as quiet labels, not pills. */
+/* Tags on case studies read as quiet grey labels with an underline, not pills.
+   Covers the hero tool-tags and any tag chips in the body (e.g. study cards).
+   Education coursework tags on the homepage get the same quiet treatment. */
 body:not(.home) .tech-tags {
   gap: 6px 18px;
 }
-body:not(.home) .tech-tags .tag {
+body:not(.home) .tag,
+.edu-detail .tech-tags .tag {
   border: none;
   background: none;
   padding: 0;
@@ -1526,11 +1550,8 @@ section > *:last-child:not(.tldr):not(.recommendation) {
 }
 
 .work-item {
-  display: grid;
-  grid-template-columns: 190px 1fr;
-  gap: 40px;
-  align-items: start;
-  padding: 34px 0;
+  display: block;
+  padding: 30px 0;
   border-top: 1px solid var(--border);
   color: var(--text);
 }
@@ -1540,12 +1561,15 @@ section > *:last-child:not(.tldr):not(.recommendation) {
   padding-top: 12px;
 }
 
+/* Tags + read-time sit as a meta row above the title (like Experience),
+   full width — no side column. */
 .work-aside {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding-top: 4px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 14px;
 }
 
 .card-tags {
@@ -2172,11 +2196,7 @@ section > *:last-child:not(.tldr):not(.recommendation) {
     padding: 24px;
   }
   .contact-links {
-    flex-direction: column;
-  }
-  .contact-links .pill-link {
-    width: 100%;
-    justify-content: center;
+    flex-direction: row;
   }
   section, body.home section, body:not(.home) section {
     width: auto;
