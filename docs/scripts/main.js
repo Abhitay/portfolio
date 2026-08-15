@@ -198,6 +198,63 @@ document.addEventListener('click', (e) => {
   update();
 })();
 
+/* ---------- Hero headline: the highlighted phrase cycles, typewriter-style ----------
+   Reuses the marker highlight + blinking caret. The width is pinned to the widest
+   phrase so the rest of the headline never reflows, and the initial HTML text is
+   left intact for screen readers and crawlers. ---------- */
+(function () {
+  const hl = document.querySelector('.hero-home h1 .hl');
+  if (!hl) return;
+
+  const phrases = [
+    'decisions people act on',
+    'pipelines teams rely on',
+    'signal worth trusting',
+    'answers you can ship',
+  ];
+
+  // inner marker hugs the text; caret rides inside it (white on black)
+  hl.textContent = '';
+  const mark = document.createElement('span');
+  mark.className = 'hl-mark';
+  const text = document.createElement('span');
+  text.textContent = phrases[0];
+  const caret = document.createElement('span');
+  caret.className = 'hl-caret';
+  caret.setAttribute('aria-hidden', 'true');
+  mark.append(text, caret);
+  hl.append(mark);
+
+  // pin the wrapper to the widest phrase (+ padding + caret) so nothing after it jumps
+  hl.style.display = 'inline-block';
+  const cs = getComputedStyle(mark);
+  const probe = document.createElement('span');
+  probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font:' + cs.font;
+  document.body.append(probe);
+  let max = 0;
+  phrases.forEach(p => { probe.textContent = p; max = Math.max(max, probe.getBoundingClientRect().width); });
+  probe.remove();
+  const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+  hl.style.minWidth = Math.ceil(max + pad) + 12 + 'px';
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  let i = 0;
+  (async function loop() {
+    await wait(2600);                 // let the load sweep finish and read
+    while (true) {
+      const cur = phrases[i];
+      for (let n = cur.length; n >= 0; n--) { text.textContent = cur.slice(0, n); await wait(26); }
+      await wait(180);
+      i = (i + 1) % phrases.length;
+      const nxt = phrases[i];
+      for (let n = 1; n <= nxt.length; n++) { text.textContent = nxt.slice(0, n); await wait(46); }
+      await wait(1800);
+    }
+  })();
+})();
+
 /* ---------- Earlier experience: condensed rows that unfold ----------
    The toggle is built here rather than in the markup, so a visitor without
    scripting is never left with a dead control — they just get the full list. */

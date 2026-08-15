@@ -100,70 +100,67 @@
 
   <section id="tldr" class="tldr">
     <h2>TL;DR</h2>
-    <p>An exact-match cache and a semantic cache running over the same request stream, measured against a no-cache baseline for hit rate, latency, and model calls avoided. Because meaning-level matching can match things that are merely similar, it adds a false-hit rate, scored here against Stack Exchange's human-confirmed duplicate links, and the operating point is chosen from a swept curve against a stated false-hit budget rather than a default. At the chosen threshold, semantic caching lifts the hit rate to 0.724 from the exact-match baseline of 0.691, holds false hits to 1.35% (inside a 2% budget), and delivers a 3.5× latency improvement on 3,316 real questions.</p>
+    <p>An exact-match cache and a semantic cache over the same request stream, measured for hit rate, latency, and model calls avoided. Because meaning-level matching can serve an answer to a merely-similar question, it carries a false-hit rate, scored against Stack Exchange's human-confirmed duplicates. At the chosen threshold it lifted the hit rate to 0.724 from 0.691, held false hits to 1.35%, and cut latency 3.5×.</p>
   </section>
 
   <section id="contents" class="toc" aria-label="Contents">
     <h2>Contents</h2>
     <ol>
-      <li><a href="#decision-context">Introduction</a></li>
-      <li><a href="#why-exact-matching-fails">The Problem</a></li>
-      <li><a href="#approach">Technical Approach</a></li>
+      <li><a href="#introduction">Introduction and Problem</a></li>
+      <li><a href="#approach">Technical Approach</a>
+        <ul>
+          <li><a href="#how-it-decides">How the cache decides</a></li>
+          <li><a href="#ground-truth">Building the ground truth</a></li>
+        </ul>
+      </li>
       <li><a href="#results">Results</a></li>
-      <li><a href="#recommendation">Recommendation</a></li>
     </ol>
   </section>
 
-  <section id="decision-context">
-    <h2>Introduction</h2>
+  <section id="introduction">
+    <h2>Introduction and Problem</h2>
     <p>
       In a high-volume question-answering product, a large share of traffic re-asks something already answered,
-      worded differently. Every one of those is a paid, slow model call producing an answer that already exists.
+      just worded differently. "how do I reset my password", "password reset?", and "cant log in need to reset
+      pw" are three spellings of one question, and each is a paid, slow model call producing an answer that
+      already sits in the last hour's logs.
     </p>
     <p>
-      The product question: how much of that is reclaimable, and what is the failure mode of reclaiming it? An
-      exact cache is safe and weak. A semantic cache is powerful and introduces a risk the exact cache never had.
+      An exact-match cache catches only the literal repeats, so it topped out at a 0.691 hit rate here. Matching
+      on meaning collapses the variants onto one cached answer and lifts the hit rate, but it introduces a failure
+      the exact cache never had: it can match something that is merely similar and serve the wrong answer,
+      fluently, with nothing logged.
     </p>
-  </section>
-
-  <section id="why-exact-matching-fails">
-    <h2>The Problem</h2>
-    <div class="cards">
-      <div class="card">
-        <h4>Users do not repeat themselves verbatim</h4>
-        <p>The same handful of meanings arrives under many spellings, punctuation, capitalisation, "hey", "please". An exact cache pays full price for each, and here it topped out at a 0.691 hit rate.</p>
-      </div>
-      <div class="card">
-        <h4>Meaning-level matching collapses that</h4>
-        <p>Many spellings, one cached answer, lifting the hit rate to 0.724 while cutting model calls by the same fraction.</p>
-      </div>
-      <div class="card">
-        <h4>And it introduces a new way to be wrong</h4>
-        <p>Matching on similarity means sometimes matching something that is merely similar, the false hit the whole project exists to measure.</p>
-      </div>
-    </div>
+    <p>
+      The question was how much of that traffic is reclaimable and at what risk. An exact cache is safe and weak;
+      a semantic cache is powerful and needs a way to bound how often it is wrong.
+    </p>
   </section>
 
   <section id="approach">
     <h2>Technical Approach</h2>
+    <h3 id="how-it-decides">How the cache decides</h3>
+    <p>
+      Every request is a single threshold decision: embed the question, find its nearest cached neighbour, and if
+      the similarity clears the threshold return the cached answer in about ten milliseconds at no cost; otherwise
+      call the model and add the new question and answer to the cache. The threshold is the entire design.
+    </p>
     <div class="fig">
       <img src="figures/semantic-cache-flow.svg" alt="Flowchart. An incoming question is embedded and matched against cached question vectors by nearest-neighbour search. If similarity meets the threshold the cached answer returns in about ten milliseconds at no cost; otherwise the model is called at roughly nine hundred milliseconds and billed, and the new question and answer join the cache. A note marks that a cache hit may be a true match or a false one, distinguishable only with human duplicate labels.">
       <p class="caption">Every request is a threshold decision. The threshold is the entire design, at 0.80 it bought a 3.5× speedup for a 1.35% false-hit rate.</p>
     </div>
-    <div class="cards">
-      <div class="card">
-        <h4>Stream, do not load</h4>
-        <p>The dump is one XML document of a few hundred megabytes (293 MB of <code>Posts.xml</code>); parsing it whole exhausts a 16GB machine. <code>iterparse</code> with <code>elem.clear()</code> keeps memory flat regardless of file size. That one line is the difference between a script that runs and one that swaps.</p>
-      </div>
-      <div class="card">
-        <h4>Duplicate links become meaning-groups</h4>
-        <p>Links are pairwise, but A↔B and B↔C means all three are the same question. The groups are the connected components of that graph, union-find, a few lines. 1,945 duplicate pairs resolved into the ground-truth meaning-groups everything else is scored against.</p>
-      </div>
-      <div class="card">
-        <h4>Cosine on an interpretable scale</h4>
-        <p>Vectors (BGE) are L2-normalised into an inner-product index, so the threshold and its sweep read directly off [-1, 1].</p>
-      </div>
-    </div>
+
+    <h3 id="ground-truth">Building the ground truth</h3>
+    <p>
+      Scoring a cache needs a definition of which questions are really the same, taken here from Stack Exchange's
+      human-marked duplicates. <strong>Stream, do not load:</strong> the 293 MB <code>Posts.xml</code> exhausts a
+      16GB machine if parsed whole, so <code>iterparse</code> with <code>elem.clear()</code> keeps memory flat
+      regardless of file size. <strong>Duplicate links become meaning-groups:</strong> links are pairwise, but
+      A↔B and B↔C means all three are one question, so the groups are the connected components of that graph
+      (union-find), and 1,945 pairs resolved into the ground-truth groups everything else is scored against.
+      <strong>Cosine on an interpretable scale:</strong> BGE vectors are L2-normalised into an inner-product
+      index, so the threshold and its sweep read directly off [-1, 1].
+    </p>
     <div class="findings">
       <strong>Design choice: the model call stays simulated, deliberately</strong>
       <p>
@@ -176,30 +173,12 @@
 
   <section id="results">
     <h2>Results</h2>
-    <div class="metrics-box">
-      <div class="metrics-row">
-        <div class="metric-item">
-          <div class="metric-label">Semantic hit rate</div>
-          <div class="metric-value">0.724</div>
-          <div class="metric-desc">exact-match baseline 0.691</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">False-hit rate</div>
-          <div class="metric-value">0.0135</div>
-          <div class="metric-desc">budget 0.02</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Model calls avoided</div>
-          <div class="metric-value">72.4%</div>
-          <div class="metric-desc">at chosen threshold 0.80</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Latency improvement</div>
-          <div class="metric-value">3.5×</div>
-          <div class="metric-desc">5,000-request stream</div>
-        </div>
-      </div>
-    </div>
+    <p>
+      At the chosen threshold of 0.80, semantic caching lifted the hit rate to 0.724 from the exact-match baseline
+      of 0.691, avoided 72.4% of model calls, and held the false-hit rate to 1.35% inside a 2% budget, for a 3.5×
+      latency improvement on a 5,000-request stream. The operating point is a choice, not a default, and the sweep
+      below shows why.
+    </p>
     <p class="section-note">The threshold sweep, a representative slice of the full 10-point sweep:</p>
     <table>
       <thead>
@@ -256,19 +235,7 @@
         <em>before</em> the threshold could be chosen, and why the chosen point is 0.80, not 0.70.
       </p>
     </div>
-  </section>
-
-  <section id="recommendation">
-    <h2>Recommendation</h2>
-    <div class="recommendation positive">
-      <h3>Adopt semantic caching, threshold chosen from the curve</h3>
-      <p>
-        Pick the operating point against an explicit false-hit budget. Where a wrong answer is cheap, a
-        game-help bot, move down the curve and take the savings. Where it is expensive, move up and pay for the
-        calls. The measured curve makes that a decision with numbers on it, not a guess.
-      </p>
-    </div>
-    <h3>Next Iteration Priorities</h3>
+    <h4>Next iteration priorities</h4>
     <ul>
       <li>Require the best match to beat the runner-up by a margin; test whether that beats raising the threshold.</li>
       <li>Segment by question type, exact-token lookups likely need a stricter threshold than open-ended ones.</li>

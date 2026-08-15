@@ -102,57 +102,49 @@
 
   <section id="tldr" class="tldr">
     <h2>TL;DR</h2>
-    <p>A support bot for appliance manuals that pairs dense vector search with BM25 keyword search, fused by rank and reranked, so it handles both vaguely-worded symptoms and exact error codes, with every answer sentence cited and checked against its source. A companion system turns the bot's own logs into a regression test suite. Reranking lifted recall@10 from 0.78 to 0.94, 94% of answer sentences are grounded, and the generated suite surfaced a 14% failure rate concentrated in a single mode: answering an ambiguous question by assuming an appliance.</p>
+    <p>A support bot for appliance manuals that answers both vaguely-worded symptoms and exact error codes, then cites and checks every sentence against its source. A second system turns the bot's own logs into a regression test suite. Reranking lifted recall@10 from 0.78 to 0.94, and the generated suite caught a 14% failure rate hiding in real traffic.</p>
   </section>
 
   <section id="contents" class="toc" aria-label="Contents">
     <h2>Contents</h2>
     <ol>
-      <li><a href="#decision-context">Introduction</a></li>
-      <li><a href="#why-vectors-alone-fail">The Problem</a></li>
-      <li><a href="#approach">Technical Approach</a></li>
-      <li><a href="#design-decisions">Design Decisions</a></li>
-      <li><a href="#evaluation-harness">Evaluation Harness</a></li>
+      <li><a href="#introduction">Introduction and Problem</a></li>
+      <li><a href="#approach">Technical Approach</a>
+        <ul>
+          <li><a href="#pipeline">The retrieval pipeline</a></li>
+          <li><a href="#choices">Choices made with data, not assertion</a></li>
+          <li><a href="#harness">An evaluation harness that writes itself</a></li>
+        </ul>
+      </li>
       <li><a href="#results">Results</a></li>
-      <li><a href="#recommendation">Recommendation</a></li>
     </ol>
   </section>
 
-  <section id="decision-context">
-    <h2>Introduction</h2>
+  <section id="introduction">
+    <h2>Introduction and Problem</h2>
     <p>
-      A support bot answering from official manuals has an unusual failure profile: users arrive with two
-      incompatible query types. <strong>Symptom descriptions</strong> in casual language ("my fridge won't get
-      cold") and <strong>exact tokens</strong> ("error CF", part numbers). These want opposite retrieval
-      strategies, and a system tuned for one is measurably bad at the other.
+      A support bot that answers from official appliance manuals has to serve two incompatible kinds of question.
+      One user types <em>"my fridge won't get cold"</em>, a fuzzy symptom in everyday words that never appears in
+      the manual, which phrases the same fault as "not maintaining temperature". Another types <em>"error CF"</em>,
+      an exact code printed verbatim in exactly one passage. The first question needs semantic matching to bridge
+      the vocabulary gap; the second needs the literal string and nothing else.
     </p>
     <p>
-      The product question: is one embedding model enough, or does exact matching need to run alongside it?
-      And, because a support bot that invents a repair step is a liability, how do you know the answers stay
-      grounded <em>over time</em>, not just at launch?
+      A single retriever is good at one of these and bad at the other. To an embedding model, ten error-code
+      passages that differ only in a two-letter code all read the same, so the one token that matters is the one
+      it weights least; keyword search has the mirror-image blind spot on paraphrase. Both failures are silent,
+      surfacing only as a fluent, confident, wrong answer that no exception or dashboard catches.
     </p>
-  </section>
-
-  <section id="why-vectors-alone-fail">
-    <h2>The Problem</h2>
-    <div class="cards">
-      <div class="card">
-        <h4>Error codes carry almost no meaning</h4>
-        <p>To an embedding model, ten error-code passages that differ only in a two-letter code all say the same thing: a fault occurred, unplug it, call service. The token that distinguishes them is the one the model weights least.</p>
-      </div>
-      <div class="card">
-        <h4>Manual vocabulary is not user vocabulary</h4>
-        <p>The manual says "not maintaining temperature"; the user says "not getting cold". Zero content words shared. This is where keyword search fails and dense retrieval wins.</p>
-      </div>
-      <div class="card">
-        <h4>Both failures are silent</h4>
-        <p>Wrong retrieval produces a fluent, confident, wrong answer. No exception, no error rate, nothing on a dashboard. Only an evaluation set catches it, and the generator below confirmed the bot's single largest failure mode is exactly this.</p>
-      </div>
-    </div>
+    <p>
+      This project asked whether one embedding model is enough or exact matching has to run alongside it, and,
+      because a bot that invents a repair step is a liability, how to keep the answers grounded over time rather
+      than only at launch.
+    </p>
   </section>
 
   <section id="approach">
     <h2>Technical Approach</h2>
+    <h3 id="pipeline">The retrieval pipeline</h3>
     <p>
       Two retrievers with complementary weaknesses run in parallel and are merged by rank, not by score. Dense
       vectors handle paraphrase; BM25 handles exact strings. The fused list is reranked by a cross-encoder that
@@ -184,40 +176,31 @@
     <div class="findings">
       <strong>Design choice: fuse by rank, not by score</strong>
       <p>
-        Cosine similarity lands around 0.4–0.8; BM25 is unbounded and routinely exceeds 3. Summing them lets
+        Cosine similarity lands around 0.4 to 0.8; BM25 is unbounded and routinely exceeds 3. Summing them lets
         BM25 shout down the vector signal for no principled reason, and any weighting has to be re-tuned the
         moment the embedding model changes. RRF discards magnitudes and keeps only positions, so it needs no
         normalisation and no weights.
       </p>
     </div>
-  </section>
 
-  <section id="design-decisions">
-    <h2>Design Decisions</h2>
-    <div class="cards">
-      <div class="card">
-        <h4>Chunk size is swept, not asserted</h4>
-        <p>150 / 300 / 600 words on the same gold set, scored by word-span overlap against the source document. The result contradicted the 300-word default: 150-word chunks scored recall 0.806 against 0.722 at 300 and 0.667 at 600, a tighter passage is less diluted by neighbouring text. The sweep is the deliverable; the default was wrong.</p>
-      </div>
-      <div class="card">
-        <h4>Abstention keys off cosine, not the fused score</h4>
-        <p>After fusion the scores are RRF sums around 0.03; after reranking they are on a different scale again. Cosine is the only one on a fixed interpretable interval, so it is what the "not in these manuals" threshold reads. Honest limitation: BGE cosine compresses on a small corpus, an off-topic "who won the World Cup" scored 0.50, above the 0.45 cutoff, so the threshold needs tuning per corpus.</p>
-      </div>
-      <div class="card">
-        <h4>Cost and latency come from the traces</h4>
-        <p>The shared client attaches usage and latency to every response, so per-answer cost is a read over logs already written, not a separate pass. Measured: ~$0.0016 per answer, roughly $1.60 per 1,000 at paid-tier rates.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="evaluation-harness">
-    <h2>Evaluation Harness</h2>
+    <h3 id="choices">Choices made with data, not assertion</h3>
     <p>
-      The second project treats the first's logs as raw material. The cases a system actually struggles with beat
-      any you would invent, which the run proved: to give the generator something to find, the bot answered its
-      clean gold set <em>plus a slice of realistic traffic</em> (ambiguous questions, out-of-scope ones, questions
-      the manuals do not cover). On the clean gold set alone the bot was faithful and the judge found <em>nothing</em>;
-      the failures live in the traffic, exactly as with real users.
+      Three parameters were measured, not assumed. <strong>Chunk size was swept</strong> at 150 / 300 / 600 words
+      on the same gold set: 150-word chunks scored recall 0.806 against 0.722 at 300 and 0.667 at 600,
+      contradicting the common 300-word default, because a tighter passage is less diluted by its neighbours.
+      <strong>Abstention keys off cosine</strong> rather than the fused score, since cosine is the only signal on a
+      fixed interpretable interval; the honest limit is that BGE cosine compresses on a small corpus, so an
+      off-topic "who won the World Cup" scored 0.50, above the 0.45 cutoff, and the threshold needs tuning per
+      corpus. <strong>Cost and latency come from the traces</strong>, read over logs already written: about
+      $0.0016 per answer, roughly $1.60 per 1,000 at paid-tier rates.
+    </p>
+
+    <h3 id="harness">An evaluation harness that writes itself</h3>
+    <p>
+      A second system treats the retrieval logs as raw material, because the cases a system actually struggles
+      with beat any you would invent. To give the generator something to find, the bot answered its clean gold set
+      plus a slice of realistic traffic (ambiguous, out-of-scope, and uncovered questions); on the clean set the
+      judge found nothing, and every failure lived in the traffic, exactly as with real users.
     </p>
     <div class="fig">
       <img src="figures/eval-harness-loop.svg" alt="Circular flow diagram. JSONL traces from the retrieval system are normalised, judged by a model into verdicts with failure reasons, embedded and clustered into named failure modes, turned into structured evaluation cases, and validated against a schema, with invalid cases discarded, producing a regression suite that tests the retrieval system, closing the loop. A side branch shows the suite itself being validated by seeding known bugs.">
@@ -245,26 +228,11 @@
 
   <section id="results">
     <h2>Results</h2>
-    <div class="metrics-box">
-      <div class="metrics-row">
-        <div class="metric-item">
-          <div class="metric-label">recall@10</div>
-          <div class="metric-value">0.78 → 0.94</div>
-          <div class="metric-desc">vector-only vs hybrid + rerank (36 questions, k=10)</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">nDCG@10</div>
-          <div class="metric-value">0.55 → 0.75</div>
-          <div class="metric-desc">vector-only vs hybrid + rerank</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Citation faithfulness</div>
-          <div class="metric-value">94%</div>
-          <div class="metric-desc">123 / 131 answer sentences supported</div>
-        </div>
-      </div>
-    </div>
-    <p class="section-note">All four systems on the same 36-question gold set, a hybrid number alone proves nothing:</p>
+    <p>
+      On a 36-question gold set, reranking is what earns the jump: hybrid with reranking reached recall@10 0.944
+      and nDCG@10 0.754, against a vector-only baseline of 0.778 and 0.547, with 94% of answer sentences grounded
+      (123 of 131). Every system ran on the same set, because a hybrid number alone proves nothing.
+    </p>
     <table>
       <thead>
         <tr>
@@ -304,25 +272,10 @@
       column is a single data point and is reported as such, not as a rate; the genuine error-code-vs-symptom
       comparison is named as the top next-iteration priority.
     </p>
-    <div class="metrics-box">
-      <div class="metrics-row">
-        <div class="metric-item">
-          <div class="metric-label">Failure rate found</div>
-          <div class="metric-value">14.0%</div>
-          <div class="metric-desc">8 / 57 traces; dominant mode assumes an unspecified appliance (6 of 8)</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Seeded-bug catch rate</div>
-          <div class="metric-value">100%</div>
-          <div class="metric-desc">stripped citations · "I do not know" · contentless</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Judge vs human</div>
-          <div class="metric-value">86.7%</div>
-          <div class="metric-desc">26 / 30 hand-labelled traces agree</div>
-        </div>
-      </div>
-    </div>
+    <p>
+      The self-generated suite surfaced a 14% failure rate (8 of 57 traces, 6 of them the unspecified-appliance
+      mode), caught 100% of seeded bugs, and its judge agreed with a human on 86.7% of 30 hand-labelled traces.
+    </p>
     <div class="findings warning">
       <strong>Main weakness: the suite can only catch failures it has seen</strong>
       <p>
@@ -345,19 +298,7 @@
         only an explicit rubric <em>with a worked example</em> made it discriminate.
       </p>
     </div>
-  </section>
-
-  <section id="recommendation">
-    <h2>Recommendation</h2>
-    <div class="recommendation positive">
-      <h3>Ship hybrid + rerank, not dense-only</h3>
-      <p>
-        The measured cost is one extra index and one rerank call; the benefit is recall@10 from 0.78 to 0.94 and
-        an entire query class dense retrieval misranks. Measure judge-vs-human agreement before trusting any
-        number the judge produces, here it was 87%, and the disagreements were all in one direction.
-      </p>
-    </div>
-    <h3>Next Iteration Priorities</h3>
+    <h4>Next iteration priorities</h4>
     <ul>
       <li>Add a batch of hand-verified error-code questions and publish recall@10 / nDCG@10 split by query type, the symptom side is solid; the code side is currently one question.</li>
       <li>Tune the abstention threshold from the failure dump; BGE cosine compresses on small corpora and the traffic run showed an off-topic query scoring above the constant cutoff.</li>

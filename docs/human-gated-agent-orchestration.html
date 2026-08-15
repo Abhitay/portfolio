@@ -100,124 +100,90 @@
 
   <section id="tldr" class="tldr">
     <h2>TL;DR</h2>
-    <p>A customer-service agent that looks up orders, reads the refund policy, and issues refunds through typed tools, with every argument validated before it runs. Money-moving tools are flagged high-risk, so the agent pauses, shows the exact action and arguments, and proceeds only on explicit human approval, and every step is logged under a shared run_id for ordered replay. On a 4-task fixture it reached 100% task success and tool-call accuracy with 100% of high-risk actions gated: the one policy-ineligible refund was stopped at the approval boundary, not executed, at $0.0006 per task.</p>
+    <p>A customer-service agent that looks up orders and issues refunds through typed, validated tools, but pauses for explicit human approval before any money moves. Every step is logged under a shared run_id for ordered replay. On a 4-task fixture it gated 100% of high-risk actions: the one policy-ineligible refund was stopped at the approval boundary, at $0.0006 per task.</p>
   </section>
 
   <section id="contents" class="toc" aria-label="Contents">
     <h2>Contents</h2>
     <ol>
-      <li><a href="#decision-context">Introduction</a></li>
-      <li><a href="#what-an-agent-is">What an Agent Is</a></li>
-      <li><a href="#approach">Technical Approach</a></li>
+      <li><a href="#introduction">Introduction and Problem</a></li>
+      <li><a href="#approach">Technical Approach</a>
+        <ul>
+          <li><a href="#what-an-agent-is">What an agent is</a></li>
+          <li><a href="#architecture">The loop, the gate, and the traces</a></li>
+        </ul>
+      </li>
       <li><a href="#results">Results</a></li>
-      <li><a href="#recommendation">Recommendation</a></li>
     </ol>
   </section>
 
-  <section id="decision-context">
-    <h2>Introduction</h2>
+  <section id="introduction">
+    <h2>Introduction and Problem</h2>
     <p>
-      A returns desk is the canonical case for agents, multi-step, tool-dependent, high-volume, and the
-      canonical case against them, because the final step moves real money out of the business. Automating the
-      lookup is obviously good. Automating the payout is obviously not.
+      A customer asks for a refund. An agent can look up the order, read the refund policy, check eligibility, and
+      issue the payment, four steps a returns desk runs hundreds of times a day. The lookups are safe to automate.
+      The payout is not: it moves real money out of the business and cannot be taken back.
     </p>
     <p>
-      The product question: which steps can run unsupervised, and what does the boundary cost in throughput? An
-      agent that asks permission for everything is a slow form; one that asks for nothing is an unbounded
-      liability.
+      That makes a returns desk both the canonical case for agents (multi-step, tool-dependent, high-volume) and
+      the canonical case against them. An agent that asks permission for everything is a slow form; one that asks
+      for nothing is an unbounded liability.
     </p>
-  </section>
-
-  <section id="what-an-agent-is">
-    <h2>What an Agent Is</h2>
-    <div class="cards">
-      <div class="card">
-        <h4>Tools</h4>
-        <p>Plain functions the model may request, each with a typed schema.</p>
-      </div>
-      <div class="card">
-        <h4>A loop</h4>
-        <p>Ask the model, run what it asked for, feed the result back, repeat.</p>
-      </div>
-      <div class="card">
-        <h4>State</h4>
-        <p>An ordered history, so a run can be inspected, resumed, replayed.</p>
-      </div>
-      <div class="card">
-        <h4>A stopping rule</h4>
-        <p>Task complete, or step budget exhausted.</p>
-      </div>
-    </div>
     <p>
-      Everything else, the framework, the plan/act/reflect vocabulary, is engineering to make those four
-      reliable.
+      The question was which steps can run unsupervised, what the approval boundary costs in throughput, and where
+      to place that boundary so a wrong refund is stopped before the money moves rather than explained afterwards.
     </p>
   </section>
 
   <section id="approach">
     <h2>Technical Approach</h2>
+    <h3 id="what-an-agent-is">What an agent is</h3>
+    <p>
+      Stripped of framework vocabulary, an agent is four things: <strong>tools</strong>, plain functions the model
+      may request, each with a typed schema; <strong>a loop</strong> that asks the model, runs what it asked for,
+      and feeds the result back; <strong>state</strong>, an ordered history so a run can be inspected, resumed, or
+      replayed; and <strong>a stopping rule</strong>, task complete or step budget exhausted. Everything else, the
+      plan/act/reflect vocabulary included, is engineering to make those four reliable.
+    </p>
+
+    <h3 id="architecture">The loop, the gate, and the traces</h3>
+    <p>
+      Every tool call is validated before it runs; ordinary tools execute directly, and high-risk tools stop at a
+      human approval gate. Three choices make that safe.
+    </p>
     <div class="fig">
       <img src="figures/agent-loop-with-gate.svg" alt="Agent control-flow diagram. The model is asked for the next action; if it requests no tool the run finishes. Each tool call passes schema validation first, and invalid calls return an error observation the agent can correct from. Valid calls are checked for high-risk status, ordinary tools execute directly, while high-risk tools stop at a highlighted human approval gate that either permits execution or records a refusal. A footer notes that every node writes an ordered trace with a run id and step number.">
       <p class="caption">Schema validation and a human approval gate stand between the agent and any irreversible action. Measured: 100% of high-risk attempts gated.</p>
     </div>
-    <div class="cards">
-      <div class="card">
-        <h4>Typed tools</h4>
-        <p>Pydantic models already emit JSON Schema, so the API tool definition and the runtime validator are the same declaration. No second definition to drift.</p>
-      </div>
-      <div class="card">
-        <h4>Validation failures return as data</h4>
-        <p>A malformed call comes back as an observation the model reads and corrects on the next turn. An exception ends the run; an observation lets it recover.</p>
-      </div>
-      <div class="card">
-        <h4>Ordered traces</h4>
-        <p>Shared <code>run_id</code>, monotonic <code>step</code>. Timestamps are not reliable ordering when steps land in the same millisecond, and replay is the only real way to debug an agent.</p>
-      </div>
-    </div>
+    <p>
+      <strong>Typed tools:</strong> Pydantic models already emit JSON Schema, so the API tool definition and the
+      runtime validator are the same declaration, with no second definition to drift. <strong>Validation failures
+      return as data:</strong> a malformed call comes back as an observation the model reads and corrects on the
+      next turn, so an error recovers the run instead of ending it. <strong>Ordered traces:</strong> a shared
+      <code>run_id</code> and monotonic <code>step</code> make replay possible, because timestamps are not reliable
+      ordering when steps land in the same millisecond, and replay is the only real way to debug an agent.
+    </p>
     <div class="findings">
       <strong>Design choice: the gate sits after validation, before execution</strong>
       <p>
         Approving an unvalidated call means the human is approving something that may not even be well-formed.
         Validate first, surface the concrete action, then execute. A refusal is recorded as a normal outcome the
         agent can see and respond to, not an exception. The provider's automatic function-calling is deliberately
-        disabled so the loop executes tools itself and the gate stays inside it, verified by driving a refund on
-        a policy-ineligible order and confirming the gate blocked it and no money moved.
+        disabled so the loop executes tools itself and the gate stays inside it, verified by driving a refund on a
+        policy-ineligible order and confirming the gate blocked it and no money moved.
       </p>
     </div>
   </section>
 
   <section id="results">
     <h2>Results</h2>
-    <div class="metrics-box">
-      <div class="metrics-row">
-        <div class="metric-item">
-          <div class="metric-label">Task-success rate</div>
-          <div class="metric-value">1.00</div>
-          <div class="metric-desc">4 / 4 tasks</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Tool-call accuracy</div>
-          <div class="metric-value">1.00</div>
-          <div class="metric-desc">mean across tasks</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">High-risk actions gated</div>
-          <div class="metric-value">1.00</div>
-          <div class="metric-desc">1 attempt, 1 gate fired</div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-label">Cost per task</div>
-          <div class="metric-value">$0.00063</div>
-          <div class="metric-desc">mean latency 23.8 s</div>
-        </div>
-      </div>
-    </div>
     <p>
-      Per-task cost is measured from token usage, and the full tau-bench sweep is <em>projected</em> from it
-      before being run, roughly 115 tasks × the measured $0.00063 ≈ $0.07 for the full suite. That projection is
-      why development happens against a small subset and the full suite runs once. To be explicit: this is a
-      <strong>4-task fixture, not tau-bench</strong>, the number is a proof the machinery works, not a benchmark
-      result.
+      On a 4-task fixture the agent reached 100% task success and tool-call accuracy, gated 100% of high-risk
+      actions (one attempt, one gate fired), and cost about $0.0006 per task at 23.8 s mean latency. Per-task cost
+      is measured from token usage and the full tau-bench sweep is projected from it, roughly 115 tasks at
+      $0.00063, about $0.07, which is why development runs against a small subset and the full suite runs once. To
+      be explicit, this is a <strong>4-task fixture, not tau-bench</strong>: the numbers prove the machinery works,
+      not a benchmark result.
     </p>
     <div class="findings warning">
       <strong>Main weakness: the gate relocates judgement, it does not remove it</strong>
@@ -234,19 +200,7 @@
       silently recovering. And latency varied 3.3 s to 68 s across the four tasks (the thinking model plus
       free-tier rate-limit backoff), so a single mean hides a wide spread.
     </p>
-  </section>
-
-  <section id="recommendation">
-    <h2>Recommendation</h2>
-    <div class="recommendation positive">
-      <h3>Gate on the tool, not the step</h3>
-      <p>
-        Read-only tools run freely; money-moving and destructive tools always stop. One approval per refund
-        removes the entire category of unsupervised financial error, measured here as 100% of high-risk attempts
-        gated.
-      </p>
-    </div>
-    <h3>Next Iteration Priorities</h3>
+    <h4>Next iteration priorities</h4>
     <ul>
       <li>Run the full tau-bench retail suite and publish success, tool accuracy, cost, and latency at scale.</li>
       <li>Make the approver policy-aware enough to auto-refuse clear cases and escalate only real judgement.</li>
