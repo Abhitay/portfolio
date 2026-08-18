@@ -188,6 +188,12 @@
         "value": "98px",
         "createdAt": "2026-08-18T16:16:34.445Z",
         "reason": "bolder pass: front-page masthead headline scale, intentional display step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "84px",
+        "createdAt": "2026-08-18T20:24:13.697Z",
+        "reason": "adapt pass: front-page masthead headline cap, intentional display step"
       }
     ]
   }

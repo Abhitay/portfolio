@@ -724,8 +724,10 @@ a.rail:hover::before {
    base words grey, the key word black via .cap-em. */
 .sec-caption {
   display: block;
+  /* Same family as the hero headline (Fraunces), upright — italic is reserved
+     for the struck key word (.cap-em) so the emphasis carries the slant. */
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(34px, 4.4vw, 58px);
   font-weight: 500;
   line-height: 1.08;
@@ -854,9 +856,14 @@ li {
    copy. Much larger and tighter, but the leading has to clear the black
    highlight marker on the line below it — so keep it above 1. */
 body.home .hero h1 {
-  font-size: clamp(34px, 8.4vw, 98px);
-  line-height: 1.12;
-  letter-spacing: -0.035em;
+  /* Sized so the longer line — "I build models that turn messy data" — always
+     stays inside the 82.4% content column, holding the headline to two clean
+     lines ("…messy data" / "into <highlight>") at every laptop width. The vw
+     term scales the type with the column so the fit holds instead of orphaning
+     words onto a third line. */
+  font-size: clamp(34px, 5.1vw, 84px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   margin-bottom: 22px;
 }
 
