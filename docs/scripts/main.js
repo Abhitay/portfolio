@@ -240,9 +240,13 @@ document.addEventListener('click', (e) => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const wait = ms => new Promise(r => setTimeout(r, ms));
+  text.textContent = '';              // start empty so the first phrase types in on load
   let i = 0;
   (async function loop() {
-    await wait(2600);                 // let the load sweep finish and read
+    await wait(450);                  // brief beat, then type the opening phrase in
+    const first = phrases[0];
+    for (let n = 1; n <= first.length; n++) { text.textContent = first.slice(0, n); await wait(46); }
+    await wait(1800);
     while (true) {
       const cur = phrases[i];
       for (let n = cur.length; n >= 0; n--) { text.textContent = cur.slice(0, n); await wait(26); }
