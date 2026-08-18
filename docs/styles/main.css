@@ -80,6 +80,7 @@
   color: rgba(255, 255, 255, 0.3);
 }
 #contact.contact > .rail { display: none; }
+#contact .sec-index { color: #fff; }
 #contact .sec-kicker { color: rgba(255, 255, 255, 0.55); }
 #contact .sec-caption { color: rgba(255, 255, 255, 0.5); }
 #contact .cap-em { color: #fff; }
@@ -675,25 +676,48 @@ a.rail:hover::before {
   }
 }
 
-/* Numbered section eyebrow — "01 · Experience" */
-/* Section header: small uppercase kicker on the left, a creative serif caption
-   pushed to the right — using the full width, no divider line. */
+/* Numbered section eyebrow — the front-page section header.
+   A hairline rule runs across the column, an oversized serif numeral anchors
+   the left like a broadsheet section mark, the label sits beside it, and the
+   creative serif caption is pushed to the right edge. No color, no box — the
+   weight comes from scale and the rule alone. */
 .section-eyebrow {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
+  column-gap: 22px;
+  row-gap: 8px;
+  flex-wrap: wrap;
   margin: 0 0 40px 0;
   font-family: var(--font-sans);
 }
 
+/* Oversized ghost numeral: the single loudest quiet move on the page. Serif,
+   set in ink at a hair under full black so it anchors without shouting over the
+   caption. Tabular so 01–05 hold the same width. */
+.sec-index {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(40px, 5vw, 66px);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  align-self: center;
+}
+
 .sec-kicker {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
   white-space: nowrap;
+  align-self: center;
+}
+
+/* Caption rides the right edge of the column. */
+.section-eyebrow .sec-caption {
+  margin-left: auto;
 }
 
 /* Big, creative right-hand caption that plays with the B&W theme:
@@ -808,6 +832,32 @@ li {
 .hero h1 {
   color: var(--text);
   font-weight: 500;
+}
+
+/* Masthead folio line — a newspaper's ruled dateline. Two true labels flank a
+   full-width hairline pair, giving the page a strong horizontal opening edge
+   instead of a lone grey eyebrow floating over whitespace. */
+.hero-masthead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 26px 0;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* Front-page masthead scale: the home headline reads as a nameplate, not body
+   copy. Much larger and tighter, but the leading has to clear the black
+   highlight marker on the line below it — so keep it above 1. */
+body.home .hero h1 {
+  font-size: clamp(34px, 8.4vw, 98px);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  margin-bottom: 22px;
 }
 
 /* Inverse (black box, white text) emphasis in the hero headline.

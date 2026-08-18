@@ -176,6 +176,18 @@
         "value": "12px",
         "createdAt": "2026-08-18T05:52:54.725Z",
         "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "66px",
+        "createdAt": "2026-08-18T16:16:34.384Z",
+        "reason": "bolder pass: oversized ghost section numeral, intentional display step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "98px",
+        "createdAt": "2026-08-18T16:16:34.445Z",
+        "reason": "bolder pass: front-page masthead headline scale, intentional display step"
       }
     ]
   }
