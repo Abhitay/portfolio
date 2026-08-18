@@ -144,7 +144,7 @@ document.addEventListener('click', (e) => {
 /* ---------- Magnet scroll: the first downward scroll glides the whole hero out
    to the next section in one motion (and snaps back up near the top). ---------- */
 (function () {
-  const first = document.querySelector('#projects');
+  const first = document.querySelector('.hero-home ~ section');
   const navEl = document.querySelector('nav');
   const hero = document.querySelector('.hero-home');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

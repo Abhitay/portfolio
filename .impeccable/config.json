@@ -1,0 +1,182 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-color",
+        "value": "rgb(22, 29, 81)",
+        "createdAt": "2026-08-18T05:33:11.113Z",
+        "reason": "user-requested Julius Baer logo-tile brand tint; DESIGN.md Monochrome Rule sanctioned exception"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#30be00",
+        "createdAt": "2026-08-18T05:33:11.171Z",
+        "reason": "user-requested TD Bank logo-tile brand tint; DESIGN.md Monochrome Rule sanctioned exception"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgb(21, 43, 115)",
+        "createdAt": "2026-08-18T05:33:11.220Z",
+        "reason": "user-requested Columbia logo-tile brand tint; DESIGN.md Monochrome Rule sanctioned exception"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgba(0, 0, 0, 0.35)",
+        "createdAt": "2026-08-18T05:33:11.270Z",
+        "reason": "intentional translucency layer, not a palette color"
+      },
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "createdAt": "2026-08-18T05:50:12.805Z",
+        "reason": "committed brand identity in DESIGN.md; Fraunces+Inter is the confirmed pairing, not to be replaced without an explicit request"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "9px",
+        "createdAt": "2026-08-18T05:52:53.523Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "10px",
+        "createdAt": "2026-08-18T05:52:53.577Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "10.5px",
+        "createdAt": "2026-08-18T05:52:53.632Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "11px",
+        "createdAt": "2026-08-18T05:52:53.681Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "13px",
+        "createdAt": "2026-08-18T05:52:53.734Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "14px",
+        "createdAt": "2026-08-18T05:52:53.783Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "15px",
+        "createdAt": "2026-08-18T05:52:53.834Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "17px",
+        "createdAt": "2026-08-18T05:52:53.881Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "18px",
+        "createdAt": "2026-08-18T05:52:53.931Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "19px",
+        "createdAt": "2026-08-18T05:52:53.986Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "20px",
+        "createdAt": "2026-08-18T05:52:54.051Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "21px",
+        "createdAt": "2026-08-18T05:52:54.114Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "22px",
+        "createdAt": "2026-08-18T05:52:54.167Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "24px",
+        "createdAt": "2026-08-18T05:52:54.218Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "32px",
+        "createdAt": "2026-08-18T05:52:54.271Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "34px",
+        "createdAt": "2026-08-18T05:52:54.321Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "38px",
+        "createdAt": "2026-08-18T05:52:54.370Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "44px",
+        "createdAt": "2026-08-18T05:52:54.419Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "2px",
+        "createdAt": "2026-08-18T05:52:54.469Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "3px",
+        "createdAt": "2026-08-18T05:52:54.520Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "6px",
+        "createdAt": "2026-08-18T05:52:54.574Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "7px",
+        "createdAt": "2026-08-18T05:52:54.622Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "10px",
+        "createdAt": "2026-08-18T05:52:54.672Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "12px",
+        "createdAt": "2026-08-18T05:52:54.725Z",
+        "reason": "incumbent intentional type/spacing scale; DESIGN.md documents roles, not every literal step"
+      }
+    ]
+  }
+}

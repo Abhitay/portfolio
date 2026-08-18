@@ -139,7 +139,8 @@
   font-weight: 500;
   font-size: 14px;
   text-decoration: none;
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .pill-link:hover {
@@ -154,8 +155,8 @@
 }
 
 .pill-link.primary:hover {
-  background: #333;
-  border-color: #333;
+  background: var(--text);
+  border-color: var(--text);
 }
 
 .snapshot-table {
@@ -210,7 +211,7 @@
   --bg: #ffffff;
   --text: #0a0a0a;
   --muted: #6f6b66;
-  --faint: #9a958e;
+  --faint: #8b867e;
   --surface: #f6f4f1;
   --border: #e7e3dd;
   --border-strong: #d3cec6;
@@ -240,12 +241,48 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
+  /* Let Fraunces/Inter pick their optical size per glyph size (§15). */
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
 }
 
 a {
   color: var(--text);
   text-decoration: none;
   font-family: inherit;
+}
+
+/* Browser surfaces carry the monochrome world too — no default blue anywhere.
+   Text selection uses the page's one dark ground; the caret and any native
+   control accent are ink; the scrollbar is a warm hairline. */
+::selection {
+  background: var(--text);
+  color: var(--bg);
+}
+:root {
+  caret-color: var(--text);
+  accent-color: var(--text);
+  scrollbar-color: var(--border-strong) transparent;
+}
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border: 3px solid var(--bg);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* Dates and read-times are data: align their digits. */
+.dates,
+.read-time {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Editorial serif for all display headings */
@@ -258,6 +295,45 @@ h3,
   font-family: var(--font-display);
   font-weight: 500;
   letter-spacing: -0.01em;
+}
+
+/* ---------- APPLE-DESIGN REFINEMENTS ---------- */
+/* §1 Response: tactile press feedback the instant the pointer goes down.
+   Compositor-only transform, so it reads as direct and never janks. */
+.work-item:active { transform: scale(0.99); }
+nav .btn:active,
+.pill-link:active,
+.nav-toggle:active { transform: scale(0.95); }
+/* Text links acknowledge the press by dimming — no layout cost. */
+nav .right a:active,
+.hero-contact a:active,
+.contact-links a:active { opacity: 0.55; }
+
+/* §16 Craft: a clean keyboard focus ring that adapts to its background
+   (currentColor), shown only for keyboard users. */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* §14 Materials: honour a viewer's request for less transparency —
+   the translucent chrome becomes solid, blur falls away. */
+@media (prefers-reduced-transparency: reduce) {
+  nav,
+  .nav-toggle {
+    background: var(--bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+/* §14 High contrast: near-solid nav with a defined edge, firmer underlines. */
+@media (prefers-contrast: more) {
+  nav { background: var(--bg); border-bottom-color: var(--text); }
+  .tag,
+  .pill-link,
+  .toc a { text-decoration-color: var(--text); }
 }
 
 /* ---------- NAVBAR ---------- */
@@ -314,10 +390,12 @@ nav .right a::after {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 2px;
   background: var(--text);
-  transition: width 0.2s ease;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 nav .right a:hover {
@@ -325,7 +403,7 @@ nav .right a:hover {
 }
 
 nav .right a:hover::after {
-  width: 100%;
+  transform: scaleX(1);
 }
 
 nav .right a.active {
@@ -334,7 +412,7 @@ nav .right a.active {
 }
 
 nav .right a.active::after {
-  width: 100%;
+  transform: scaleX(1);
 }
 nav .btn {
   padding: 9px 18px;
@@ -346,7 +424,8 @@ nav .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    transform 0.14s cubic-bezier(0.22, 1, 0.36, 1);
   font-size: 14px;
   position: relative;
   vertical-align: middle;
@@ -602,6 +681,7 @@ a.rail:hover::before {
 .section-eyebrow {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: 24px;
   margin: 0 0 40px 0;
   font-family: var(--font-sans);
@@ -619,15 +699,19 @@ a.rail:hover::before {
 /* Big, creative right-hand caption that plays with the B&W theme:
    base words grey, the key word black via .cap-em. */
 .sec-caption {
-  margin-left: auto;
+  display: block;
   font-family: var(--font-display);
-  font-style: normal;
-  font-size: clamp(26px, 4.2vw, 48px);
+  font-style: italic;
+  font-size: clamp(34px, 4.4vw, 58px);
   font-weight: 500;
-  line-height: 1;
+  line-height: 1.08;
   letter-spacing: -0.02em;
   color: var(--faint);
-  white-space: nowrap;
+  text-align: right;
+  text-wrap: balance;
+  /* em-based cap: single-line width and this max scale together with the font,
+     so every caption wraps to two lines at any viewport width. */
+  max-width: 18em;
 }
 
 .sec-caption .cap-em {
@@ -642,11 +726,15 @@ a.rail:hover::before {
   }
 }
 
+/* Sub-group header sits a clear level below the section kicker while staying in
+   the same sans label family: sentence case with no tracking, so it never twins
+   the all-caps, letter-spaced "01 · Section" kicker. */
 .sub-eyebrow {
-  font-size: 12px;
+  font-family: var(--font-sans);
   font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--muted);
   margin: 40px 0 16px 0;
 }
@@ -655,6 +743,8 @@ h1 {
   font-size: clamp(40px, 6vw, 60px);
   line-height: 1.05;
   margin: 0 0 16px 0;
+  /* Large display type reads too loose at default tracking — tighten it (§15). */
+  letter-spacing: -0.025em;
 }
 
 h2 {
@@ -1111,7 +1201,7 @@ th, td {
 }
 
 th {
-  background: #f3f4f6;
+  background: var(--surface);
   font-weight: 600;
   color: var(--text);
 }
@@ -1170,8 +1260,7 @@ footer {
 .tldr {
   background: none;
   border: none;
-  border-left: 3px solid var(--text);
-  padding: 2px 0 2px 22px;
+  padding: 0;
   border-radius: 0;
   margin: 8px 0 0;
   box-shadow: none;
@@ -1257,19 +1346,25 @@ section > *:last-child:not(.tldr) {
 .impact-strip {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px 16px;
   margin-bottom: 16px;
 }
 
+/* Experience tags read as quiet grey labels with an underline, not pills —
+   matching the project, hero, contact, and case-study tags. */
 .impact-item {
   display: inline-block;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  padding: 4px 11px;
-  border-radius: 999px;
-  background: transparent;
-  border: 1px solid var(--border-strong);
+  font-size: 12px;
+  letter-spacing: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  border: none;
   color: var(--muted);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
   white-space: nowrap;
 }
 
@@ -1359,6 +1454,8 @@ section > *:last-child:not(.tldr) {
   padding: 30px 0;
   border-top: 1px solid var(--border);
   color: var(--text);
+  transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: left center;
 }
 
 .work-item:first-child {
@@ -1384,11 +1481,22 @@ section > *:last-child:not(.tldr) {
 .card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px 16px;
 }
 
+/* Project tags read as quiet grey labels with an underline, matching the hero,
+   contact, and case-study tags — not pills. */
 .card-tags .tag {
   margin-bottom: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: var(--muted);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
 }
 
 .work-main h3 {

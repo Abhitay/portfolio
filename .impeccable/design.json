@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-18T00:00:00Z",
+  "title": "Design System: Abhitay Shinde Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "neutral", "displayName": "Ink Black", "canonical": "#0a0a0a", "tonalRamp": ["#0a0a0a", "#26241f", "#403c36", "#5a544c", "#6f6b66", "#9a958e", "#c7c2ba", "#f6f4f1"] },
+      "paper": { "role": "neutral", "displayName": "Warm Paper", "canonical": "#ffffff", "tonalRamp": ["#e7e3dd", "#eeebe6", "#f2efeb", "#f6f4f1", "#faf9f6", "#fcfbf9", "#fefefd", "#ffffff"] },
+      "muted": { "role": "neutral", "displayName": "Workhorse Grey", "canonical": "#6f6b66", "tonalRamp": ["#2b2925", "#403c37", "#544f49", "#6f6b66", "#8a857e", "#a5a099", "#c3beb6", "#e2ded8"] },
+      "faint": { "role": "neutral", "displayName": "Faint Grey", "canonical": "#8b867e", "tonalRamp": ["#3d3a35", "#524e48", "#6a655e", "#7a746c", "#8b867e", "#a8a39b", "#cecac3", "#e9e6e1"] },
+      "surface": { "role": "neutral", "displayName": "Warm Off-White", "canonical": "#f6f4f1", "tonalRamp": ["#d9d5cf", "#e0ddd7", "#e7e3dd", "#eeebe6", "#f6f4f1", "#faf8f5", "#fcfbf9", "#ffffff"] },
+      "border": { "role": "neutral", "displayName": "Hairline", "canonical": "#e7e3dd", "tonalRamp": ["#c1bcb3", "#cec9c1", "#d3cec6", "#ddd9d2", "#e7e3dd", "#efece7", "#f5f3ef", "#fbfaf8"] },
+      "border-strong": { "role": "neutral", "displayName": "Strong Hairline", "canonical": "#d3cec6", "tonalRamp": ["#a49d92", "#b4aea3", "#c3bdb2", "#d3cec6", "#dedad2", "#e8e5df", "#f1efeb", "#f9f8f6"] },
+      "success": { "role": "tertiary", "displayName": "Ledger Green", "canonical": "#1f7a52", "tonalRamp": ["#0c3121", "#124832", "#175f42", "#1f7a52", "#2f9668", "#57b389", "#8ccdb0", "#c8e6d8"] },
+      "warning": { "role": "tertiary", "displayName": "Ochre", "canonical": "#9a6a00", "tonalRamp": ["#3d2a00", "#5a3e00", "#785200", "#9a6a00", "#c08600", "#e0a520", "#eec868", "#f6e6b6"] },
+      "danger": { "role": "tertiary", "displayName": "Errata Red", "canonical": "#b42318", "tonalRamp": ["#4a0f0a", "#6a160e", "#8c1c13", "#b42318", "#d94438", "#e8776e", "#f2a9a3", "#f8d4d0"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline and case-study titles. Tightly tracked Fraunces." },
+      "heading": { "displayName": "Heading", "purpose": "Section (h2) and sub-section (h3) titles." },
+      "caption": { "displayName": "Section Caption", "purpose": "Right-aligned grey Fraunces italic standfirst with one word struck Ink. The signature." },
+      "body": { "displayName": "Body", "purpose": "All running prose at comfortable 1.7 leading." },
+      "label": { "displayName": "Label / Kicker", "purpose": "Uppercase Inter micro-type for section kickers and sub-eyebrows." }
+    },
+    "shadows": [
+      { "name": "toggle-lift", "value": "0 8px 16px rgba(0,0,0,0.08)", "purpose": "The ONLY shadow in the system: mobile menu toggle hover. Content is otherwise flat." }
+    ],
+    "motion": [
+      { "name": "ease-fluid", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Standard easing for press feedback, hovers, and section-caption motion." },
+      { "name": "press-scale", "value": "scale(0.95)", "purpose": "Buttons/pills scale to 0.95 on :active; project rows to 0.99 from their left origin." }
+    ],
+    "breakpoints": [
+      { "name": "caption-hide", "value": "620px" },
+      { "name": "cert-collapse", "value": "640px" },
+      { "name": "mobile", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Section Caption",
+      "kind": "custom",
+      "refersTo": "caption",
+      "description": "Signature masthead standfirst: grey Fraunces italic, exactly one word struck solid Ink.",
+      "html": "<span class=\"ds-caption\">made with <em class=\"ds-cap-em\">black coffee</em> and a <em class=\"ds-cap-em\">curious mind</em></span>",
+      "css": ".ds-caption { font-family: Fraunces, Georgia, serif; font-style: italic; font-weight: 500; font-size: clamp(26px,4.2vw,48px); line-height: 1; letter-spacing: -0.02em; color: #9a958e; } .ds-cap-em { color: #0a0a0a; font-style: italic; font-family: inherit; }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Grey underlined text label. Never a pill. Used for tech tags, skills, and meta.",
+      "html": "<span class=\"ds-tag\">Hybrid Search</span>",
+      "css": ".ds-tag { display: inline-block; font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #6f6b66; text-decoration: underline; text-decoration-color: #d3cec6; text-underline-offset: 3px; } .ds-tag:hover { color: #0a0a0a; text-decoration-color: #0a0a0a; }"
+    },
+    {
+      "name": "Nav Resume Button",
+      "kind": "button",
+      "refersTo": "nav-button",
+      "description": "The one persistent chrome button: outlined quiet pill.",
+      "html": "<a class=\"ds-btn\" href=\"#\">Resume</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; height: 38px; padding: 9px 18px; border-radius: 999px; background: transparent; border: 1px solid #d3cec6; color: #0a0a0a; font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; text-decoration: none; transition: background .18s ease, border-color .18s ease, transform .14s cubic-bezier(.22,1,.36,1); } .ds-btn:hover { border-color: #0a0a0a; } .ds-btn:active { transform: scale(.95); } .ds-btn:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }"
+    },
+    {
+      "name": "Work Item Row",
+      "kind": "card",
+      "refersTo": "work-item",
+      "description": "A project entry as a hairline-separated list row, not a boxed card. Whole row is the link.",
+      "html": "<a class=\"ds-work\" href=\"#\"><div class=\"ds-work-meta\"><span class=\"ds-tag\">RAG</span><span class=\"ds-tag\">Reranking</span><span class=\"ds-read\">12 min read</span></div><h3 class=\"ds-work-title\">Hybrid RAG Retrieval + Evaluation Harness</h3><p class=\"ds-work-desc\">A support bot that answers from product manuals and grades its own answers.</p><span class=\"ds-arrow\">Explore the analysis →</span></a>",
+      "css": ".ds-work { display: block; padding: 30px 0; border-top: 1px solid #e7e3dd; color: #0a0a0a; text-decoration: none; transition: transform .16s cubic-bezier(.22,1,.36,1); transform-origin: left center; } .ds-work:active { transform: scale(.99); } .ds-work-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin-bottom: 14px; } .ds-read { font-size: 13px; font-weight: 600; color: #6f6b66; } .ds-work-title { font-family: Fraunces, Georgia, serif; font-weight: 500; font-size: 21px; letter-spacing: -0.01em; margin: 0 0 10px; } .ds-work-desc { font-family: Inter, sans-serif; color: #6f6b66; line-height: 1.7; margin: 0 0 12px; } .ds-arrow { font-family: Inter, sans-serif; font-weight: 500; color: #0a0a0a; border-bottom: 1px solid #d3cec6; padding-bottom: 1px; } .ds-work:hover .ds-arrow { border-color: #0a0a0a; }"
+    },
+    {
+      "name": "Finding Aside",
+      "kind": "custom",
+      "refersTo": "finding-note",
+      "description": "The one filled surface: a quiet warm off-white inset note inside case studies, serif kicker lead, no border, no color.",
+      "html": "<div class=\"ds-finding\"><strong class=\"ds-finding-lead\">Design choice: the model call stays simulated, deliberately</strong><p class=\"ds-finding-body\">Every metric depends on which question matched, never on the answer text.</p></div>",
+      "css": ".ds-finding { background: #f6f4f1; border: none; border-radius: 8px; padding: 22px 26px; } .ds-finding-lead { display: block; font-family: Fraunces, Georgia, serif; font-weight: 500; font-size: 17px; color: #0a0a0a; margin-bottom: 6px; } .ds-finding-body { font-family: Inter, sans-serif; color: #6f6b66; line-height: 1.65; margin: 0; }"
+    },
+    {
+      "name": "Section Kicker",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "Uppercase Inter micro-label that pairs with the struck-word caption to open a section.",
+      "html": "<span class=\"ds-kicker\">02 · Experience</span>",
+      "css": ".ds-kicker { font-family: Inter, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #6f6b66; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Broadsheet",
+    "overview": "This is a black-and-white editorial publication about one person, set with the confidence of a newspaper front page. A serif masthead carries oversized display type; grey italic standfirsts run a single word struck solid black; content is organized into hairline-separated columns and lists rather than cards. Nothing floats, nothing glows, nothing is colored. The restraint is the argument: a data scientist who writes up his own work with honest tradeoffs earns trust by looking considered, not decorated. The personality is quietly witty, surfacing only in the section captions, always on the same typographic device.",
+    "keyCharacteristics": [
+      "Serif display (Fraunces) + sans body (Inter); no third voice.",
+      "Strict ink / paper / warm-grey palette; no color in the interface.",
+      "Hairline rules and whitespace instead of cards, boxes, or shadows.",
+      "Right-aligned grey italic section captions with one word struck black.",
+      "Tags and links are grey underlined text, never pills."
+    ],
+    "rules": [
+      { "name": "The Monochrome Rule", "body": "The interface is ink, paper, and warm-grey only. No blue links, no brand color, no gradients. The sole tinted exception is a logo tile whose background is matched to that logo's own brand ground so the mark blends into the rounded tile.", "section": "colors" },
+      { "name": "The One Ground Rule", "body": "There is exactly one dark region: the contact + footer band in Ink. Its inversion signals the end of the page; it is never repeated elsewhere.", "section": "colors" },
+      { "name": "The Struck-Word Rule", "body": "Every section caption is grey Fraunces italic with exactly one word set in solid Ink, always at a meaningful noun. It is the only place italic and the only lone black accent appear in grey text.", "section": "typography" },
+      { "name": "The Optical Masthead Rule", "body": "Large display type carries negative tracking (-0.025em) and font-optical-sizing: auto; body stays at 0 tracking. Never apply one letter-spacing value across sizes.", "section": "typography" },
+      { "name": "The No-Em-Dash Rule", "body": "House copy never uses em dashes, in body or captions. Use a period, a comma, or restructure.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest and stay flat. The single permitted shadow is the mobile toggle's hover lift; if a new element wants a shadow to separate itself, use a hairline rule or whitespace instead.", "section": "elevation" },
+      { "name": "The Hairline Rule", "body": "Groups are separated by 1px border rules, first row flush, never boxed. A card in this system is a list row, not a container.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the palette to Ink / Paper / warm-grey; let hairlines and whitespace carry structure.",
+      "Do separate groups with 1px Border hairline rows, first row flush, not boxes.",
+      "Do render tags and inline links as grey underlined text (Border-Strong underline, 3px offset).",
+      "Do give every section a struck-word caption: grey Fraunces italic with exactly one Ink word.",
+      "Do tighten large display type (-0.025em) and keep body at 0 tracking.",
+      "Do tint a logo tile to its own brand background so the mark blends into the 11px tile."
+    ],
+    "donts": [
+      "Don't introduce any accent color, gradient, or glassmorphism into the interface (logo-tile tints are the only exception).",
+      "Don't use pill chips, bordered cards, or drop shadows on content; the mobile toggle's hover lift is the only shadow.",
+      "Don't use em dashes anywhere in copy or captions.",
+      "Don't add a second dark region; the contact/footer band is the only inverted ground.",
+      "Don't stack the Surface fill on itself or use it for cards; it is only the case-study finding aside.",
+      "Don't fabricate metrics, testimonials, logos, or an availability claim; every visible credential must be real and verifiable."
+    ]
+  }
+}
